@@ -1,0 +1,88 @@
+import 'package:breathe/shared/shared_widgets.dart';
+import 'package:breathe/themes/theme.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+
+class Loading extends StatelessWidget {
+  const Loading({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: MediaQuery.of(context).size.height,
+      width: MediaQuery.of(context).size.width,
+      child: Center(
+        child: SpinKitCircle(
+          size: 100.w,
+          color: CustomTheme.brown,
+        ),
+      ),
+    );
+  }
+}
+
+class LoadingPage extends StatelessWidget {
+  const LoadingPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        body: Center(
+          child: SpinKitCircle(
+            size: 100.w,
+            color: CustomTheme.brown,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class LoadingSmall extends StatelessWidget {
+  final double size;
+
+  LoadingSmall({double? size, Key? key})
+      : size = size ?? 100.w,
+        super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(5.w),
+      child: SpinKitCircle(
+        size: size,
+        color: CustomTheme.brown,
+      ),
+    );
+  }
+}
+
+Future<void> showLoadingDialog(BuildContext context) async {
+  await showDialog(
+    context: context,
+    barrierColor: Colors.black.withOpacity(0.25),
+    builder: (context) {
+      return Center(
+        child: SizedBox(
+          height: 220.w,
+          width: 220.w,
+          child: Card(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30.w),
+            ),
+            child: Container(
+              padding: EdgeInsets.all(20.w),
+              child: SpinKitCircle(
+                size: 110.w,
+                color: CustomTheme.brown,
+              ),
+            ),
+          ),
+        ),
+      );
+    },
+  );
+}
