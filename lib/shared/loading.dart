@@ -32,7 +32,7 @@ class LoadingPage extends StatelessWidget {
       home: Scaffold(
         body: Center(
           child: SpinKitCircle(
-            size: 100.w,
+            size: 100,
             color: CustomTheme.brown,
           ),
         ),

@@ -24,30 +24,30 @@ class SomethingWentWrong extends StatelessWidget {
                 color: CustomTheme.cream,
               ),
             ),
-            SizedBox(
-              height: 40.w,
+            const SizedBox(
+              height: 40,
             ),
             InkWell(
               onTap: () {
                 context.read<AppBloc>().add(AppStarted());
               },
               child: Container(
-                margin: EdgeInsets.symmetric(horizontal: 50.w),
-                height: 55.w,
+                margin: const EdgeInsets.symmetric(horizontal: 50),
+                height: 55,
                 decoration: BoxDecoration(
                   color: CustomTheme.brown,
-                  borderRadius: BorderRadius.circular(12.w),
+                  borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       MdiIcons.reload,
-                      size: 24.w,
+                      size: 24,
                       color: CustomTheme.cream,
                     ),
-                    SizedBox(
-                      width: 8.w,
+                    const SizedBox(
+                      width: 8,
                     ),
                     Text(
                       "Please Try Again",

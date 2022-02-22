@@ -16,6 +16,7 @@ class Wrapper extends StatelessWidget {
         state is LoginPageState ||
         state is SignupPageState ||
         state is EmailInputState) {
+      print('lesgoo');
       return const Loading();
     } else if (state is Authenticated) {
       return const HomePage();

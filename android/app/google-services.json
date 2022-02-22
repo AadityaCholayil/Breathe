@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "179745379178",
+    "project_id": "breathe-efa27",
+    "storage_bucket": "breathe-efa27.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179745379178:android:9adad8318cb15747f3cb13",
+        "android_client_info": {
+          "package_name": "com.mates.breathe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179745379178-vmr900v9d053pl7algbrn2ft7n0n56j2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.mates.breathe",
+            "certificate_hash": "fa0585efe2995d3314c49360bb553f762c74e293"
+          }
+        },
+        {
+          "client_id": "179745379178-87kvd2v88uo9j0m22n6qeeuekqn5la07.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8Uz_QZ0ovSIchXS6LH2c8m6h0kfxsphg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179745379178-87kvd2v88uo9j0m22n6qeeuekqn5la07.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
