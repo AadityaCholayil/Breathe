@@ -9,7 +9,6 @@ import 'package:breathe/views/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:provider/provider.dart';
 
 class App extends StatefulWidget {
   const App({Key? key}) : super(key: key);
