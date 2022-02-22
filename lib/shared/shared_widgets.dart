@@ -1,97 +1,173 @@
-import 'dart:async';
 import 'package:breathe/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'dart:ui' as ui;
 
-class BackgroundImage extends StatelessWidget {
-  final Widget child;
+InputDecoration customInputDecoration(
+    {String labelText = '',
+    bool isSearch = false}) {
+  return InputDecoration(
+    suffixIcon: isSearch
+        ? Padding(
+            padding: EdgeInsets.only(right: 20.w),
+            child: Icon(
+              Icons.search,
+              size: 25.w,
+            ),
+          )
+        : null,
+    contentPadding: EdgeInsets.fromLTRB(20.w, 15.w, 15.w, 15.w),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Colors.transparent,
+        width: 2.w,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(15.w)),
+    ),
+    fillColor: CustomTheme.card,
+    labelText: labelText,
+    labelStyle: const TextStyle(fontSize: 18),
+    alignLabelWithHint: true,
+    floatingLabelBehavior: FloatingLabelBehavior.never,
+    helperStyle: const TextStyle(
+      color: Color(0xdd000000),
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    hintStyle: const TextStyle(
+      color: Color(0xdd000000),
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    errorStyle: const TextStyle(
+      color: Color(0xffd32f2f),
+      fontSize: 15.0,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    errorMaxLines: null,
+    isDense: false,
+    isCollapsed: false,
+    prefixStyle: const TextStyle(
+      color: Color(0xdd000000),
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    suffixStyle: const TextStyle(
+      color: Color(0xdd000000),
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    counterStyle: const TextStyle(
+      color: Color(0xdd000000),
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    filled: true,
+    errorBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: const Color(0xffd32f2f),
+        width: 2.w,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(15.w)),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: CustomTheme.accent,
+        width: 2.w,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(15.w)),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: const Color(0xffd32f2f),
+        width: 2.w,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(15.w)),
+    ),
+    disabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: const Color(0xff000000),
+        width: 2.w,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(15.w)),
+    ),
+    border: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: const Color(0xff000000),
+        width: 2.w,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(15.w)),
+    ),
+  );
+}
 
-  const BackgroundImage({required this.child, Key? key}) : super(key: key);
+TextStyle formTextStyle() => TextStyle(
+      fontSize: 18,
+      color: CustomTheme.t1,
+    );
+
+TextStyle formTextStyle2() =>
+    TextStyle(fontSize: 18, color: CustomTheme.t1);
+
+class CustomElevatedButton extends StatelessWidget {
+  final void Function()? onPressed;
+  final String text;
+  final int style;
+
+  const CustomElevatedButton(
+      {Key? key, this.onPressed, this.text = 'Submit', this.style = 0})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: const BoxDecoration(
-        image: DecorationImage(
-          image: AssetImage('assets/bg.png'),
-          fit: BoxFit.fitWidth,
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        elevation: 4,
+        primary: style == 0 ? CustomTheme.accent : Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(12.w),
         ),
       ),
-      width: MediaQuery.of(context).size.width,
-      child: child,
+      child: Container(
+        alignment: Alignment.center,
+        height: 55.w,
+        child: Text(
+          text,
+          style: TextStyle(
+              color: style == 0 ? CustomTheme.onAccent : Colors.black,
+              fontSize: 19,
+              fontWeight: FontWeight.w600),
+        ),
+      ),
+      onPressed: onPressed,
     );
   }
 }
 
-class CustomTexture extends StatelessWidget {
-  final Widget child;
-
-  const CustomTexture({Key? key, required this.child}) : super(key: key);
-
-  Future<ui.Image> loadImage() async {
-    ImageProvider myImage = Image.asset(
-      "assets/texture.png",
-      fit: BoxFit.fitHeight,
-    ).image;
-    final completer = Completer<ui.Image>();
-    final stream = myImage.resolve(const ImageConfiguration());
-    stream.addListener(
-        ImageStreamListener((info, _) => completer.complete(info.image)));
-    return completer.future;
-  }
+class CustomBackButton extends StatelessWidget {
+  const CustomBackButton({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<ui.Image>(
-      future: loadImage(),
-      builder: (context, snapshot) {
-        return snapshot.hasData
-            ? ShaderMask(
-                blendMode: BlendMode.overlay,
-                shaderCallback: (bounds) => ImageShader(
-                  snapshot.data!,
-                  TileMode.mirror,
-                  TileMode.mirror,
-                  Matrix4.identity().storage,
-                ),
-                child: child,
-              )
-            : SizedBox(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                child: BackgroundImage(
-                  child: Center(
-                    child: SpinKitCircle(
-                      size: 100.w,
-                      color: CustomTheme.brown,
-                    ),
-                  ),
-                ),
-              );
+    return IconButton(
+      padding: EdgeInsets.fromLTRB(0, 9.w, 15.w, 9.w),
+      iconSize: 32.w,
+      color: CustomTheme.accent,
+      icon: const Icon(Icons.arrow_back_ios_rounded),
+      onPressed: () {
+        Navigator.pop(context);
       },
-    );
-  }
-}
-
-class CustomAppBar extends StatelessWidget {
-  const CustomAppBar({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 90.w,
-      padding: EdgeInsets.only(left: 20.w, right: 20.w),
-      child: IconButton(
-        onPressed: () => Navigator.pop(context),
-        icon: Icon(
-          Icons.arrow_back_ios_rounded,
-          size: 32.w,
-          color: CustomTheme.brown,
-        ),
-        padding: EdgeInsets.zero,
-      ),
     );
   }
 }

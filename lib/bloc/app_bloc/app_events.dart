@@ -45,18 +45,23 @@ class SignupUser extends AppEvent {
   final String password;
   final String name;
   final int age;
+  final String gender;
+  final String doctorId;
 
-  const SignupUser(
-      {required this.email,
-      required this.password,
-      required this.name,
-      required this.age});
+  const SignupUser({
+    required this.email,
+    required this.password,
+    required this.name,
+    required this.age,
+    required this.gender,
+    required this.doctorId,
+  });
 
   @override
-  String toString() => 'SignupUser';
+  String toString() => 'SignupUser($email, $password, $name, $age, $gender, $doctorId)';
 
   @override
-  List<Object?> get props => [toString()];
+  List<Object?> get props => [email, password, name, age, gender, doctorId];
 }
 
 class UpdateUserData extends AppEvent {
@@ -65,7 +70,7 @@ class UpdateUserData extends AppEvent {
   const UpdateUserData(this.userData);
 
   @override
-  String toString() => 'UpdateUserData';
+  String toString() => 'UpdateUserData($userData)';
 
   @override
   List<Object?> get props => [toString()];

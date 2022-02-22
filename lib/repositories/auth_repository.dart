@@ -41,6 +41,7 @@ class AuthRepository{
       return user==null?UserData.empty:UserData.fromUser(user);
     } on FirebaseAuthException catch (e) {
       // throw custom exceptions that can be handled in AppBloc
+      print(e.code);
       switch (e.code) {
         case 'user-not-found':
           throw UserNotFoundException();
@@ -65,6 +66,7 @@ class AuthRepository{
       return user==null?UserData.empty:UserData.fromUser(user);
     } on FirebaseAuthException catch (e) {
       // throw custom exceptions that can be handled in AppBloc
+      print(e.code);
       switch (e.code) {
         case 'email-already-in-use':
           throw EmailAlreadyInUseException();

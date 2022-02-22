@@ -1,5 +1,6 @@
 import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/shared/loading.dart';
+import 'package:breathe/views/auth_screens/welcome_screen.dart';
 import 'package:breathe/views/home_page.dart';
 import 'package:flutter/material.dart';
 
@@ -16,8 +17,7 @@ class Wrapper extends StatelessWidget {
         state is LoginPageState ||
         state is SignupPageState ||
         state is EmailInputState) {
-      print('lesgoo');
-      return const Loading();
+      return const WelcomeScreen();
     } else if (state is Authenticated) {
       return const HomePage();
     } else {

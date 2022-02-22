@@ -63,9 +63,19 @@ class UserData extends Equatable {
 
   @override
   String toString() {
-    return 'uid: $uid, email: $email, name: $name, age: $age';
+    return 'UserData($uid, $email, $name, $age, $gender, $doctorId, $healthStatus, $doctorName, $hospital)';
   }
 
   @override
-  List<Object?> get props => [uid, email, name, age];
+  List<Object?> get props => [
+        uid,
+        email,
+        name,
+        age,
+        gender,
+        doctorId,
+        healthStatus,
+        doctorName,
+        hospital
+      ];
 }

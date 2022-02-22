@@ -61,7 +61,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       // Login using email and password
       userData = await _authRepository.logInWithCredentials(
           event.email, event.password);
-
       // Update DatabaseRepository
       _databaseRepository = DatabaseRepository(uid: userData.uid);
       // After login fetch rest of the user details from database
@@ -119,7 +118,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           uid: userData.uid,
           email: event.email,
           name: event.name,
-          age: event.age);
+          age: event.age,
+          gender: event.gender,
+          doctorId: event.doctorId,
+      );
       _databaseRepository.updateUserData(newUserData);
       userData = newUserData;
       emit(Authenticated(userData: userData));
