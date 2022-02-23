@@ -32,19 +32,6 @@ class CapacityReport {
     );
   }
 
-  // CapacityReport.fromJson(Map<String, dynamic> json) : this(
-  //     bestScore: json['bestScore'],
-  //     averageScore: json['averageScore'],
-  //     if (json['fullReading'] != null) {
-  //   fullReading = new List<FullReading>();
-  //   json['fullReading'].forEach((v) {
-  //     fullReading.add(new FullReading.fromJson(v));
-  //   });
-  // }
-  // totalDuration: json['totalDuration'],
-  // timeTaken: json['timeTaken'],
-  // );
-
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
     data['bestScore'] = bestScore;
