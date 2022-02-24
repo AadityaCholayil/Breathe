@@ -14,7 +14,7 @@ class Loading extends StatelessWidget {
       child: Center(
         child: SpinKitCircle(
           size: 100.w,
-          color: CustomTheme.brown,
+          color: CustomTheme.accent,
         ),
       ),
     );
@@ -32,7 +32,7 @@ class LoadingPage extends StatelessWidget {
         body: Center(
           child: SpinKitCircle(
             size: 100,
-            color: CustomTheme.brown,
+            color: CustomTheme.accent,
           ),
         ),
       ),
@@ -53,7 +53,7 @@ class LoadingSmall extends StatelessWidget {
       padding: EdgeInsets.all(5.w),
       child: SpinKitCircle(
         size: size,
-        color: CustomTheme.brown,
+        color: CustomTheme.accent,
       ),
     );
   }
@@ -76,7 +76,7 @@ Future<void> showLoadingDialog(BuildContext context) async {
               padding: EdgeInsets.all(20.w),
               child: SpinKitCircle(
                 size: 110.w,
-                color: CustomTheme.brown,
+                color: CustomTheme.accent,
               ),
             ),
           ),
