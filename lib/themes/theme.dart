@@ -5,6 +5,8 @@ class CustomTheme {
 
   static Color get card => const Color(0xFFFFFFFF);
 
+  static Color get cardShadow => const Color(0xFFADE1FF).withOpacity(0.3);
+
   static Color get onAccent => const Color(0xFFFFFFFF);
 
   static Color get accent => const Color(0xFF0DAEFF);
