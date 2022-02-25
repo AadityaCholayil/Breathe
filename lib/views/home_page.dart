@@ -1,5 +1,6 @@
 import 'package:breathe/bloc/app_bloc/app_bloc.dart';
 import 'package:breathe/themes/theme.dart';
+import 'package:breathe/views/readings/take_readings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,6 +18,8 @@ class HomePage extends StatelessWidget {
         ),
         onPressed: () {
           // Add your onPressed code here!
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const TakeReadingPage()));
         },
         label: Text(
           'Take Reading',
