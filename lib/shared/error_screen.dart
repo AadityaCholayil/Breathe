@@ -21,7 +21,7 @@ class SomethingWentWrong extends StatelessWidget {
               style: TextStyle(
                 fontSize: 50,
                 fontWeight: FontWeight.w600,
-                color: CustomTheme.cream,
+                color: CustomTheme.t1,
               ),
             ),
             const SizedBox(
@@ -35,7 +35,7 @@ class SomethingWentWrong extends StatelessWidget {
                 margin: const EdgeInsets.symmetric(horizontal: 50),
                 height: 55,
                 decoration: BoxDecoration(
-                  color: CustomTheme.brown,
+                  color: CustomTheme.card,
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Row(
@@ -44,7 +44,7 @@ class SomethingWentWrong extends StatelessWidget {
                     Icon(
                       MdiIcons.reload,
                       size: 24,
-                      color: CustomTheme.cream,
+                      color: CustomTheme.accent,
                     ),
                     const SizedBox(
                       width: 8,
@@ -53,7 +53,7 @@ class SomethingWentWrong extends StatelessWidget {
                       "Please Try Again",
                       style: TextStyle(
                         fontSize: 16,
-                        color: CustomTheme.cream,
+                        color: CustomTheme.onAccent,
                       ),
                     ),
                   ],
@@ -83,7 +83,7 @@ class SomethingWentWrongSmall extends StatelessWidget {
               style: TextStyle(
                 fontSize: 50,
                 fontWeight: FontWeight.w600,
-                color: CustomTheme.cream,
+                color: CustomTheme.t1,
               ),
             ),
             SizedBox(
@@ -97,7 +97,7 @@ class SomethingWentWrongSmall extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: 50.w),
                 height: 55.w,
                 decoration: BoxDecoration(
-                  color: CustomTheme.brown,
+                  color: CustomTheme.accent,
                   borderRadius: BorderRadius.circular(12.w),
                 ),
                 child: Row(
@@ -106,7 +106,7 @@ class SomethingWentWrongSmall extends StatelessWidget {
                     Icon(
                       MdiIcons.reload,
                       size: 24.w,
-                      color: CustomTheme.cream,
+                      color: CustomTheme.onAccent,
                     ),
                     SizedBox(
                       width: 8.w,
@@ -115,7 +115,7 @@ class SomethingWentWrongSmall extends StatelessWidget {
                       "Please Try Again",
                       style: TextStyle(
                         fontSize: 16,
-                        color: CustomTheme.cream,
+                        color: CustomTheme.t1,
                       ),
                     ),
                   ],
@@ -138,18 +138,18 @@ void showErrorSnackBar(BuildContext context, String message) {
       ),
       margin: EdgeInsets.all(15.w),
       behavior: SnackBarBehavior.floating,
-      backgroundColor: CustomTheme.cream,
+      backgroundColor: CustomTheme.t1,
       content: Text(
         message,
         style: TextStyle(
           fontSize: 16,
-          color: CustomTheme.brown,
+          color: CustomTheme.accent,
           fontWeight: FontWeight.w400,
         ),
       ),
       action: SnackBarAction(
         label: 'OK',
-        textColor: CustomTheme.brown,
+        textColor: CustomTheme.onAccent,
         onPressed: () {},
       ),
     ),
