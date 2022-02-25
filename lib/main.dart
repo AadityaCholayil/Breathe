@@ -2,13 +2,18 @@ import 'package:breathe/app.dart';
 import 'package:breathe/bloc/app_bloc_observer.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/shared/loading.dart';
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
 
-void main() {
+// List of available cameras
+List<CameraDescription> cameras = [];
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  cameras = await availableCameras();
   BlocOverrides.runZoned(
     () => {},
     eventTransformer: sequential<dynamic>(),

@@ -156,14 +156,16 @@ class CustomElevatedButton extends StatelessWidget {
 }
 
 class CustomBackButton extends StatelessWidget {
-  const CustomBackButton({Key? key}) : super(key: key);
+  final Color? color;
+
+  const CustomBackButton({this.color, Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return IconButton(
       padding: EdgeInsets.fromLTRB(0, 9.w, 15.w, 9.w),
       iconSize: 32.w,
-      color: CustomTheme.accent,
+      color: color ?? CustomTheme.accent,
       icon: const Icon(Icons.arrow_back_ios_rounded),
       onPressed: () {
         Navigator.pop(context);
