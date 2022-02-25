@@ -29,6 +29,7 @@ class LoadingPage extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: CustomTheme.bg,
         body: Center(
           child: SpinKitCircle(
             size: 100,
