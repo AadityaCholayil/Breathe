@@ -7,6 +7,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:tflite/tflite.dart';
 
 // List of available cameras
 List<CameraDescription> cameras = [];
@@ -14,6 +15,15 @@ List<CameraDescription> cameras = [];
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
+  String? res = await Tflite.loadModel(
+    model: "assets/tensorflow/model.tflite",
+    labels: "assets/tensorflow/labels.txt",
+    numThreads: 1,
+    // defaults to 1
+    isAsset: true,
+    // defaults to true, set to false to load resources outside assets
+    useGpuDelegate: false, // defaults to false, set to true to use GPU delegate
+  );
   BlocOverrides.runZoned(
     () => {},
     eventTransformer: sequential<dynamic>(),
@@ -21,7 +31,6 @@ void main() async {
   );
   runApp(const FlutterFireInit());
 }
-
 
 class FlutterFireInit extends StatefulWidget {
   const FlutterFireInit({Key? key}) : super(key: key);

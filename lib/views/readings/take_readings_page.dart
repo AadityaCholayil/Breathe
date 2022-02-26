@@ -72,7 +72,7 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
     // predicting = false;
   }
 
-  /// Initializes the camera by setting [cameraController]
+  // Initializes the camera by setting [cameraController]
   void initializeCamera() async {
     controller =
         CameraController(cameras[0], ResolutionPreset.low, enableAudio: false);
