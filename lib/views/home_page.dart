@@ -192,7 +192,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     SizedBox(
                       height: 63.w,
                       child: VerticalDivider(
@@ -201,7 +201,7 @@ class HomePage extends StatelessWidget {
                         // endIndent: 3.w,
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Column(
                       children: [
                         Text(
