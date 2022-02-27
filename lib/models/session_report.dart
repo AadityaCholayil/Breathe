@@ -1,34 +1,38 @@
-class CapacityReport {
+class SessionReport {
   int bestScore;
   int averageScore;
   List<FullReading> fullReading;
-  double totalDuration;
-  String timeTaken;
+  int totalDuration;
+  String timeTakeAt;
 
-  CapacityReport(
+  SessionReport(
       {this.bestScore = 0,
         this.averageScore = 0,
         this.fullReading = const [],
         this.totalDuration = 0,
-        this.timeTaken = ''});
+        this.timeTakeAt = ''});
 
-  static CapacityReport fromJson(Map<String, dynamic> json) {
+  static SessionReport fromJson(Map<String, dynamic> json) {
     int bestScore = json['bestScore'];
     int averageScore = json['averageScore'];
     List<FullReading> fullReading = [];
     if (json['fullReading'] != null) {
       json['fullReading'].forEach((v) {
-        fullReading.add(FullReading.fromJson(v));
+
       });
+      for(var reading in json['fullReading']){
+        fullReading.add(FullReading.fromJson(reading));
+      }
     }
-    double totalDuration = json['totalDuration'];
-    String timeTaken = json['timeTaken'];
-    return CapacityReport(
+    int totalDuration = json['totalDuration'];
+    String timeTakenAt = json['timeTakenAt'];
+    print(fullReading);
+    return SessionReport(
       bestScore: bestScore,
       averageScore: averageScore,
       fullReading: fullReading,
       totalDuration: totalDuration,
-      timeTaken: timeTaken,
+      timeTakeAt: timeTakenAt,
     );
   }
 
@@ -38,19 +42,19 @@ class CapacityReport {
     data['averageScore'] = averageScore;
     data['fullReading'] = fullReading.map((v) => v.toJson()).toList();
     data['totalDuration'] = totalDuration;
-    data['timeTaken'] = timeTaken;
+    data['timeTakenAt'] = timeTakeAt;
     return data;
   }
 }
 
 class FullReading {
-  double timeElapsed;
+  int timeElapsed;
   int score;
 
   FullReading({this.timeElapsed = 0, this.score = 0});
 
   static FullReading fromJson(Map<String, dynamic> json) {
-    double timeElapsed = json['timeElapsed'];
+    int timeElapsed = json['timeElapsed'] ;
     int score = json['score'];
     return FullReading(
       timeElapsed: timeElapsed,
@@ -63,5 +67,10 @@ class FullReading {
     data['timeElapsed'] = timeElapsed;
     data['score'] = score;
     return data;
+  }
+
+  @override
+  String toString() {
+    return "FullReading($timeElapsed, $score)";
   }
 }
