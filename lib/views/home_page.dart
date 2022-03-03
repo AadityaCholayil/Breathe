@@ -1,4 +1,7 @@
 import 'package:breathe/bloc/app_bloc/app_bloc.dart';
+import 'package:breathe/models/session_report.dart';
+import 'package:breathe/shared/coming_soon.dart';
+import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:breathe/views/report_screens/session_report_page.dart';
 import 'package:breathe/views/readings/take_readings_page.dart';
@@ -11,6 +14,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SessionReport report = SessionReport.fromJson(data);
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
@@ -93,11 +97,11 @@ class HomePage extends StatelessWidget {
                 SizedBox(
                   width: 24.w,
                 ),
-                _buildCard("report", "Report", 54.w),
+                _buildCard(context,"report", "Report", 54.w),
                 SizedBox(
                   width: 20.w,
                 ),
-                _buildCard("exercise", "Exercise", 48.w),
+                _buildCard(context,"exercise", "Exercise", 48.w),
               ],
             ),
             SizedBox(height: 17.w),
@@ -106,11 +110,11 @@ class HomePage extends StatelessWidget {
                 SizedBox(
                   width: 24.w,
                 ),
-                _buildCard("medicineReminder", "Medicine Reminder", 45.w),
+                _buildCard(context,"medicineReminder", "Medicine Reminder", 45.w),
                 SizedBox(
                   width: 20.w,
                 ),
-                _buildCard("askDoctor", "Chat with your\ndoctor", 45.w),
+                _buildCard(context,"askDoctor", "Chat with your\ndoctor", 45.w),
               ],
             ),
             SizedBox(height: 36.w),
@@ -126,7 +130,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 23.w),
-            for (int i = 0; i < 5; i++) _buildPreviousReadingCard(context),
+            for (int i = 0; i < 5; i++) _buildPreviousReadingCard(context, report),
             SizedBox(height: 60.w),
           ],
         ),
@@ -134,7 +138,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildPreviousReadingCard(BuildContext context) {
+  Widget _buildPreviousReadingCard(BuildContext context, SessionReport report) {
     return Padding(
       padding: EdgeInsets.only(bottom: 35.w),
       child: InkWell(
@@ -173,7 +177,7 @@ class HomePage extends StatelessWidget {
                     Column(
                       children: [
                         Text(
-                          "1200",
+                          report.bestScore.toString(),
                           style: TextStyle(
                             fontSize: 41,
                             fontWeight: FontWeight.w400,
@@ -192,7 +196,7 @@ class HomePage extends StatelessWidget {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     SizedBox(
                       height: 63.w,
                       child: VerticalDivider(
@@ -201,11 +205,11 @@ class HomePage extends StatelessWidget {
                         // endIndent: 3.w,
                       ),
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Column(
                       children: [
                         Text(
-                          "1200",
+                          report.averageScore.toString(),
                           style: TextStyle(
                             fontSize: 41,
                             fontWeight: FontWeight.w400,
@@ -233,7 +237,7 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "03:10 PM - 14 Mar 22",
+                    report.timeTakeAt,
                     style: TextStyle(
                       fontSize: 18.w,
                       color: CustomTheme.t1,
@@ -249,10 +253,11 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  InkWell _buildCard(String asset, String cardType, double iconHeight) {
+  InkWell _buildCard(BuildContext context, String asset, String cardType, double iconHeight) {
     return InkWell(
       onTap: () {
         print("Button Pressed");
+        Navigator.push(context, MaterialPageRoute(builder: (context) => const ComingSoon()));
       },
       child: Container(
         height: 123.w,

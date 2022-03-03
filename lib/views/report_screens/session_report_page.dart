@@ -1,4 +1,5 @@
 import 'package:breathe/bloc/app_bloc/app_bloc.dart';
+import 'package:breathe/models/session_report.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -7,6 +8,59 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+var data = {
+  "bestScore": 1150,
+  "averageScore": 900,
+  "fullReading": [
+    {
+      'score': 1000,
+      'timeElapsed': 500,
+    },
+    {
+      'score': 995,
+      'timeElapsed': 1000,
+    },
+    {
+      'score': 887,
+      'timeElapsed': 1500,
+    },
+    {
+      'score': 999,
+      'timeElapsed': 2000,
+    },
+    {
+      'score': 1111,
+      'timeElapsed': 2500,
+    },
+    {
+      'score': 1150,
+      'timeElapsed': 3000,
+    },
+    {
+      'score': 608,
+      'timeElapsed': 3500,
+    },
+    {
+      'score': 500,
+      'timeElapsed': 4000,
+    },
+    {
+      'score': 899,
+      'timeElapsed': 4500,
+    },
+    {
+      'score': 752,
+      'timeElapsed': 5000,
+    },
+    {
+      'score': 800,
+      'timeElapsed': 5500,
+    },
+  ],
+  "totalDuration": 5500,
+  "timeTakenAt": '03:10 PM - 14 Mar 22'
+};
+
 class SessionReportPage extends StatelessWidget {
   const SessionReportPage({Key? key}) : super(key: key);
 
@@ -14,6 +68,9 @@ class SessionReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String bestToolTip = "Shows the best reading.";
     String averageToolTip = "Shows the average reading.";
+    SessionReport report = SessionReport.fromJson(data);
+    // print(report.averageScore);
+
     return Scaffold(
       backgroundColor: CustomTheme.bg,
       body: SingleChildScrollView(
@@ -47,7 +104,7 @@ class SessionReportPage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 24.w),
               child: Text(
-                "03:10 PM - 14 Mar 22",
+                report.timeTakeAt,
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
@@ -61,11 +118,11 @@ class SessionReportPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildCard("Best", "1090", bestToolTip),
+                _buildCard("Best", report.bestScore, bestToolTip),
                 SizedBox(
                   width: 16.w,
                 ),
-                _buildCard("Average", "998", averageToolTip),
+                _buildCard("Average", report.averageScore, averageToolTip),
               ],
             ),
             SizedBox(
@@ -82,10 +139,8 @@ class SessionReportPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: 8.w
-            ),
-            _buildGraph(context),
+            SizedBox(height: 8.w),
+            _buildGraph(context, report),
             SizedBox(height: 20.w),
             Padding(
               padding: EdgeInsets.only(left: 25.w),
@@ -98,24 +153,21 @@ class SessionReportPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: 8.w
-            ),
-            _buildGraph(context),
-            SizedBox(
-              height: 50.w
-            ),
+            SizedBox(height: 8.w),
+            _buildGraph(context, report),
+            SizedBox(height: 50.w),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildGraph(BuildContext context) {
+  Widget _buildGraph(BuildContext context, SessionReport report) {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 24.w),
       child: Container(
-        padding: EdgeInsets.only(top: 30.w, left: 10.w, right: 15.w, bottom: 15.w),
+        padding:
+            EdgeInsets.only(top: 30.w, left: 10.w, right: 15.w, bottom: 15.w),
         // height: MediaQuery.of(context).size.height,
         height: 256.w,
         width: 366.w,
@@ -137,9 +189,9 @@ class SessionReportPage extends StatelessWidget {
         ),
         child: LineChart(
           LineChartData(
-            maxX: 11,
+            maxX: (report.totalDuration/1000).toDouble(),
             minY: 0,
-            maxY: 1000,
+            maxY: 1200,
             gridData: FlGridData(
               drawHorizontalLine: false,
               drawVerticalLine: false,
@@ -155,17 +207,8 @@ class SessionReportPage extends StatelessWidget {
             lineBarsData: [
               LineChartBarData(
                 spots: [
-                  const FlSpot(0, 900),
-                  const FlSpot(1, 500),
-                  const FlSpot(2, 100),
-                  const FlSpot(3, 600),
-                  const FlSpot(4, 500),
-                  const FlSpot(5, 300),
-                  const FlSpot(6, 200),
-                  const FlSpot(7, 100),
-                  const FlSpot(8, 400),
-                  const FlSpot(9, 300),
-                  const FlSpot(10, 10),
+                  for(var reading in report.fullReading)
+                   FlSpot((reading.timeElapsed/1000).toDouble(), reading.score.toDouble()),
                 ],
                 colors: [CustomTheme.accent],
                 isCurved: true,
@@ -182,7 +225,9 @@ class SessionReportPage extends StatelessWidget {
             titlesData: FlTitlesData(
               leftTitles: SideTitles(
                 showTitles: true,
-                interval: 200,
+                interval: 400,
+                // margin: 20
+                reservedSize: 30.w
               ),
               rightTitles: SideTitles(showTitles: false),
               topTitles: SideTitles(showTitles: false),
@@ -209,7 +254,7 @@ class SessionReportPage extends StatelessWidget {
     );
   }
 
-  Widget _buildCard(String cardType, String value, String toolTip) {
+  Widget _buildCard(String cardType, int value, String toolTip) {
     return Container(
       height: 114.w,
       width: 173.w,
@@ -266,7 +311,7 @@ class SessionReportPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                value,
+                value.toString(),
                 style: TextStyle(
                   color: CustomTheme.t1,
                   fontWeight: FontWeight.w400,
