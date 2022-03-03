@@ -1,3 +1,6 @@
+import 'package:breathe/tflite/classifier.dart';
+import 'package:breathe/utils/image_utils.dart';
+import 'package:breathe/utils/isolate_utils.dart';
 import 'package:camera/camera.dart';
 import 'package:equatable/equatable.dart';
 
@@ -20,8 +23,14 @@ class ChangeRecordingStatus extends TensorFlowEvent {
 
 class PerformInference extends TensorFlowEvent {
   final CameraImage image;
+  final IsolateUtils isolateUtils;
+  final Classifier classifier;
 
-  const PerformInference({required this.image});
+  const PerformInference({
+    required this.image,
+    required this.isolateUtils,
+    required this.classifier,
+  });
 
   @override
   String toString() {
@@ -31,4 +40,3 @@ class PerformInference extends TensorFlowEvent {
   @override
   List<Object?> get props => [toString()];
 }
-
