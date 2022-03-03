@@ -1,10 +1,7 @@
-import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class ComingSoon extends StatelessWidget {
   const ComingSoon({Key? key}) : super(key: key);

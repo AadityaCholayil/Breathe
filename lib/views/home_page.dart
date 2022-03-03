@@ -5,6 +5,7 @@ import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:breathe/views/report_screens/session_report_page.dart';
 import 'package:breathe/views/readings/take_readings_page.dart';
+import 'package:breathe/views/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -57,6 +58,7 @@ class HomePage extends StatelessWidget {
                     ),
                     onTap: () {
                       print("Settings button pressed");
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
                     },
                   ),
                 ],
