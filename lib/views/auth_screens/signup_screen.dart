@@ -12,13 +12,14 @@ class SignupPage extends StatefulWidget {
   final int age;
   final String gender;
   final String doctorId;
+  final String hospital;
 
   const SignupPage({
     Key? key,
     required this.name,
     required this.age,
     required this.gender,
-    required this.doctorId,
+    required this.doctorId, required this.hospital,
   }) : super(key: key);
 
   @override
@@ -284,6 +285,7 @@ class _SignupPageState extends State<SignupPage> {
                             age: widget.age,
                             gender: widget.gender,
                             doctorId: widget.doctorId,
+                            hospital: widget.hospital,
                           ));
                         },
                       ),

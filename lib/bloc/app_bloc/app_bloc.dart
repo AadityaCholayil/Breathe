@@ -115,12 +115,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       _databaseRepository = DatabaseRepository(uid: userData.uid);
       // Add User details to db
       UserData newUserData = UserData(
-          uid: userData.uid,
-          email: event.email,
-          name: event.name,
-          age: event.age,
-          gender: event.gender,
-          doctorId: event.doctorId,
+        uid: userData.uid,
+        email: event.email,
+        name: event.name,
+        age: event.age,
+        gender: event.gender,
+        doctorId: event.doctorId,
+        hospital: event.hospital,
       );
       _databaseRepository.updateUserData(newUserData);
       userData = newUserData;

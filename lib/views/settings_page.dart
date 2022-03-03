@@ -1,3 +1,4 @@
+import 'package:breathe/shared/coming_soon.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:flutter/cupertino.dart';
@@ -100,8 +101,8 @@ class SettingsPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 24.w),
             child: Text(
-              // context.read<AppBloc>().userData.hospital,
-              "XYZ Hospital",
+              context.read<AppBloc>().userData.hospital,
+              // "XYZ Hospital",
               style: TextStyle(
                 color: CustomTheme.t1,
                 fontSize: 24,
@@ -123,11 +124,17 @@ class SettingsPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8.w),
-          const SettingsOptions(listItemName: 'Edit Details'),
+          const SettingsOptions(
+            listItemName: 'Edit Details',
+            destination: ComingSoon(),
+          ),
           SizedBox(height: 28.w),
-          const SettingsOptions(listItemName: 'Delete Account'),
+          const SettingsOptions(
+            listItemName: 'Delete Account',
+            destination: ComingSoon(),
+          ),
           SizedBox(height: 28.w),
-          const SettingsOptions(listItemName: 'Sign Out'),
+          const SettingsOptions(listItemName: 'Sign Out', destination: null),
         ],
       ),
     );
@@ -222,20 +229,33 @@ class SettingsPage extends StatelessWidget {
 class SettingsOptions extends StatelessWidget {
   final String listItemName;
   final Widget? destination;
+
   const SettingsOptions({
-    Key? key, required this.listItemName, this.destination,
+    Key? key,
+    required this.listItemName,
+    this.destination,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Navigator.push(
+        if (destination == null) {
+          // context.read<AuthBloc>().add(LoggedOut());
+          showDialog(
+            context: context,
+            builder: (context) {
+              return const SignOutPrompt();
+            },
+          );
+        } else {
+          Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => destination!,
             ),
           );
+        }
       },
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 24.w),

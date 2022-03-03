@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
                     child: Icon(
                       Icons.settings,
                       size: 32,
-                      color: CustomTheme.accent,
+                      color: CustomTheme.t1,
                     ),
                     onTap: () {
                       print("Settings button pressed");
