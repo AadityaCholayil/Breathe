@@ -1,6 +1,9 @@
+import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+
 
 InputDecoration customInputDecoration(
     {String labelText = '',
@@ -173,3 +176,98 @@ class CustomBackButton extends StatelessWidget {
     );
   }
 }
+class SignOutPrompt extends StatelessWidget {
+  const SignOutPrompt({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: 160.w,
+        width: 300.w,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(22.w),
+          ),
+          color: CustomTheme.bg,
+          child: Container(
+            padding: EdgeInsets.only(bottom: 10.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 22.w),
+                Text(
+                  "Do you want to Sign out?",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: CustomTheme.t1,
+                    fontSize: 20.w,
+                  ),
+                ),
+                SizedBox(
+                  height: 30.w,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          CustomTheme.accent,
+                        ),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.w),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                      child: Text(
+                        'No',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: CustomTheme.onAccent,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 15.w),
+                    TextButton(
+                      onPressed: () {
+                        context.read<AppBloc>().add(LoggedOut());
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                12.w,
+                              ),
+                              side: BorderSide(color: CustomTheme.t1)),
+                        ),
+                      ),
+                      child: Text(
+                        'Yes',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: CustomTheme.t1,
+                          // backgroundColor: CustomTheme.brown,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20.w,
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+

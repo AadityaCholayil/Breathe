@@ -5,6 +5,7 @@ import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:breathe/views/report_screens/session_report_page.dart';
 import 'package:breathe/views/readings/take_readings_page.dart';
+import 'package:breathe/views/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -21,10 +22,15 @@ class HomePage extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(14.w),
         ),
-        onPressed: () {
-          // Add your onPressed code here!
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const TakeReadingPage()));
+        onPressed: () async {
+          await showModalBottomSheet(
+            context: context,
+            barrierColor: Colors.black.withOpacity(0.25),
+            backgroundColor: Colors.transparent,
+            builder: (context) {
+              return _buildBottomCard();
+            },
+          );
         },
         label: Text(
           'Take Reading',
@@ -53,10 +59,14 @@ class HomePage extends StatelessWidget {
                     child: Icon(
                       Icons.settings,
                       size: 32,
-                      color: CustomTheme.accent,
+                      color: CustomTheme.t1,
                     ),
                     onTap: () {
                       print("Settings button pressed");
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SettingsPage()));
                     },
                   ),
                 ],
@@ -79,10 +89,7 @@ class HomePage extends StatelessWidget {
             Padding(
               padding: EdgeInsets.only(left: 30.w),
               child: Text(
-                context
-                    .read<AppBloc>()
-                    .userData
-                    .name,
+                context.read<AppBloc>().userData.name,
                 // "Pranav",
                 style: TextStyle(
                   color: CustomTheme.t1,
@@ -97,11 +104,11 @@ class HomePage extends StatelessWidget {
                 SizedBox(
                   width: 24.w,
                 ),
-                _buildCard(context,"report", "Report", 54.w),
+                _buildCard(context, "report", "Report", 54.w),
                 SizedBox(
                   width: 20.w,
                 ),
-                _buildCard(context,"exercise", "Exercise", 48.w),
+                _buildCard(context, "exercise", "Exercise", 48.w),
               ],
             ),
             SizedBox(height: 17.w),
@@ -110,11 +117,13 @@ class HomePage extends StatelessWidget {
                 SizedBox(
                   width: 24.w,
                 ),
-                _buildCard(context,"medicineReminder", "Medicine Reminder", 45.w),
+                _buildCard(
+                    context, "medicineReminder", "Medicine Reminder", 45.w),
                 SizedBox(
                   width: 20.w,
                 ),
-                _buildCard(context,"askDoctor", "Chat with your\ndoctor", 45.w),
+                _buildCard(
+                    context, "askDoctor", "Chat with your\ndoctor", 45.w),
               ],
             ),
             SizedBox(height: 36.w),
@@ -130,7 +139,8 @@ class HomePage extends StatelessWidget {
               ),
             ),
             SizedBox(height: 23.w),
-            for (int i = 0; i < 5; i++) _buildPreviousReadingCard(context, report),
+            for (int i = 0; i < 5; i++)
+              _buildPreviousReadingCard(context, report),
             SizedBox(height: 60.w),
           ],
         ),
@@ -253,11 +263,13 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  InkWell _buildCard(BuildContext context, String asset, String cardType, double iconHeight) {
+  Widget _buildCard(
+      BuildContext context, String asset, String cardType, double iconHeight) {
     return InkWell(
       onTap: () {
         print("Button Pressed");
-        Navigator.push(context, MaterialPageRoute(builder: (context) => const ComingSoon()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const ComingSoon()));
       },
       child: Container(
         height: 123.w,
@@ -296,6 +308,48 @@ class HomePage extends StatelessWidget {
                 fontSize: 15,
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildBottomCard() {
+    return Card(
+      margin: EdgeInsets.all(22.w),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.w),
+      ),
+      // shadowColor: CustomTheme.accent,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 22.w, vertical: 5.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          // mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.videocam),
+                title: Text(
+                  'Record',
+                  style: TextStyle(fontSize: 16, color: CustomTheme.t1),
+                ),
+                onTap: () {}),
+            Divider(
+              color: CustomTheme.accent,
+              indent: 10.w,
+              endIndent: 10.w,
+              height: 8.w,
+              thickness: 1.5.w,
+            ),
+            ListTile(
+                contentPadding: EdgeInsets.zero,
+                leading: const Icon(Icons.edit),
+                title: Text(
+                  'Manual',
+                  style: TextStyle(fontSize: 16, color: CustomTheme.t1),
+                ),
+                onTap: () {}),
           ],
         ),
       ),
