@@ -16,7 +16,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   cameras = await availableCameras();
   String? res = await Tflite.loadModel(
-    model: "assets/tensorflow/model.tflite",
+    model: "assets/tensorflow/model1-full.tflite",
     labels: "assets/tensorflow/labels.txt",
     numThreads: 1,
     // defaults to 1

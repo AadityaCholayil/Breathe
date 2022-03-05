@@ -138,7 +138,7 @@ void showErrorSnackBar(BuildContext context, String message) {
       ),
       margin: EdgeInsets.all(15.w),
       behavior: SnackBarBehavior.floating,
-      backgroundColor: CustomTheme.t1,
+      backgroundColor: CustomTheme.bg,
       content: Text(
         message,
         style: TextStyle(

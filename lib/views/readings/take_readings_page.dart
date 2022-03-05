@@ -2,10 +2,12 @@ import 'package:breathe/bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
 import 'package:breathe/main.dart';
 import 'package:breathe/shared/loading.dart';
 import 'package:breathe/themes/theme.dart';
+import 'package:breathe/views/readings/bounding_boxes.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'dart:math' as math;
 
 class TakeReadingPage extends StatefulWidget {
   const TakeReadingPage({Key? key}) : super(key: key);
@@ -99,6 +101,7 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
     if (!controller.value.isInitialized) {
       return const LoadingPage();
     }
+    Size screen = MediaQuery.of(context).size;
     return BlocBuilder<TensorFlowBloc, TensorFlowState>(
       builder: (context, state) {
         bool recording = state.recording;
@@ -117,29 +120,39 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
                     const Spacer(flex: 1),
                     AspectRatio(
                       aspectRatio: 1 / controller.value.aspectRatio,
-                      child: CameraPreview(
-                        controller,
-                        child: Container(
-                          alignment: Alignment.topCenter,
-                          padding: EdgeInsets.only(top: 20.w),
-                          child: Container(
-                            alignment: Alignment.center,
-                            height: 70.w,
-                            width: 130.w,
-                            decoration: BoxDecoration(
-                              color: CustomTheme.card,
-                              borderRadius: BorderRadius.circular(10.w),
-                            ),
-                            child: Text(
-                              '${state.reading}',
-                              style: TextStyle(
-                                fontSize: 36,
-                                fontWeight: FontWeight.w600,
-                                color: CustomTheme.t1,
+                      child: Stack(
+                        children: [
+                          CameraPreview(
+                            controller,
+                            child: Container(
+                              alignment: Alignment.topCenter,
+                              padding: EdgeInsets.only(top: 20.w),
+                              child: Container(
+                                alignment: Alignment.center,
+                                height: 70.w,
+                                width: 130.w,
+                                decoration: BoxDecoration(
+                                  color: CustomTheme.card,
+                                  borderRadius: BorderRadius.circular(10.w),
+                                ),
+                                child: Text(
+                                  '${state.reading}',
+                                  style: TextStyle(
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.w600,
+                                    color: CustomTheme.t1,
+                                  ),
+                                ),
                               ),
                             ),
                           ),
-                        ),
+                          BndBox(
+                              state.recognitions == null ? [] : state.recognitions,
+                              math.max(state.imageHeight, state.imageWidth),
+                              math.min(state.imageHeight, state.imageWidth),
+                              screen.height-340,
+                              screen.width),
+                        ],
                       ),
                       // aspectRatio: 0.5625,
                       // child: Container(color: Colors.amber),

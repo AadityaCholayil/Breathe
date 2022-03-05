@@ -36,15 +36,16 @@ class TensorFlowBloc extends Bloc<TensorFlowEvent, TensorFlowState> {
             imageMean: 127.5,   // defaults to 127.5
             imageStd: 127.5,    // defaults to 127.5
             rotation: 90,       // defaults to 90, Android only
-            threshold: 0.1,     // defaults to 0.1
+            threshold: 0.5,     // defaults to 0.1
             asynch: true        // defaults to true
         );
+        print('hi');
         print(recognitions);
 
 
 
 
-        emit(state.copyWith(reading: state.reading+1));
+        emit(state.copyWith(reading: state.reading+1, recognitions: recognitions, imageHeight: event.image.height, imageWidth: event.image.width));
         // await Future.delayed(const Duration(milliseconds: 500));
         predicting = false;
       }
