@@ -47,6 +47,7 @@ class SignupUser extends AppEvent {
   final int age;
   final String gender;
   final String doctorId;
+  final String hospital;
 
   const SignupUser({
     required this.email,
@@ -55,13 +56,14 @@ class SignupUser extends AppEvent {
     required this.age,
     required this.gender,
     required this.doctorId,
+    required this.hospital,
   });
 
   @override
-  String toString() => 'SignupUser($email, $password, $name, $age, $gender, $doctorId)';
+  String toString() => 'SignupUser($email, $password, $name, $age, $gender, $hospital, $doctorId,)';
 
   @override
-  List<Object?> get props => [email, password, name, age, gender, doctorId];
+  List<Object?> get props => [email, password, name, age, gender, hospital, doctorId];
 }
 
 class UpdateUserData extends AppEvent {
