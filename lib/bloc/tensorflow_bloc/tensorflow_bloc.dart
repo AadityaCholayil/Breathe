@@ -1,5 +1,6 @@
 import 'package:breathe/bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tflite/tflite.dart';
 
 class TensorFlowBloc extends Bloc<TensorFlowEvent, TensorFlowState> {
   DateTime? startingTime;
@@ -27,8 +28,25 @@ class TensorFlowBloc extends Bloc<TensorFlowEvent, TensorFlowState> {
     if (state.recording) {
       if (!predicting) {
         predicting = true;
-        emit(state.copyWith(reading: state.reading+10));
-        await Future.delayed(const Duration(milliseconds: 500));
+        var recognitions = await Tflite.detectObjectOnFrame(
+            bytesList: event.image.planes.map((plane) {return plane.bytes;}).toList(),// required
+            model: "SSDMobileNet",
+            imageHeight: event.image.height,
+            imageWidth: event.image.width,
+            imageMean: 127.5,   // defaults to 127.5
+            imageStd: 127.5,    // defaults to 127.5
+            rotation: 90,       // defaults to 90, Android only
+            threshold: 0.5,     // defaults to 0.1
+            asynch: true        // defaults to true
+        );
+        print('hi');
+        print(recognitions);
+
+
+
+
+        emit(state.copyWith(reading: state.reading+1, recognitions: recognitions, imageHeight: event.image.height, imageWidth: event.image.width));
+        // await Future.delayed(const Duration(milliseconds: 500));
         predicting = false;
       }
     }

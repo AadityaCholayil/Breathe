@@ -1,5 +1,6 @@
 import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/shared/error_screen.dart';
+import 'package:breathe/shared/loading.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:breathe/views/auth_screens/get_started_page.dart';
 import 'package:flutter/material.dart';
@@ -28,10 +29,15 @@ class _LoginPageState extends State<LoginPage> {
     return BlocConsumer<AppBloc, AppState>(
       listener: (context, state) async {
         if (state is LoginPageState) {
-          showErrorSnackBar(context, state.message);
+          if (state == LoginPageState.loading) {
+            showLoadingDialog(context);
+          } else {
+            showErrorSnackBar(context, state.message);
+          }
         }
         if (state is Authenticated) {
           stateMessage = 'Success!';
+          Navigator.pop(context);
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           print('Navigating..');
           Navigator.popUntil(context, ModalRoute.withName('/'));
@@ -114,7 +120,8 @@ class _LoginPageState extends State<LoginPage> {
                             borderRadius: BorderRadius.circular(15.w),
                             clipBehavior: Clip.antiAliasWithSaveLayer,
                             child: TextFormField(
-                              decoration: customInputDecoration(labelText: 'Password'),
+                              decoration:
+                                  customInputDecoration(labelText: 'Password'),
                               style: formTextStyle(),
                               obscureText: !showPassword,
                               onSaved: (value) {
@@ -168,14 +175,14 @@ class _LoginPageState extends State<LoginPage> {
                               "Don't have an account?",
                               style: TextStyle(
                                   fontSize: 16,
-                                  color: Theme.of(context).colorScheme.onSurface),
+                                  color:
+                                      Theme.of(context).colorScheme.onSurface),
                             ),
                             TextButton(
                               child: Text(
                                 "Sign Up!",
                                 style: TextStyle(
-                                    fontSize: 16,
-                                    color: CustomTheme.accent),
+                                    fontSize: 16, color: CustomTheme.accent),
                               ),
                               onPressed: () {
                                 Navigator.of(context).pushReplacement(

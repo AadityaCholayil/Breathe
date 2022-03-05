@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
             barrierColor: Colors.black.withOpacity(0.25),
             backgroundColor: Colors.transparent,
             builder: (context) {
-              return _buildBottomCard();
+              return _buildBottomCard(context);
             },
           );
         },
@@ -314,7 +314,7 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomCard() {
+  Widget _buildBottomCard(BuildContext context) {
     return Card(
       margin: EdgeInsets.all(22.w),
       shape: RoundedRectangleBorder(
@@ -328,13 +328,16 @@ class HomePage extends StatelessWidget {
           // mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ListTile(
-                contentPadding: EdgeInsets.zero,
-                leading: const Icon(Icons.videocam),
-                title: Text(
-                  'Record',
-                  style: TextStyle(fontSize: 16, color: CustomTheme.t1),
-                ),
-                onTap: () {}),
+              contentPadding: EdgeInsets.zero,
+              leading: const Icon(Icons.videocam),
+              title: Text(
+                'Record',
+                style: TextStyle(fontSize: 16, color: CustomTheme.t1),
+              ),
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => TakeReadingPage()));
+              },
+            ),
             Divider(
               color: CustomTheme.accent,
               indent: 10.w,
