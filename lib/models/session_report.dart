@@ -1,36 +1,36 @@
 class SessionReport {
   int bestScore;
   int averageScore;
-  List<FullReading> fullReading;
+  List<Reading> reading;
   int totalDuration;
   String timeTakeAt;
 
   SessionReport(
       {this.bestScore = 0,
         this.averageScore = 0,
-        this.fullReading = const [],
+        this.reading = const [],
         this.totalDuration = 0,
         this.timeTakeAt = ''});
 
   static SessionReport fromJson(Map<String, dynamic> json) {
     int bestScore = json['bestScore'];
     int averageScore = json['averageScore'];
-    List<FullReading> fullReading = [];
-    if (json['fullReading'] != null) {
-      json['fullReading'].forEach((v) {
+    List<Reading> reading = [];
+    if (json['reading'] != null) {
+      json['reading'].forEach((v) {
 
       });
-      for(var reading in json['fullReading']){
-        fullReading.add(FullReading.fromJson(reading));
+      for(var reading in json['reading']){
+        reading.add(Reading.fromJson(reading));
       }
     }
     int totalDuration = json['totalDuration'];
     String timeTakenAt = json['timeTakenAt'];
-    print(fullReading);
+    print(reading);
     return SessionReport(
       bestScore: bestScore,
       averageScore: averageScore,
-      fullReading: fullReading,
+      reading: reading,
       totalDuration: totalDuration,
       timeTakeAt: timeTakenAt,
     );
@@ -40,23 +40,23 @@ class SessionReport {
     final Map<String, dynamic> data = {};
     data['bestScore'] = bestScore;
     data['averageScore'] = averageScore;
-    data['fullReading'] = fullReading.map((v) => v.toJson()).toList();
+    data['reading'] = reading.map((v) => v.toJson()).toList();
     data['totalDuration'] = totalDuration;
     data['timeTakenAt'] = timeTakeAt;
     return data;
   }
 }
 
-class FullReading {
+class Reading {
   int timeElapsed;
   int score;
 
-  FullReading({this.timeElapsed = 0, this.score = 0});
+  Reading({this.timeElapsed = 0, this.score = 0});
 
-  static FullReading fromJson(Map<String, dynamic> json) {
+  static Reading fromJson(Map<String, dynamic> json) {
     int timeElapsed = json['timeElapsed'] ;
     int score = json['score'];
-    return FullReading(
+    return Reading(
       timeElapsed: timeElapsed,
       score: score
     );

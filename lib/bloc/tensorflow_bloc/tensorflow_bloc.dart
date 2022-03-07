@@ -1,4 +1,5 @@
 import 'package:breathe/bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
+import 'package:breathe/models/recognitions.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tflite/tflite.dart';
 
@@ -28,7 +29,7 @@ class TensorFlowBloc extends Bloc<TensorFlowEvent, TensorFlowState> {
     if (state.recording) {
       if (!predicting) {
         predicting = true;
-        var recognitions = await Tflite.detectObjectOnFrame(
+        var recognitionsMap = await Tflite.detectObjectOnFrame(
             bytesList: event.image.planes.map((plane) {return plane.bytes;}).toList(),// required
             model: "SSDMobileNet",
             imageHeight: event.image.height,
@@ -40,11 +41,11 @@ class TensorFlowBloc extends Bloc<TensorFlowEvent, TensorFlowState> {
             asynch: true        // defaults to true
         );
         print('hi');
-        print(recognitions);
-
-
-
-
+        print(recognitionsMap);
+        List<Recognition> recognitions = [];
+        for(var recognition in recognitionsMap??[]) {
+          recognitions.add(Recognition.fromJson(recognition));
+        }
         emit(state.copyWith(reading: state.reading+1, recognitions: recognitions, imageHeight: event.image.height, imageWidth: event.image.width));
         // await Future.delayed(const Duration(milliseconds: 500));
         predicting = false;
