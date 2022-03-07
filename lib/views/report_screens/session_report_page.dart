@@ -189,7 +189,7 @@ class SessionReportPage extends StatelessWidget {
         ),
         child: LineChart(
           LineChartData(
-            maxX: (report.totalDuration/1000).toDouble(),
+            maxX: (report.totalDuration / 1000).toDouble(),
             minY: 0,
             maxY: 1200,
             gridData: FlGridData(
@@ -207,8 +207,9 @@ class SessionReportPage extends StatelessWidget {
             lineBarsData: [
               LineChartBarData(
                 spots: [
-                  for(var reading in report.fullReading)
-                   FlSpot((reading.timeElapsed/1000).toDouble(), reading.score.toDouble()),
+                  for (var reading in report.reading)
+                    FlSpot((reading.timeElapsed / 1000).toDouble(),
+                        reading.score.toDouble()),
                 ],
                 colors: [CustomTheme.accent],
                 isCurved: true,
@@ -224,11 +225,10 @@ class SessionReportPage extends StatelessWidget {
             ],
             titlesData: FlTitlesData(
               leftTitles: SideTitles(
-                showTitles: true,
-                interval: 400,
-                // margin: 20
-                reservedSize: 30.w
-              ),
+                  showTitles: true,
+                  interval: 400,
+                  // margin: 20
+                  reservedSize: 30.w),
               rightTitles: SideTitles(showTitles: false),
               topTitles: SideTitles(showTitles: false),
             ),
@@ -329,9 +329,7 @@ class SessionReportPage extends StatelessWidget {
                   fontSize: 21.5,
                 ),
               ),
-              SizedBox(
-                width: 3.w,
-              ),
+              SizedBox(width: 3.w),
               Text(
                 "1200",
                 style: TextStyle(

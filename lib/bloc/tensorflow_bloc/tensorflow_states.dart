@@ -1,10 +1,11 @@
+import 'package:breathe/models/recognitions.dart';
 import 'package:equatable/equatable.dart';
 
 class TensorFlowState extends Equatable {
   final bool recording;
   final int reading;
   final Duration timeElapsed;
-  final List recognitions;
+  final List<Recognition> recognitions;
   final int imageHeight;
   final int imageWidth;
 
@@ -21,7 +22,7 @@ class TensorFlowState extends Equatable {
     bool? recording,
     int? reading,
     Duration? timeElapsed,
-    List? recognitions,
+    List<Recognition>? recognitions,
     int? imageWidth,
     int? imageHeight,
   }) {
