@@ -16,11 +16,11 @@ class Classifier {
   /// Labels file loaded as list
   List<String>? _labels;
 
-  static const String modelFileName = "tensorflow/model-maker-2.tflite";
+  static const String modelFileName = "tensorflow/model1-full.tflite";
   static const String labelFileName = "tensorflow/labels.txt";
 
   /// Input size of image (height = width = 300)
-  static const int inputSize = 384;
+  static const int inputSize = 320;
 
   /// Result score threshold
   static const double threshold = 0.5;
@@ -38,7 +38,7 @@ class Classifier {
   List<TfLiteType> _outputTypes = [];
 
   /// Number of results to show
-  static const int numResults = 25;
+  static const int numResults = 10;
 
   Classifier({
     Interpreter? interpreter,
@@ -113,15 +113,15 @@ class Classifier {
     print(_outputShapes);
 
     // TensorBuffers for output tensors
-    // TensorBuffer outputLocations = TensorBufferFloat(_outputShapes[0]);
-    // TensorBuffer outputClasses = TensorBufferFloat(_outputShapes[1]);
-    // TensorBuffer outputScores = TensorBufferFloat(_outputShapes[2]);
-    // TensorBuffer numLocations = TensorBufferFloat(_outputShapes[3]);
+    TensorBuffer outputLocations = TensorBufferFloat(_outputShapes[0]);
+    TensorBuffer outputClasses = TensorBufferFloat(_outputShapes[1]);
+    TensorBuffer outputScores = TensorBufferFloat(_outputShapes[2]);
+    TensorBuffer numLocations = TensorBufferFloat(_outputShapes[3]);
 
-    TensorBuffer outputLocations = TensorBufferFloat(_outputShapes[1]);
-    TensorBuffer outputClasses = TensorBufferFloat(_outputShapes[0]);
-    TensorBuffer outputScores = TensorBufferFloat(_outputShapes[3]);
-    TensorBuffer numLocations = TensorBufferFloat(_outputShapes[2]);
+    // TensorBuffer outputLocations = TensorBufferFloat(_outputShapes[1]);
+    // TensorBuffer outputClasses = TensorBufferFloat(_outputShapes[0]);
+    // TensorBuffer outputScores = TensorBufferFloat(_outputShapes[3]);
+    // TensorBuffer numLocations = TensorBufferFloat(_outputShapes[2]);
 
     // Inputs object for runForMultipleInputs
     // Use [TensorImage.buffer] or [TensorBuffer.buffer] to pass by reference
@@ -129,14 +129,14 @@ class Classifier {
 
     // Outputs map
     Map<int, Object> outputs = {
-      // 0: outputLocations.buffer,
-      // 1: outputClasses.buffer,
-      // 2: outputScores.buffer,
-      // 3: numLocations.buffer,
-      1: outputLocations.buffer,
-      0: outputClasses.buffer,
-      3: outputScores.buffer,
-      2: numLocations.buffer,
+      0: outputLocations.buffer,
+      1: outputClasses.buffer,
+      2: outputScores.buffer,
+      3: numLocations.buffer,
+      // 1: outputLocations.buffer,
+      // 0: outputClasses.buffer,
+      // 3: outputScores.buffer,
+      // 2: numLocations.buffer,
     };
 
     var inferenceTimeStart = DateTime.now().millisecondsSinceEpoch;
