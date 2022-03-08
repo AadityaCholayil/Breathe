@@ -37,7 +37,8 @@ class TensorFlowState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [recording, reading, timeElapsed];
+  List<Object?> get props =>
+      [recording, reading, timeElapsed, recognitions, imageWidth, imageHeight];
 
   const TensorFlowState.init()
       : this(
