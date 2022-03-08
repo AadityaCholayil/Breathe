@@ -39,12 +39,13 @@ class TensorFlowState extends Equatable {
   @override
   List<Object?> get props => [recording, reading, timeElapsed];
 
-  const TensorFlowState.init():this(
-      recording: false,
-      reading: 0,
-      timeElapsed: const Duration(milliseconds: 0),
-      recognitions: const [],
-      imageHeight: 0,
-      imageWidth: 0,
-  );
+  const TensorFlowState.init()
+      : this(
+          recording: false,
+          reading: 0,
+          timeElapsed: const Duration(milliseconds: 0),
+          recognitions: const [],
+          imageHeight: 0,
+          imageWidth: 0,
+        );
 }
