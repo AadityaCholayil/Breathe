@@ -1,3 +1,4 @@
+import 'package:breathe/models/session_report.dart';
 import 'package:breathe/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -40,24 +41,24 @@ class DatabaseRepository {
     await usersRef.doc(uid).delete();
   }
 
-  // // Pokemons Collection Reference for specific user
-  // CollectionReference<PokemonDB> get pokemonsRef => db
-  //     .collection('users')
-  //     .doc(uid)
-  //     .collection('pokemons')
-  //     .withConverter<PokemonDB>(
-  //       fromFirestore: (snapshot, a) =>
-  //           PokemonDB.fromJson(snapshot.data()!, snapshot.id),
-  //       toFirestore: (pokemon, _) => pokemon.toJson(),
-  //     );
-  //
-  // // Get Pokemons from db
-  // Future<List<PokemonDB>> getPokemons() async {
-  //   List<QueryDocumentSnapshot<PokemonDB>> list = [];
-  //   list = await pokemonsRef.get().then((snapshot) => snapshot.docs);
-  //   return list.map((e) => e.data()).toList();
-  // }
-  //
+  // Report Collection Reference for specific user
+  CollectionReference<SessionReport> get reportsRef => db
+      .collection('users')
+      .doc(uid)
+      .collection('reports')
+      .withConverter<SessionReport>(
+        fromFirestore: (snapshot, a) =>
+            SessionReport.fromJson(snapshot.data()!, snapshot.id),
+        toFirestore: (report, _) => report.toJson(),
+      );
+
+  // Get Reports from db
+  Future<List<SessionReport>> getTodaysReports() async {
+    List<QueryDocumentSnapshot<SessionReport>> list = [];
+    list = await reportsRef.get().then((snapshot) => snapshot.docs);
+    return list.map((e) => e.data()).toList();
+  }
+
   // Future<void> addPokemon(PokemonDB pokemon) async {
   //   await pokemonsRef.add(pokemon);
   // }

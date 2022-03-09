@@ -19,9 +19,14 @@ class Recognition {
 
   static Recognition fromJson(Map json) {
     return Recognition(
-        label:json['detectedClass'],
+      label: json['detectedClass'],
       score: json['confidenceInClass'],
-      location: Rect.fromLTWH(json['rect']['x'], json['rect']['t'], json['rect']['w'], json['rect']['h'])
+      location: Rect.fromLTWH(
+        json['rect']['x'] ?? 0,
+        json['rect']['y'] ?? 0,
+        json['rect']['w'] ?? 0,
+        json['rect']['h'] ?? 0,
+      ),
     );
   }
 

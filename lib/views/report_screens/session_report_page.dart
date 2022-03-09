@@ -1,9 +1,9 @@
-import 'package:breathe/bloc/app_bloc/app_bloc.dart';
+import 'package:breathe/bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -11,7 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 var data = {
   "bestScore": 1150,
   "averageScore": 900,
-  "fullReading": [
+  "readings": [
     {
       'score': 1000,
       'timeElapsed': 500,
@@ -58,19 +58,21 @@ var data = {
     },
   ],
   "totalDuration": 5500,
-  "timeTakenAt": '03:10 PM - 14 Mar 22'
+  "timeTakenAt": Timestamp.now(),
+  // "timeTakenAt": '03:10 PM - 14 Mar 22'
 };
 
 class SessionReportPage extends StatelessWidget {
-  const SessionReportPage({Key? key}) : super(key: key);
+  final SessionReport report;
+
+  const SessionReportPage({Key? key, required this.report}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     String bestToolTip = "Shows the best reading.";
     String averageToolTip = "Shows the average reading.";
-    SessionReport report = SessionReport.fromJson(data);
-    // print(report.averageScore);
-
+    // SessionReport report = context.read<TensorFlowBloc>().report;
+    print(report);
     return Scaffold(
       backgroundColor: CustomTheme.bg,
       body: SingleChildScrollView(
@@ -84,9 +86,7 @@ class SessionReportPage extends StatelessWidget {
               padding: EdgeInsets.only(left: 24.w),
               child: const CustomBackButton(),
             ),
-            SizedBox(
-              height: 40.w,
-            ),
+            SizedBox(height: 40.w),
             Padding(
               padding: EdgeInsets.only(left: 24.w),
               child: Text(
@@ -98,13 +98,11 @@ class SessionReportPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: 8.w,
-            ),
+            SizedBox(height: 8.w),
             Padding(
               padding: EdgeInsets.only(left: 24.w),
               child: Text(
-                report.timeTakeAt,
+                report.timeTakenAt.toDate().toIso8601String(),
                 style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
@@ -112,9 +110,7 @@ class SessionReportPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
-              height: 40.w,
-            ),
+            SizedBox(height: 40.w),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -125,9 +121,7 @@ class SessionReportPage extends StatelessWidget {
                 _buildCard("Average", report.averageScore, averageToolTip),
               ],
             ),
-            SizedBox(
-              height: 20.w,
-            ),
+            SizedBox(height: 20.w),
             Padding(
               padding: EdgeInsets.only(left: 25.w),
               child: Text(
@@ -207,7 +201,7 @@ class SessionReportPage extends StatelessWidget {
             lineBarsData: [
               LineChartBarData(
                 spots: [
-                  for (var reading in report.reading)
+                  for (var reading in report.readings)
                     FlSpot((reading.timeElapsed / 1000).toDouble(),
                         reading.score.toDouble()),
                 ],

@@ -9,6 +9,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:math' as math;
 
+import 'package:google_fonts/google_fonts.dart';
+
 class TakeReadingPage extends StatefulWidget {
   const TakeReadingPage({Key? key}) : super(key: key);
 
@@ -147,7 +149,7 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
                             ),
                           ),
                           BndBox(
-                              state.recognitions == null ? [] : state.recognitions,
+                              state.recognitions,
                               math.max(state.imageHeight, state.imageWidth),
                               math.min(state.imageHeight, state.imageWidth),
                               screen.height-340,
@@ -203,7 +205,7 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
                         onTap: () {
                           context
                               .read<TensorFlowBloc>()
-                              .add(ChangeRecordingStatus());
+                              .add(StartSession());
                         },
                         child: Container(
                           height: 77.w,
@@ -248,11 +250,11 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
         children: [
           SizedBox(width: 10.w),
           Container(
-            width: 24.w,
+            width: 22.w,
             alignment: Alignment.centerRight,
             child: Text(
               timeElapsed.substring(3, 4),
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                 fontSize: 36,
                 fontWeight: FontWeight.w600,
                 color: CustomTheme.onAccent,
@@ -260,10 +262,10 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 1.5.w),
+            padding: EdgeInsets.symmetric(horizontal: 1.1.w),
             child: Text(
               ':',
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
                 color: CustomTheme.onAccent,
@@ -271,11 +273,11 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
             ),
           ),
           Container(
-            width: 25.w,
+            width: 21.w,
             alignment: Alignment.center,
             child: Text(
               timeElapsed.substring(5, 6),
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                 fontSize: 36,
                 fontWeight: FontWeight.w600,
                 color: CustomTheme.onAccent,
@@ -283,11 +285,11 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
             ),
           ),
           Container(
-            width: 26.w,
+            width: 21.w,
             alignment: Alignment.center,
             child: Text(
               timeElapsed.substring(6, 7),
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                 fontSize: 36,
                 fontWeight: FontWeight.w600,
                 color: CustomTheme.onAccent,
@@ -299,7 +301,7 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
             width: 37.w,
             child: Text(
               '${timeElapsed.substring(7, 9)}s',
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 color: CustomTheme.onAccent,

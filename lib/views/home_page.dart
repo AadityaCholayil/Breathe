@@ -1,7 +1,6 @@
 import 'package:breathe/bloc/app_bloc/app_bloc.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/shared/coming_soon.dart';
-import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:breathe/views/report_screens/session_report_page.dart';
 import 'package:breathe/views/readings/take_readings_page.dart';
@@ -15,35 +14,10 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SessionReport report = SessionReport.fromJson(data);
+    SessionReport report = SessionReport.fromJson(data, '');
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(14.w),
-        ),
-        onPressed: () async {
-          await showModalBottomSheet(
-            context: context,
-            barrierColor: Colors.black.withOpacity(0.25),
-            backgroundColor: Colors.transparent,
-            builder: (context) {
-              return _buildBottomCard(context);
-            },
-          );
-        },
-        label: Text(
-          'Take Reading',
-          style: TextStyle(
-            color: CustomTheme.onAccent,
-          ),
-        ),
-        icon: Icon(
-          Icons.add,
-          color: CustomTheme.onAccent,
-        ),
-        backgroundColor: CustomTheme.accent,
-      ),
+      floatingActionButton: _buildFloatingActionButton(context),
       backgroundColor: CustomTheme.bg,
       body: SingleChildScrollView(
         physics: const BouncingScrollPhysics(),
@@ -148,6 +122,35 @@ class HomePage extends StatelessWidget {
     );
   }
 
+  FloatingActionButton _buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton.extended(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14.w),
+      ),
+      onPressed: () async {
+        await showModalBottomSheet(
+          context: context,
+          barrierColor: Colors.black.withOpacity(0.25),
+          backgroundColor: Colors.transparent,
+          builder: (context) {
+            return _buildBottomCard(context);
+          },
+        );
+      },
+      label: Text(
+        'Take Reading',
+        style: TextStyle(
+          color: CustomTheme.onAccent,
+        ),
+      ),
+      icon: Icon(
+        Icons.add,
+        color: CustomTheme.onAccent,
+      ),
+      backgroundColor: CustomTheme.accent,
+    );
+  }
+
   Widget _buildPreviousReadingCard(BuildContext context, SessionReport report) {
     return Padding(
       padding: EdgeInsets.only(bottom: 35.w),
@@ -157,7 +160,7 @@ class HomePage extends StatelessWidget {
           Navigator.push(
               context,
               MaterialPageRoute(
-                  builder: (context) => const SessionReportPage()));
+                  builder: (context) => SessionReportPage(report: report)));
         },
         child: Container(
           margin: EdgeInsets.symmetric(horizontal: 24.w),
@@ -247,7 +250,7 @@ class HomePage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    report.timeTakeAt,
+                    report.timeTakenAt.toDate().toIso8601String(),
                     style: TextStyle(
                       fontSize: 18.w,
                       color: CustomTheme.t1,
@@ -335,7 +338,8 @@ class HomePage extends StatelessWidget {
                 style: TextStyle(fontSize: 16, color: CustomTheme.t1),
               ),
               onTap: () {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => TakeReadingPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TakeReadingPage()));
               },
             ),
             Divider(
