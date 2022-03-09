@@ -1,4 +1,5 @@
 import 'package:breathe/bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
+import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/recognitions.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -9,6 +10,7 @@ class TensorFlowBloc extends Bloc<TensorFlowEvent, TensorFlowState> {
   late DateTime startingTime;
   bool predicting = false;
   Duration timeElapsed = const Duration();
+  List<Reading> readings = [];
   late SessionReport report;
 
   TensorFlowBloc() : super(const TensorFlowState.init()) {
@@ -33,9 +35,12 @@ class TensorFlowBloc extends Bloc<TensorFlowEvent, TensorFlowState> {
   Future<void> _onEndSession(
       EndSession event, Emitter<TensorFlowState> emit) async {
     emit(state.copyWith(timeElapsed: timeElapsed, recording: false));
-    report.totalDuration = report.readings.last.timeElapsed;
+    report.totalDuration = readings.last.timeElapsed;
+    report.readings = readings;
     report.setAverageScore();
     report.setBestScore();
+    report.date = getDateFromDateTime(startingTime);
+    await Future.delayed(const Duration(milliseconds: 1000));
     emit(state.copyWith(processingDone: true));
   }
 
@@ -63,7 +68,9 @@ class TensorFlowBloc extends Bloc<TensorFlowEvent, TensorFlowState> {
           recognitions.add(Recognition.fromJson(recognition));
         }
         int reading = getScoreFromRecognitions(recognitions);
-        report.readings.add(Reading(timeElapsed: timeElapsed.inMilliseconds, score: reading));
+        readings.add(Reading(
+            timeElapsed: DateTime.now().difference(startingTime).inMilliseconds,
+            score: reading));
         emit(state.copyWith(
           reading: reading,
           recognitions: recognitions,
@@ -75,13 +82,14 @@ class TensorFlowBloc extends Bloc<TensorFlowEvent, TensorFlowState> {
     }
   }
 
-  // Algo to get score
+  // Algorithm to get score
   int getScoreFromRecognitions(List<Recognition> recognitions) {
     if (recognitions.length >= 3) {
+      // TODO: Implement Algorithm
       recognitions.sort((a, b) => b.score.compareTo(a.score));
       recognitions.getRange(0, 3);
     }
 
-    return (state.reading + 10) % 1200;
+    return (state.reading + 50) % 1200;
   }
 }

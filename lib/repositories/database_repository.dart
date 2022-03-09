@@ -1,3 +1,4 @@
+import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -52,22 +53,24 @@ class DatabaseRepository {
         toFirestore: (report, _) => report.toJson(),
       );
 
-  // Get Reports from db
+  // Get Today's Reports from db
   Future<List<SessionReport>> getTodaysReports() async {
     List<QueryDocumentSnapshot<SessionReport>> list = [];
-    list = await reportsRef.get().then((snapshot) => snapshot.docs);
+    list = await reportsRef
+        .where('date', isEqualTo: getDateFromDateTime(DateTime.now()))
+        .orderBy('timestamp')
+        .get()
+        .then((snapshot) => snapshot.docs);
     return list.map((e) => e.data()).toList();
   }
 
-  // Future<void> addPokemon(PokemonDB pokemon) async {
-  //   await pokemonsRef.add(pokemon);
-  // }
-  //
-  // Future<void> updatePokemon(PokemonDB pokemon) async {
-  //   await pokemonsRef.doc(pokemon.id).set(pokemon);
-  // }
-  //
-  // Future<void> deletePokemon(PokemonDB pokemon) async {
-  //   await pokemonsRef.doc(pokemon.id).delete();
-  // }
+  // Add Reports to db
+  Future<void> addReport(SessionReport report) async {
+    await reportsRef.add(report);
+  }
+
+  // Delete Report from db
+  Future<void> deleteReport(SessionReport report) async {
+    await reportsRef.doc(report.id).delete();
+  }
 }

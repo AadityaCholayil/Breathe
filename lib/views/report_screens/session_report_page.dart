@@ -1,3 +1,4 @@
+import 'package:breathe/bloc/database_bloc/database_bloc_files.dart';
 import 'package:breathe/bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/shared/shared_widgets.dart';
@@ -9,6 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 var data = {
+  "date": "2022-03-09",
   "bestScore": 1150,
   "averageScore": 900,
   "readings": [
@@ -59,7 +61,6 @@ var data = {
   ],
   "totalDuration": 5500,
   "timeTakenAt": Timestamp.now(),
-  // "timeTakenAt": '03:10 PM - 14 Mar 22'
 };
 
 class SessionReportPage extends StatelessWidget {
@@ -71,7 +72,6 @@ class SessionReportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     String bestToolTip = "Shows the best reading.";
     String averageToolTip = "Shows the average reading.";
-    // SessionReport report = context.read<TensorFlowBloc>().report;
     print(report);
     return Scaffold(
       backgroundColor: CustomTheme.bg,
@@ -83,8 +83,25 @@ class SessionReportPage extends StatelessWidget {
           children: [
             SizedBox(height: 85.w),
             Padding(
-              padding: EdgeInsets.only(left: 24.w),
-              child: const CustomBackButton(),
+              padding: EdgeInsets.only(left: 24.w, right: 24.w),
+              child: Row(
+                children: [
+                  const CustomBackButton(),
+                  const Spacer(),
+                  IconButton(
+                    onPressed: () {
+                      context
+                          .read<DatabaseBloc>()
+                          .add(SaveReport(report: report));
+                    },
+                    icon: Icon(
+                      Icons.save_alt,
+                      size: 32.w,
+                      color: CustomTheme.accent,
+                    ),
+                  ),
+                ],
+              ),
             ),
             SizedBox(height: 40.w),
             Padding(

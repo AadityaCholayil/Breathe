@@ -7,21 +7,25 @@ class SessionReport {
   List<Reading> readings;
   int totalDuration;
   Timestamp timeTakenAt;
+  String date;
 
-  SessionReport(
-      {this.id = '',
-        this.bestScore = 0,
-        this.averageScore = 0,
-        this.readings = const [],
-        this.totalDuration = 0,
-        required this.timeTakenAt});
+  SessionReport({
+    this.id = '',
+    this.date = '',
+    this.bestScore = 0,
+    this.averageScore = 0,
+    this.readings = const [],
+    this.totalDuration = 0,
+    required this.timeTakenAt,
+  });
 
   static SessionReport fromJson(Map<String, dynamic> json, String id) {
+    String date = json['date'];
     int bestScore = json['bestScore'];
     int averageScore = json['averageScore'];
     List<Reading> readings = [];
     if (json['readings'] != null) {
-      for(var reading in json['readings']){
+      for (var reading in json['readings']) {
         readings.add(Reading.fromJson(reading));
       }
     }
@@ -30,6 +34,7 @@ class SessionReport {
     print(readings);
     return SessionReport(
       id: id,
+      date: date,
       bestScore: bestScore,
       averageScore: averageScore,
       readings: readings,
@@ -40,6 +45,7 @@ class SessionReport {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = {};
+    data['date'] = date;
     data['bestScore'] = bestScore;
     data['averageScore'] = averageScore;
     data['readings'] = readings.map((v) => v.toJson()).toList();
@@ -65,17 +71,29 @@ class SessionReport {
 
   @override
   String toString() {
-    return 'SessionReport(id: $id, bestScore: $bestScore, averageScore: $averageScore, readings: $readings, totalDuration: $totalDuration, timeTakenAt: $timeTakenAt)';
+    return 'SessionReport(id: $id, date: $date, bestScore: $bestScore, averageScore: $averageScore, readings: $readings, totalDuration: $totalDuration, timeTakenAt: $timeTakenAt)';
   }
 
-  // const SessionReport.init() : this(
-  //     id: '',
-  //     bestScore: 0,
-  //     averageScore: 0,
-  //     reading: [],
-  //     totalDuration: 0,
-  //     timeTakenAt: Timestamp.fromMillisecondsSinceEpoch(0),
-  //   );
+  static SessionReport empty() {
+    return SessionReport(
+      id: '',
+      date: '',
+      bestScore: 0,
+      averageScore: 0,
+      readings: [],
+      totalDuration: 0,
+      timeTakenAt: Timestamp.fromMillisecondsSinceEpoch(0),
+    );
+  }
+
+//    const SessionReport.init() : this(
+//     id: '',
+//     bestScore: 0,
+//     averageScore: 0,
+//     reading: [],
+//     totalDuration: 0,
+//     timeTakenAt: Timestamp.fromMillisecondsSinceEpoch(0),
+//   );
 
 }
 
@@ -86,12 +104,9 @@ class Reading {
   Reading({this.timeElapsed = 0, this.score = 0});
 
   static Reading fromJson(Map<String, dynamic> json) {
-    int timeElapsed = json['timeElapsed'] ;
+    int timeElapsed = json['timeElapsed'];
     int score = json['score'];
-    return Reading(
-      timeElapsed: timeElapsed,
-      score: score
-    );
+    return Reading(timeElapsed: timeElapsed, score: score);
   }
 
   Map<String, dynamic> toJson() {

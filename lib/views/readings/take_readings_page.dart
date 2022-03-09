@@ -1,8 +1,10 @@
 import 'package:breathe/bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
 import 'package:breathe/main.dart';
+import 'package:breathe/models/session_report.dart';
 import 'package:breathe/shared/loading.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:breathe/views/readings/bounding_boxes.dart';
+import 'package:breathe/views/report_screens/session_report_page.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -104,7 +106,20 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
       return const LoadingPage();
     }
     Size screen = MediaQuery.of(context).size;
-    return BlocBuilder<TensorFlowBloc, TensorFlowState>(
+    return BlocConsumer<TensorFlowBloc, TensorFlowState>(
+      listener: (context, state) {
+        if (state.processingDone) {
+          SessionReport report = context.read<TensorFlowBloc>().report;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SessionReportPage(
+                report: report,
+              ),
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         bool recording = state.recording;
         return SizedBox(
@@ -152,7 +167,7 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
                               state.recognitions,
                               math.max(state.imageHeight, state.imageWidth),
                               math.min(state.imageHeight, state.imageWidth),
-                              screen.height-340,
+                              screen.height - 340,
                               screen.width),
                         ],
                       ),
@@ -203,9 +218,11 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
                       alignment: Alignment.topCenter,
                       child: InkWell(
                         onTap: () {
-                          context
-                              .read<TensorFlowBloc>()
-                              .add(StartSession());
+                          if (!state.recording) {
+                            context.read<TensorFlowBloc>().add(StartSession());
+                          } else {
+                            context.read<TensorFlowBloc>().add(EndSession());
+                          }
                         },
                         child: Container(
                           height: 77.w,
