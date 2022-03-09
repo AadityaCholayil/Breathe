@@ -11,6 +11,7 @@ class UserData extends Equatable {
   final String healthStatus;
   final String doctorName;
   final String hospital;
+  final String profilePic;
 
   const UserData({
     this.uid = '',
@@ -22,6 +23,7 @@ class UserData extends Equatable {
     this.healthStatus = '',
     this.doctorName = '',
     this.hospital = '',
+    this.profilePic = '',
   });
 
   static UserData fromUser(User user) {
@@ -41,6 +43,7 @@ class UserData extends Equatable {
           healthStatus: json['healthStatus'],
           doctorName: json['doctorName'],
           hospital: json['hospital'],
+          profilePic: json['profilePic'],
         );
 
   Map<String, dynamic> toJson() {
@@ -54,6 +57,7 @@ class UserData extends Equatable {
     data['healthStatus'] = healthStatus;
     data['doctorName'] = doctorName;
     data['hospital'] = hospital;
+    data['profilePic'] = profilePic;
     return data;
   }
 
@@ -63,7 +67,7 @@ class UserData extends Equatable {
 
   @override
   String toString() {
-    return 'UserData($uid, $email, $name, $age, $gender, $doctorId, $healthStatus, $doctorName, $hospital)';
+    return 'UserData($uid, $email, $name, $age, $gender, $doctorId, $healthStatus, $doctorName, $hospital, $profilePic)';
   }
 
   @override
@@ -76,6 +80,7 @@ class UserData extends Equatable {
         doctorId,
         healthStatus,
         doctorName,
-        hospital
+        hospital,
+        profilePic,
       ];
 }

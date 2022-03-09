@@ -23,7 +23,8 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
     emit(const HomePageState(pageState: PageState.loading));
     try {
       List<SessionReport> reportList =
-      await databaseRepository.getTodaysReports();
+          await databaseRepository.getTodaysReports();
+      print(reportList);
       emit(HomePageState(
         reportList: reportList,
         pageState: PageState.success,

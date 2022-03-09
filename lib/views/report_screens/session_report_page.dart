@@ -1,6 +1,9 @@
 import 'package:breathe/bloc/database_bloc/database_bloc_files.dart';
 import 'package:breathe/bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
+import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/session_report.dart';
+import 'package:breathe/shared/error_screen.dart';
+import 'package:breathe/shared/loading.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -73,103 +76,122 @@ class SessionReportPage extends StatelessWidget {
     String bestToolTip = "Shows the best reading.";
     String averageToolTip = "Shows the average reading.";
     print(report);
-    return Scaffold(
-      backgroundColor: CustomTheme.bg,
-      body: SingleChildScrollView(
-        physics: const BouncingScrollPhysics(),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 85.w),
-            Padding(
-              padding: EdgeInsets.only(left: 24.w, right: 24.w),
-              child: Row(
+    return BlocConsumer<DatabaseBloc,DatabaseState>(
+      listener: (context, state){
+        if (state is SessionReportPageState){
+          if(state.pageState == PageState.loading){
+            showLoadingSnackBar(context);
+          }
+          if(state.pageState == PageState.success){
+            showErrorSnackBar(context, 'Successfully saved!');
+          }
+          if(state.pageState == PageState.error){
+            showErrorSnackBar(context, 'Something went wrong. Please try again!');
+          }
+        }
+      },
+      builder: (context, state) {
+        return SafeArea(
+          child: Scaffold(
+            backgroundColor: CustomTheme.bg,
+            body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const CustomBackButton(),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: () {
-                      context
-                          .read<DatabaseBloc>()
-                          .add(SaveReport(report: report));
-                    },
-                    icon: Icon(
-                      Icons.save_alt,
-                      size: 32.w,
-                      color: CustomTheme.accent,
+                  SizedBox(height: 24.w),
+                  Padding(
+                    padding: EdgeInsets.only(left: 24.w, right: 24.w),
+                    child: Row(
+                      children: [
+                        const CustomBackButton(),
+                        const Spacer(),
+                        IconButton(
+                          onPressed: () {
+                            context
+                                .read<DatabaseBloc>()
+                                .add(SaveReport(report: report));
+                          },
+                          icon: Icon(
+                            Icons.save_alt,
+                            size: 32.w,
+                            color: CustomTheme.accent,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
+                  SizedBox(height: 30.w),
+                  Padding(
+                    padding: EdgeInsets.only(left: 24.w),
+                    child: Text(
+                      "Session Report",
+                      style: TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w600,
+                        color: CustomTheme.t1,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8.w),
+                  Padding(
+                    padding: EdgeInsets.only(left: 24.w),
+                    child: Text(
+                      report.timeTakenAt.toDate().toIso8601String(),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: CustomTheme.t2,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 40.w),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      _buildCard("Best", report.bestScore, bestToolTip),
+                      SizedBox(
+                        width: 16.w,
+                      ),
+                      _buildCard("Average", report.averageScore, averageToolTip),
+                    ],
+                  ),
+                  SizedBox(height: 20.w),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.w),
+                    child: Text(
+                      "Graph 1",
+                      style: TextStyle(
+                        color: CustomTheme.t1,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 22,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8.w),
+                  _buildGraph(context, report),
+                  SizedBox(height: 20.w),
+                  Padding(
+                    padding: EdgeInsets.only(left: 25.w),
+                    child: Text(
+                      "Graph 2",
+                      style: TextStyle(
+                        color: CustomTheme.t1,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 22,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8.w),
+                  _buildGraph(context, report),
+                  SizedBox(height: 50.w),
                 ],
               ),
             ),
-            SizedBox(height: 40.w),
-            Padding(
-              padding: EdgeInsets.only(left: 24.w),
-              child: Text(
-                "Session Report",
-                style: TextStyle(
-                  fontSize: 40,
-                  fontWeight: FontWeight.w600,
-                  color: CustomTheme.t1,
-                ),
-              ),
-            ),
-            SizedBox(height: 8.w),
-            Padding(
-              padding: EdgeInsets.only(left: 24.w),
-              child: Text(
-                report.timeTakenAt.toDate().toIso8601String(),
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                  color: CustomTheme.t2,
-                ),
-              ),
-            ),
-            SizedBox(height: 40.w),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                _buildCard("Best", report.bestScore, bestToolTip),
-                SizedBox(
-                  width: 16.w,
-                ),
-                _buildCard("Average", report.averageScore, averageToolTip),
-              ],
-            ),
-            SizedBox(height: 20.w),
-            Padding(
-              padding: EdgeInsets.only(left: 25.w),
-              child: Text(
-                "Graph 1",
-                style: TextStyle(
-                  color: CustomTheme.t1,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 22,
-                ),
-              ),
-            ),
-            SizedBox(height: 8.w),
-            _buildGraph(context, report),
-            SizedBox(height: 20.w),
-            Padding(
-              padding: EdgeInsets.only(left: 25.w),
-              child: Text(
-                "Graph 2",
-                style: TextStyle(
-                  color: CustomTheme.t1,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 22,
-                ),
-              ),
-            ),
-            SizedBox(height: 8.w),
-            _buildGraph(context, report),
-            SizedBox(height: 50.w),
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
 
