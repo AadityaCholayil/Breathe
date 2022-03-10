@@ -1,5 +1,10 @@
+import 'dart:io';
+import 'package:breathe/models/helper_models.dart';
+import 'package:breathe/models/session_report.dart';
 import 'package:breathe/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 
 class DatabaseRepository {
   final String uid;
@@ -40,33 +45,53 @@ class DatabaseRepository {
     await usersRef.doc(uid).delete();
   }
 
-  // // Pokemons Collection Reference for specific user
-  // CollectionReference<PokemonDB> get pokemonsRef => db
-  //     .collection('users')
-  //     .doc(uid)
-  //     .collection('pokemons')
-  //     .withConverter<PokemonDB>(
-  //       fromFirestore: (snapshot, a) =>
-  //           PokemonDB.fromJson(snapshot.data()!, snapshot.id),
-  //       toFirestore: (pokemon, _) => pokemon.toJson(),
-  //     );
-  //
-  // // Get Pokemons from db
-  // Future<List<PokemonDB>> getPokemons() async {
-  //   List<QueryDocumentSnapshot<PokemonDB>> list = [];
-  //   list = await pokemonsRef.get().then((snapshot) => snapshot.docs);
-  //   return list.map((e) => e.data()).toList();
-  // }
-  //
-  // Future<void> addPokemon(PokemonDB pokemon) async {
-  //   await pokemonsRef.add(pokemon);
-  // }
-  //
-  // Future<void> updatePokemon(PokemonDB pokemon) async {
-  //   await pokemonsRef.doc(pokemon.id).set(pokemon);
-  // }
-  //
-  // Future<void> deletePokemon(PokemonDB pokemon) async {
-  //   await pokemonsRef.doc(pokemon.id).delete();
-  // }
+  // Report Collection Reference for specific user
+  CollectionReference<SessionReport> get reportsRef => db
+      .collection('users')
+      .doc(uid)
+      .collection('reports')
+      .withConverter<SessionReport>(
+        fromFirestore: (snapshot, a) =>
+            SessionReport.fromJson(snapshot.data()!, snapshot.id),
+        toFirestore: (report, _) => report.toJson(),
+      );
+
+  // Get Today's Reports from db
+  Future<List<SessionReport>> getTodaysReports() async {
+    List<QueryDocumentSnapshot<SessionReport>> list = [];
+    String todaysDate = getDateFromDateTime(DateTime.now());
+    list = await reportsRef
+        .where('date', isEqualTo: todaysDate)
+        .orderBy('timeTakenAt')
+        .get()
+        .then((snapshot) => snapshot.docs);
+    return list.map((e) => e.data()).toList();
+  }
+
+  // Add Reports to db
+  Future<void> addReport(SessionReport report) async {
+    await reportsRef.add(report);
+  }
+
+  // Delete Report from db
+  Future<void> deleteReport(SessionReport report) async {
+    await reportsRef.doc(report.id).delete();
+  }
+
+  final firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+
+  Future<String?> uploadFile(File _image) async {
+    try {
+      await storage.ref('UserProfiles/$uid/profile_pic.png').putFile(_image);
+      var result = await storage
+          .ref('UserProfiles/$uid/profile_pic.png')
+          .getDownloadURL();
+      print('profileUrl: $result');
+      return result;
+    } on Exception catch (e) {
+      print('Failed - $e');
+      return null;
+    }
+  }
 }

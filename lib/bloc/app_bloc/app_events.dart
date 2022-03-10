@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:breathe/models/user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -48,6 +50,7 @@ class SignupUser extends AppEvent {
   final String gender;
   final String doctorId;
   final String hospital;
+  final File? profilePic;
 
   const SignupUser({
     required this.email,
@@ -57,13 +60,16 @@ class SignupUser extends AppEvent {
     required this.gender,
     required this.doctorId,
     required this.hospital,
+    required this.profilePic,
   });
 
   @override
-  String toString() => 'SignupUser($email, $password, $name, $age, $gender, $hospital, $doctorId,)';
+  String toString() =>
+      'SignupUser($email, $password, $name, $age, $gender, $hospital, $doctorId)';
 
   @override
-  List<Object?> get props => [email, password, name, age, gender, hospital, doctorId];
+  List<Object?> get props =>
+      [email, password, name, age, gender, hospital, doctorId, profilePic];
 }
 
 class UpdateUserData extends AppEvent {

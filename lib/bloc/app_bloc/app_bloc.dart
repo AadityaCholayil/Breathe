@@ -113,6 +113,24 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           event.email, event.password);
       // Update DatabaseRepository
       _databaseRepository = DatabaseRepository(uid: userData.uid);
+      // Upload Profile Pic
+      String photoUrl = '';
+      if (event.profilePic != null) {
+        // Upload new image to Firebase storage
+        String? res = await _databaseRepository.uploadFile(event.profilePic!);
+        if (res != null) {
+          photoUrl = res;
+        } else {
+          // Default profile pic
+          photoUrl =
+              'https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg';
+        }
+      } else {
+        // Default profile pic
+        photoUrl =
+            'https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg';
+      }
+      print(photoUrl);
       // Add User details to db
       UserData newUserData = UserData(
         uid: userData.uid,
@@ -122,11 +140,13 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         gender: event.gender,
         doctorId: event.doctorId,
         hospital: event.hospital,
+        profilePic: photoUrl,
       );
       _databaseRepository.updateUserData(newUserData);
       userData = newUserData;
       emit(Authenticated(userData: userData));
     } on Exception catch (e) {
+      print(e);
       if (e is EmailAlreadyInUseException) {
         emit(SignupPageState.userAlreadyExists);
       } else {

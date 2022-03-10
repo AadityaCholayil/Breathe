@@ -1,13 +1,17 @@
 import 'package:breathe/bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
 import 'package:breathe/main.dart';
+import 'package:breathe/models/session_report.dart';
 import 'package:breathe/shared/loading.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:breathe/views/readings/bounding_boxes.dart';
+import 'package:breathe/views/report_screens/session_report_page.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'dart:math' as math;
+
+import 'package:google_fonts/google_fonts.dart';
 
 class TakeReadingPage extends StatefulWidget {
   const TakeReadingPage({Key? key}) : super(key: key);
@@ -102,7 +106,20 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
       return const LoadingPage();
     }
     Size screen = MediaQuery.of(context).size;
-    return BlocBuilder<TensorFlowBloc, TensorFlowState>(
+    return BlocConsumer<TensorFlowBloc, TensorFlowState>(
+      listener: (context, state) {
+        if (state.processingDone) {
+          SessionReport report = context.read<TensorFlowBloc>().report;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SessionReportPage(
+                report: report,
+              ),
+            ),
+          );
+        }
+      },
       builder: (context, state) {
         bool recording = state.recording;
         return SizedBox(
@@ -147,10 +164,10 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
                             ),
                           ),
                           BndBox(
-                              state.recognitions == null ? [] : state.recognitions,
+                              state.recognitions,
                               math.max(state.imageHeight, state.imageWidth),
                               math.min(state.imageHeight, state.imageWidth),
-                              screen.height-340,
+                              screen.height - 340,
                               screen.width),
                         ],
                       ),
@@ -201,9 +218,11 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
                       alignment: Alignment.topCenter,
                       child: InkWell(
                         onTap: () {
-                          context
-                              .read<TensorFlowBloc>()
-                              .add(ChangeRecordingStatus());
+                          if (!state.recording) {
+                            context.read<TensorFlowBloc>().add(StartSession());
+                          } else {
+                            context.read<TensorFlowBloc>().add(EndSession());
+                          }
                         },
                         child: Container(
                           height: 77.w,
@@ -248,11 +267,11 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
         children: [
           SizedBox(width: 10.w),
           Container(
-            width: 24.w,
+            width: 22.w,
             alignment: Alignment.centerRight,
             child: Text(
               timeElapsed.substring(3, 4),
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                 fontSize: 36,
                 fontWeight: FontWeight.w600,
                 color: CustomTheme.onAccent,
@@ -260,10 +279,10 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
             ),
           ),
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 1.5.w),
+            padding: EdgeInsets.symmetric(horizontal: 1.1.w),
             child: Text(
               ':',
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                 fontSize: 20,
                 fontWeight: FontWeight.w600,
                 color: CustomTheme.onAccent,
@@ -271,11 +290,11 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
             ),
           ),
           Container(
-            width: 25.w,
+            width: 21.w,
             alignment: Alignment.center,
             child: Text(
               timeElapsed.substring(5, 6),
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                 fontSize: 36,
                 fontWeight: FontWeight.w600,
                 color: CustomTheme.onAccent,
@@ -283,11 +302,11 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
             ),
           ),
           Container(
-            width: 26.w,
+            width: 21.w,
             alignment: Alignment.center,
             child: Text(
               timeElapsed.substring(6, 7),
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                 fontSize: 36,
                 fontWeight: FontWeight.w600,
                 color: CustomTheme.onAccent,
@@ -299,7 +318,7 @@ class _TakeReadingPageViewState extends State<TakeReadingPageView>
             width: 37.w,
             child: Text(
               '${timeElapsed.substring(7, 9)}s',
-              style: TextStyle(
+              style: GoogleFonts.roboto(
                 fontSize: 24,
                 fontWeight: FontWeight.w600,
                 color: CustomTheme.onAccent,

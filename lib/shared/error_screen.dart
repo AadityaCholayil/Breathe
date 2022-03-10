@@ -143,13 +143,13 @@ void showErrorSnackBar(BuildContext context, String message) {
         message,
         style: TextStyle(
           fontSize: 16,
-          color: CustomTheme.accent,
+          color: CustomTheme.t1,
           fontWeight: FontWeight.w400,
         ),
       ),
       action: SnackBarAction(
         label: 'OK',
-        textColor: CustomTheme.onAccent,
+        textColor: CustomTheme.accent,
         onPressed: () {},
       ),
     ),

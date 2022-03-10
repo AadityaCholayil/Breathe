@@ -1,3 +1,4 @@
+import 'package:breathe/bloc/database_bloc/database_bloc.dart';
 import 'package:breathe/shared/coming_soon.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
@@ -41,7 +42,7 @@ class SettingsPage extends StatelessWidget {
             child: CircleAvatar(
               radius: 75.w,
               backgroundColor: Colors.grey,
-              backgroundImage: const AssetImage("assets/DummyProfile.jpg"),
+              backgroundImage: NetworkImage(context.read<DatabaseBloc>().userData.profilePic),
             ),
           ),
           SizedBox(height: 11.w),

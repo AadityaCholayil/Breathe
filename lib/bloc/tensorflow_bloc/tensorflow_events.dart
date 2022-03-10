@@ -8,10 +8,20 @@ abstract class TensorFlowEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class ChangeRecordingStatus extends TensorFlowEvent {
+class StartSession extends TensorFlowEvent {
   @override
   String toString() {
-    return 'ChangeRecordingStatus';
+    return 'StartSession';
+  }
+
+  @override
+  List<Object?> get props => [toString()];
+}
+
+class EndSession extends TensorFlowEvent {
+  @override
+  String toString() {
+    return 'EndSession';
   }
 
   @override

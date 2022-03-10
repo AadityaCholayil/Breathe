@@ -60,6 +60,35 @@ class LoadingSmall extends StatelessWidget {
   }
 }
 
+void showLoadingSnackBar(BuildContext context) {
+  ScaffoldMessenger.of(context).hideCurrentSnackBar();
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10.w),
+      ),
+      margin: EdgeInsets.all(15.w),
+      behavior: SnackBarBehavior.floating,
+      backgroundColor: CustomTheme.bg,
+      content: Row(
+        children: [
+          Text(
+            'Loading',
+            style: TextStyle(
+              fontSize: 16,
+              color: CustomTheme.accent,
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+          const Spacer(),
+          CircularProgressIndicator(color: CustomTheme.accent),
+        ],
+      ),
+
+    ),
+  );
+}
+
 Future<void> showLoadingDialog(BuildContext context) async {
   await showDialog(
     context: context,

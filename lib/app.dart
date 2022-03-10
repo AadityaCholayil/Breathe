@@ -33,14 +33,13 @@ class _AppState extends State<App> {
           builder: (context) {
             return BlocBuilder<AppBloc, AppState>(
               builder: (context, state) {
-                return BlocProvider<DatabaseBloc>(
-                  create: (context) {
-                    UserData userData = context.read<AppBloc>().userData;
-                    return DatabaseBloc(
-                      userData: userData,
-                      databaseRepository: DatabaseRepository(uid: userData.uid),
-                    );
-                  },
+                UserData userData = context.read<AppBloc>().userData;
+                DatabaseBloc databaseBloc = DatabaseBloc(
+                  userData: userData,
+                  databaseRepository: DatabaseRepository(uid: userData.uid),
+                );
+                return BlocProvider<DatabaseBloc>.value(
+                  value: databaseBloc,
                   child: ScreenUtilInit(
                     designSize: const Size(414, 896),
                     builder: () {
@@ -51,8 +50,7 @@ class _AppState extends State<App> {
                           child: Wrapper(state: state),
                         ),
                         builder: (context, child) {
-                          int width =
-                          MediaQuery.of(context).size.width.toInt();
+                          int width = MediaQuery.of(context).size.width.toInt();
                           return MediaQuery(
                             data: MediaQuery.of(context)
                                 .copyWith(textScaleFactor: width / 414),

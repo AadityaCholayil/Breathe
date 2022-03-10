@@ -1,27 +1,47 @@
 import 'package:breathe/bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
+import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/recognitions.dart';
+import 'package:breathe/models/session_report.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tflite/tflite.dart';
 
 class TensorFlowBloc extends Bloc<TensorFlowEvent, TensorFlowState> {
-  DateTime? startingTime;
+  late DateTime startingTime;
   bool predicting = false;
+  Duration timeElapsed = const Duration();
+  List<Reading> readings = [];
+  late SessionReport report;
 
   TensorFlowBloc() : super(const TensorFlowState.init()) {
-    on<ChangeRecordingStatus>(_onChangeRecordingStatus);
+    on<StartSession>(_onStartSession);
+    on<EndSession>(_onEndSession);
     on<PerformInference>(_onPerformInference);
   }
 
-  Future<void> _onChangeRecordingStatus(
-      ChangeRecordingStatus event, Emitter<TensorFlowState> emit) async {
+  Future<void> _onStartSession(
+      StartSession event, Emitter<TensorFlowState> emit) async {
     startingTime = DateTime.now();
-    emit(state.copyWith(recording: !state.recording));
-    while(state.recording){
+    report = SessionReport(timeTakenAt: Timestamp.fromDate(startingTime));
+    emit(state.copyWith(recording: true));
+    while (state.recording) {
       var now = DateTime.now();
-      Duration timeElapsed = now.difference(startingTime ?? now);
+      timeElapsed = now.difference(startingTime);
       emit(state.copyWith(timeElapsed: timeElapsed));
       await Future.delayed(const Duration(milliseconds: 100));
     }
+  }
+
+  Future<void> _onEndSession(
+      EndSession event, Emitter<TensorFlowState> emit) async {
+    emit(state.copyWith(timeElapsed: timeElapsed, recording: false));
+    report.totalDuration = readings.last.timeElapsed;
+    report.readings = readings;
+    report.setAverageScore();
+    report.setBestScore();
+    report.date = getDateFromDateTime(startingTime);
+    await Future.delayed(const Duration(milliseconds: 1000));
+    emit(state.copyWith(processingDone: true));
   }
 
   Future<void> _onPerformInference(
@@ -30,26 +50,46 @@ class TensorFlowBloc extends Bloc<TensorFlowEvent, TensorFlowState> {
       if (!predicting) {
         predicting = true;
         var recognitionsMap = await Tflite.detectObjectOnFrame(
-            bytesList: event.image.planes.map((plane) {return plane.bytes;}).toList(),// required
-            model: "SSDMobileNet",
-            imageHeight: event.image.height,
-            imageWidth: event.image.width,
-            imageMean: 127.5,   // defaults to 127.5
-            imageStd: 127.5,    // defaults to 127.5
-            rotation: 90,       // defaults to 90, Android only
-            threshold: 0.5,     // defaults to 0.1
-            asynch: true        // defaults to true
+          bytesList: event.image.planes.map((plane) {
+            return plane.bytes;
+          }).toList(),
+          model: "SSDMobileNet",
+          imageHeight: event.image.height,
+          imageWidth: event.image.width,
+          imageMean: 127.5,
+          imageStd: 127.5,
+          rotation: 90,
+          threshold: 0.5,
+          asynch: true,
         );
-        print('hi');
         print(recognitionsMap);
         List<Recognition> recognitions = [];
-        for(var recognition in recognitionsMap??[]) {
+        for (var recognition in recognitionsMap ?? []) {
           recognitions.add(Recognition.fromJson(recognition));
         }
-        emit(state.copyWith(reading: state.reading+1, recognitions: recognitions, imageHeight: event.image.height, imageWidth: event.image.width));
-        // await Future.delayed(const Duration(milliseconds: 500));
+        int reading = getScoreFromRecognitions(recognitions);
+        readings.add(Reading(
+            timeElapsed: DateTime.now().difference(startingTime).inMilliseconds,
+            score: reading));
+        emit(state.copyWith(
+          reading: reading,
+          recognitions: recognitions,
+          imageHeight: event.image.height,
+          imageWidth: event.image.width,
+        ));
         predicting = false;
       }
     }
+  }
+
+  // Algorithm to get score
+  int getScoreFromRecognitions(List<Recognition> recognitions) {
+    if (recognitions.length >= 3) {
+      // TODO: Implement Algorithm
+      recognitions.sort((a, b) => b.score.compareTo(a.score));
+      recognitions.getRange(0, 3);
+    }
+
+    return (state.reading + 50) % 1200;
   }
 }
