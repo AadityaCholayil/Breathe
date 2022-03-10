@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/shared/shared_widgets.dart';
@@ -13,13 +15,16 @@ class SignupPage extends StatefulWidget {
   final String gender;
   final String doctorId;
   final String hospital;
+  final File? profilePic;
 
   const SignupPage({
     Key? key,
     required this.name,
     required this.age,
     required this.gender,
-    required this.doctorId, required this.hospital,
+    required this.doctorId,
+    required this.hospital,
+    required this.profilePic,
   }) : super(key: key);
 
   @override
@@ -286,6 +291,7 @@ class _SignupPageState extends State<SignupPage> {
                             gender: widget.gender,
                             doctorId: widget.doctorId,
                             hospital: widget.hospital,
+                            profilePic: widget.profilePic,
                           ));
                         },
                       ),

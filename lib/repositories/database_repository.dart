@@ -1,7 +1,10 @@
+import 'dart:io';
 import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/models/user.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+
 
 class DatabaseRepository {
   final String uid;
@@ -73,5 +76,22 @@ class DatabaseRepository {
   // Delete Report from db
   Future<void> deleteReport(SessionReport report) async {
     await reportsRef.doc(report.id).delete();
+  }
+
+  final firebase_storage.FirebaseStorage storage =
+      firebase_storage.FirebaseStorage.instance;
+
+  Future<String?> uploadFile(File _image) async {
+    try {
+      await storage.ref('UserProfiles/$uid/profile_pic.png').putFile(_image);
+      var result = await storage
+          .ref('UserProfiles/$uid/profile_pic.png')
+          .getDownloadURL();
+      print('profileUrl: $result');
+      return result;
+    } on Exception catch (e) {
+      print('Failed - $e');
+      return null;
+    }
   }
 }
