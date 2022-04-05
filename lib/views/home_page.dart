@@ -1,5 +1,4 @@
 import 'package:breathe/bloc/app_bloc/app_bloc.dart';
-import 'package:breathe/bloc/database_bloc/database_bloc.dart';
 import 'package:breathe/bloc/database_bloc/database_bloc_files.dart';
 import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/session_report.dart';
@@ -31,134 +30,137 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<DatabaseBloc, DatabaseState>(
-        listener: (context, state) {
-      if (state is HomePageState) {
-        if (state.pageState == PageState.success) {
-          reportList = state.reportList;
+      listener: (context, state) {
+        if (state is HomePageState) {
+          if (state.pageState == PageState.success) {
+            reportList = state.reportList;
+          }
         }
-      }
-    }, builder: (context, state) {
-      return Scaffold(
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: _buildFloatingActionButton(context),
-        backgroundColor: CustomTheme.bg,
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.only(right: 25.w, top: 25.w),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    InkWell(
-                      child: Icon(
-                        Icons.settings,
-                        size: 32,
-                        color: CustomTheme.t1,
+      },
+      builder: (context, state) {
+        return Scaffold(
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: _buildFloatingActionButton(context),
+          backgroundColor: CustomTheme.bg,
+          body: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(right: 25.w, top: 25.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InkWell(
+                        child: Icon(
+                          Icons.settings,
+                          size: 32,
+                          color: CustomTheme.t1,
+                        ),
+                        onTap: () {
+                          print("Settings button pressed");
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const SettingsPage()));
+                        },
                       ),
-                      onTap: () {
-                        print("Settings button pressed");
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const SettingsPage()));
-                      },
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 30.w,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 30.w),
+                  child: Text(
+                    'Welcome Back,',
+                    style: TextStyle(
+                      color: CustomTheme.t1,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w400,
                     ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 30.w),
+                  child: Text(
+                    context.read<AppBloc>().userData.name,
+                    // "Pranav",
+                    style: TextStyle(
+                      color: CustomTheme.t1,
+                      fontSize: 42,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 56.w),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 24.w,
+                    ),
+                    _buildCard(context, "report", "Report", 54.w),
+                    SizedBox(
+                      width: 20.w,
+                    ),
+                    _buildCard(context, "exercise", "Exercise", 48.w),
                   ],
                 ),
-              ),
-              SizedBox(
-                height: 30.w,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 30.w),
-                child: Text(
-                  'Welcome Back,',
-                  style: TextStyle(
-                    color: CustomTheme.t1,
-                    fontSize: 25,
-                    fontWeight: FontWeight.w400,
+                SizedBox(height: 17.w),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: 24.w,
+                    ),
+                    _buildCard(
+                        context, "medicineReminder", "Medicine Reminder", 45.w),
+                    SizedBox(
+                      width: 20.w,
+                    ),
+                    _buildCard(
+                        context, "askDoctor", "Chat with your\ndoctor", 45.w),
+                  ],
+                ),
+                SizedBox(height: 36.w),
+                Padding(
+                  padding: EdgeInsets.only(left: 30.w),
+                  child: Text(
+                    "Previous Reading",
+                    style: TextStyle(
+                      color: CustomTheme.t1,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 30.w),
-                child: Text(
-                  context.read<AppBloc>().userData.name,
-                  // "Pranav",
-                  style: TextStyle(
-                    color: CustomTheme.t1,
-                    fontSize: 42,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              SizedBox(height: 56.w),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 24.w,
-                  ),
-                  _buildCard(context, "report", "Report", 54.w),
-                  SizedBox(
-                    width: 20.w,
-                  ),
-                  _buildCard(context, "exercise", "Exercise", 48.w),
-                ],
-              ),
-              SizedBox(height: 17.w),
-              Row(
-                children: [
-                  SizedBox(
-                    width: 24.w,
-                  ),
-                  _buildCard(
-                      context, "medicineReminder", "Medicine Reminder", 45.w),
-                  SizedBox(
-                    width: 20.w,
-                  ),
-                  _buildCard(
-                      context, "askDoctor", "Chat with your\ndoctor", 45.w),
-                ],
-              ),
-              SizedBox(height: 36.w),
-              Padding(
-                padding: EdgeInsets.only(left: 30.w),
-                child: Text(
-                  "Previous Reading",
-                  style: TextStyle(
-                    color: CustomTheme.t1,
-                    fontSize: 22,
-                    fontWeight: FontWeight.w600,
-                  ),
-                ),
-              ),
-              SizedBox(height: 23.w),
-              for (var report in reportList)
-                _buildPreviousReadingCard(context, report),
-              reportList.isEmpty
-                  ? SizedBox(
-                      height: 200.w,
-                      child: Center(
-                        child: Text(
-                          'No reports added yet.',
-                          style: TextStyle(
-                            color: CustomTheme.t1,
-                            fontSize: 18,
-                            fontWeight: FontWeight.w400,
+                SizedBox(height: 23.w),
+                for (var report in reportList)
+                  _buildPreviousReadingCard(context, report),
+                reportList.isEmpty
+                    ? SizedBox(
+                        height: 200.w,
+                        child: Center(
+                          child: Text(
+                            'No reports added yet.',
+                            style: TextStyle(
+                              color: CustomTheme.t1,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w400,
+                            ),
                           ),
                         ),
-                      ),
-                    )
-                  : const SizedBox.shrink(),
-              SizedBox(height: 60.w),
-            ],
+                      )
+                    : const SizedBox.shrink(),
+                SizedBox(height: 60.w),
+              ],
+            ),
           ),
-        ),
-      );
-    });
+        );
+      },
+    );
   }
 
   FloatingActionButton _buildFloatingActionButton(BuildContext context) {

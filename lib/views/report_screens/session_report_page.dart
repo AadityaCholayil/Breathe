@@ -161,7 +161,7 @@ class SessionReportPage extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(left: 25.w),
                     child: Text(
-                      "Graph 1",
+                      "Timeline",
                       style: TextStyle(
                         color: CustomTheme.t1,
                         fontWeight: FontWeight.w500,
@@ -175,7 +175,7 @@ class SessionReportPage extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(left: 25.w),
                     child: Text(
-                      "Graph 2",
+                      "Peak Values",
                       style: TextStyle(
                         color: CustomTheme.t1,
                         fontWeight: FontWeight.w500,
@@ -184,7 +184,7 @@ class SessionReportPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 8.w),
-                  _buildGraph(context, report),
+                  _buildGraph2(context, report),
                   SizedBox(height: 50.w),
                 ],
               ),
@@ -241,6 +241,98 @@ class SessionReportPage extends StatelessWidget {
               LineChartBarData(
                 spots: [
                   for (var reading in report.readings)
+                    FlSpot((reading.timeElapsed / 1000).toDouble(),
+                        reading.score.toDouble()),
+                ],
+                colors: [CustomTheme.accent],
+                isCurved: true,
+                curveSmoothness: 0.35,
+                preventCurveOverShooting: true,
+                belowBarData: BarAreaData(
+                  show: true,
+                  colors: [
+                    CustomTheme.accent,
+                  ],
+                ),
+              ),
+            ],
+            titlesData: FlTitlesData(
+              leftTitles: SideTitles(
+                  showTitles: true,
+                  interval: 400,
+                  // margin: 20
+                  reservedSize: 30.w),
+              rightTitles: SideTitles(showTitles: false),
+              topTitles: SideTitles(showTitles: false),
+            ),
+            axisTitleData: FlAxisTitleData(
+              leftTitle: AxisTitle(
+                showTitle: true,
+                titleText: 'Score',
+                textStyle: TextStyle(
+                  fontSize: 18,
+                  color: CustomTheme.t2,
+                ),
+              ),
+              bottomTitle: AxisTitle(
+                showTitle: true,
+                titleText: 'Time',
+                margin: 15,
+                textStyle: TextStyle(fontSize: 18, color: CustomTheme.t2),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGraph2(BuildContext context, SessionReport report) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 24.w),
+      child: Container(
+        padding:
+        EdgeInsets.only(top: 30.w, left: 10.w, right: 15.w, bottom: 15.w),
+        // height: MediaQuery.of(context).size.height,
+        height: 256.w,
+        width: 366.w,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: CustomTheme.cardShadow,
+              blurRadius: 15,
+              // spreadRadius: 1,
+              // blurStyle: ,
+              offset: Offset(
+                4.w,
+                4.w,
+              ),
+            ),
+          ],
+          color: CustomTheme.card,
+          borderRadius: BorderRadius.circular(20.w),
+        ),
+        child: LineChart(
+          LineChartData(
+            maxX: (report.totalDuration / 1000).toDouble(),
+            minY: 0,
+            maxY: 1200,
+            gridData: FlGridData(
+              drawHorizontalLine: false,
+              drawVerticalLine: false,
+            ),
+            borderData: FlBorderData(
+              border: Border(
+                bottom: BorderSide(color: CustomTheme.t1),
+                left: BorderSide(color: CustomTheme.t1),
+                top: const BorderSide(color: Colors.transparent),
+                right: const BorderSide(color: Colors.transparent),
+              ),
+            ),
+            lineBarsData: [
+              LineChartBarData(
+                spots: [
+                  for (var reading in report.peaks)
                     FlSpot((reading.timeElapsed / 1000).toDouble(),
                         reading.score.toDouble()),
                 ],

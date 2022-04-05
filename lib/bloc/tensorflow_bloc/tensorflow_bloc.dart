@@ -85,11 +85,49 @@ class TensorFlowBloc extends Bloc<TensorFlowEvent, TensorFlowState> {
   // Algorithm to get score
   int getScoreFromRecognitions(List<Recognition> recognitions) {
     if (recognitions.length >= 3) {
-      // TODO: Implement Algorithm
       recognitions.sort((a, b) => b.score.compareTo(a.score));
       recognitions.getRange(0, 3);
-    }
+      // case zero
+      double threshold =
+          (recognitions.map((r) => r.location.height).reduce((a, b) => a + b) /
+                  3) *
+              0.4;
+      recognitions.sort((a, b) => a.location.left.compareTo(b.location.left));
+      double b1 = recognitions[0].location.bottom;
+      double b2 = recognitions[1].location.bottom;
+      double b3 = recognitions[2].location.bottom;
+      // For 0 and 1200
+      if (b2 - b1 < threshold && b3 - b2 < threshold) {
+        if (b1 < 0.5) {
+          return 1200;
+        } else {
+          return 0;
+        }
+      }
+      // For 1 ball up
+      if (b3 - b2 < threshold && b2 - b1 > threshold) {
+        double spiroHeight = recognitions[1].location.height * 4.2;
+        int reading = ((b1 / spiroHeight) * 600).ceil();
+        print('NEW: h: $spiroHeight, b1: $b1, b2: $b2, reading: $reading');
 
-    return (state.reading + 50) % 1200;
+        double spiroHeight2 = recognitions[1].location.height * 4.2;
+        int reading2 = (((b1 - b2) / (spiroHeight2 - b2)) * 600).ceil();
+        print('OLD: h: $spiroHeight2, b1: $b1, b2: $b2, reading: $reading2');
+        return reading2 < 600 ? reading2 : 600;
+      }
+      // For 2nd ball middle
+      if (b2 - b1 > threshold && b3 - b2 > threshold) {
+        double spiroHeight = recognitions[0].location.height * 3.2;
+        int reading = (((b2 - b3) / (spiroHeight - b3)) * 300).ceil();
+        return 600 + (reading < 300 ? reading : 300);
+      }
+      if (b2 - b1 < threshold &&
+          b3 - b2 < (recognitions[0].location.height * 3.2)) {
+        double spiroHeight = recognitions[0].location.height * 3.2;
+        int reading = (((spiroHeight - (b2 - b3) / spiroHeight - b3)) * 300).ceil();
+        return 900 + (reading < 300 ? reading : 300);
+      }
+    }
+    return state.reading;
   }
 }

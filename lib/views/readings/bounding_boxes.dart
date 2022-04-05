@@ -41,6 +41,13 @@ class BndBox extends StatelessWidget {
           if (_y < difH / 2) h -= (difH / 2 - _y) * scaleH;
         }
 
+        // print('x: $x');
+        // print('w: $w');
+        // print('y: $y');
+        // print('h: $h');
+        // print('previewW: $previewW');
+        // print('previewH: $previewH');
+
         return Positioned(
           left: math.max(0, x),
           top: math.max(0, y),
