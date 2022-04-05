@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SessionReport {
@@ -55,18 +57,23 @@ class SessionReport {
   }
 
   List<Reading> get peaks {
-    // TODO: Calculate peaks
-    return readings;
+    List<Reading> peaks = [];
+    for (int i = 1; i < readings.length; i++) {
+      if (readings[i].score < readings[i - 1].score) {
+        peaks.add(readings[i - 1]);
+      }
+    }
+    return peaks;
   }
 
   void setAverageScore() {
-    // TODO: Calculate average from peaks
-    averageScore = 1000;
+    averageScore =
+        (peaks.map((p) => p.score).reduce((a, b) => a + b) / peaks.length)
+            .ceil();
   }
 
   void setBestScore() {
-    // TODO: Calculate best from peaks
-    bestScore = 1200;
+    bestScore = (peaks.reduce((p1, p2) => p1.score > p2.score ? p1 : p2)).score;
   }
 
   @override

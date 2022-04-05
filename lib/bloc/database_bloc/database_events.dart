@@ -21,7 +21,7 @@ class SaveReport extends DatabaseEvent {
   const SaveReport({required this.report});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [report];
 }
 
 class DeleteReport extends DatabaseEvent {
@@ -30,7 +30,7 @@ class DeleteReport extends DatabaseEvent {
   const DeleteReport({required this.report});
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [report];
 }
 
 // class AddPokemon extends DatabaseEvent {
