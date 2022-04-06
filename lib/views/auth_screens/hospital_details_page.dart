@@ -1,21 +1,30 @@
 import 'dart:io';
+
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/auth_screens/hospital_details_page.dart';
 import 'package:breathe/views/auth_screens/login_screen.dart';
+import 'package:breathe/views/auth_screens/signup_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
-class GetStartedPage extends StatefulWidget {
-  const GetStartedPage({Key? key}) : super(key: key);
+class HospitalDetailsPage extends StatefulWidget {
+  const HospitalDetailsPage(
+      {Key? key,
+      required String name,
+      required int age,
+      required String gender,
+      required String doctorId,
+      required String hospital,
+      required File profilePic})
+      : super(key: key);
 
   @override
-  _GetStartedPageState createState() => _GetStartedPageState();
+  _HospitalDetailsPageState createState() => _HospitalDetailsPageState();
 }
 
-class _GetStartedPageState extends State<GetStartedPage> {
+class _HospitalDetailsPageState extends State<HospitalDetailsPage> {
   String name = '';
   int age = 0;
   String gender = '';
@@ -100,13 +109,13 @@ class _GetStartedPageState extends State<GetStartedPage> {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => HospitalDetailsPage(
+                                  builder: (context) => SignupPage(
                                     name: name,
                                     age: age,
                                     gender: gender,
                                     doctorId: doctorId,
                                     hospital: hospital,
-                                    profilePic: _image!,
+                                    profilePic: _image,
                                   ),
                                 ),
                               );

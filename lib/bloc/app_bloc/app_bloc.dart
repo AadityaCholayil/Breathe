@@ -155,9 +155,49 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     }
   }
 
+  // FutureOr<void> _onUpdateUserData(
+  //     UpdateUserData event, Emitter<AppState> emit) async {
+  //   emit(Uninitialized(userData: UserData.empty));
+  // }
   FutureOr<void> _onUpdateUserData(
       UpdateUserData event, Emitter<AppState> emit) async {
-    emit(Uninitialized(userData: UserData.empty));
+    emit(EditProfilePageState.loading);
+    try {
+      // Get userData for uid and email
+      UserData userDataTemp = _authRepository.getUserData;
+      // Update databaseRepository
+      _databaseRepository = DatabaseRepository(uid: userDataTemp.uid);
+      String photoUrl = '';
+      if (event.profilePic != null) {
+        // Upload new image to Firebase storage
+        String? res = await _databaseRepository.uploadFile(event.profilePic!);
+        if (res != null) {
+          photoUrl = res;
+        } else {
+          emit(EditProfilePageState.somethingWentWrong);
+        }
+      } else {
+        // Keep the same photoUrl
+        photoUrl = userData.profilePic;
+      }
+      // Create new userData object
+      UserData newUserData = UserData(
+          uid: userData.uid,
+          email: userData.email,
+          name: event.name,
+          age: event.age,
+          gender: event.gender,
+          doctorId: event.doctorId,
+          hospital: event.hospital,
+          profilePic: photoUrl,
+      );
+      // Update userData
+      await _databaseRepository.updateUserData(newUserData);
+      userData = newUserData;
+      emit(EditProfilePageState.success);
+    } on Exception catch (_) {
+      emit(EditProfilePageState.somethingWentWrong);
+    }
   }
 
   FutureOr<void> _onLoggedOut(LoggedOut event, Emitter<AppState> emit) async {

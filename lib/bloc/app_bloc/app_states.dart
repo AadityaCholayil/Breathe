@@ -137,3 +137,24 @@ class DeleteAccountPageState extends AppState {
   @override
   List<Object?> get props => [toString() + message];
 }
+class EditProfilePageState extends AppState {
+  final String message;
+
+  const EditProfilePageState({required this.message});
+
+  static EditProfilePageState loading =
+      const EditProfilePageState(message: 'Loading');
+
+  static EditProfilePageState somethingWentWrong =
+      const EditProfilePageState(
+          message: 'Something went wrong, Please try again');
+
+  static EditProfilePageState success =
+  const EditProfilePageState(message: 'Success!');
+
+  @override
+  String toString() => 'EditProfilePageState.'+message;
+
+  @override
+  List<Object?> get props => [toString()];
+}
