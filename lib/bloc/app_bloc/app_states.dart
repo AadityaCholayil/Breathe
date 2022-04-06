@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:breathe/models/user.dart';
 
+import '../../models/user.dart';
+
 @immutable
 abstract class AppState extends Equatable {
   const AppState([List props = const []]) : super();

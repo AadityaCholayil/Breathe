@@ -4,6 +4,8 @@ import 'package:breathe/models/user.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
+import '../../models/user.dart';
+
 @immutable
 abstract class AppEvent extends Equatable {
   const AppEvent([List props = const []]) : super();

@@ -40,6 +40,7 @@ class SessionReportPageState extends DatabaseState {
   List<Object?> get props => [report, pageState];
 }
 
+
 // class HomePageState extends DatabaseState {
 //   final List<RaidBoss>? raidBossList;
 //   final PageState pageState;
