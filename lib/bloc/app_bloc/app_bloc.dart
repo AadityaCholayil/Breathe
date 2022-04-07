@@ -168,9 +168,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       // Update databaseRepository
       _databaseRepository = DatabaseRepository(uid: userDataTemp.uid);
       String photoUrl = '';
-      if (event.profilePic != null) {
+      if (event.userData.profilePic != null) {
         // Upload new image to Firebase storage
-        String? res = await _databaseRepository.uploadFile(event.profilePic!);
+        String? res = await _databaseRepository.uploadFile(event.userData.profilePic!);
         if (res != null) {
           photoUrl = res;
         } else {
@@ -181,16 +181,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         photoUrl = userData.profilePic;
       }
       // Create new userData object
-      UserData newUserData = UserData(
-          uid: userData.uid,
-          email: userData.email,
-          name: event.name,
-          age: event.age,
-          gender: event.gender,
-          doctorId: event.doctorId,
-          hospital: event.hospital,
-          profilePic: photoUrl,
-      );
+      UserData newUserData = event.userData;
       // Update userData
       await _databaseRepository.updateUserData(newUserData);
       userData = newUserData;

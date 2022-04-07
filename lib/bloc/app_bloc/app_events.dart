@@ -76,16 +76,27 @@ class SignupUser extends AppEvent {
 
 class UpdateUserData extends AppEvent {
   final UserData userData;
-  final String email;
-  final String password;
-  final String name;
-  final int age;
-  final String gender;
-  final String doctorId;
-  final String hospital;
-  final File? profilePic;
 
-  const UpdateUserData(this.userData, this.email, this.password, this.name, this.age, this.gender, this.doctorId, this.hospital, this.profilePic);
+  // final String email;
+  // final String password;
+  // final String name;
+  // final int age;
+  // final String gender;
+  // final String doctorId;
+  // final String hospital;
+  // final File? profilePic;
+
+  const UpdateUserData(
+    this.userData,
+    // this.email,
+    // this.password,
+    // this.name,
+    // this.age,
+    // this.gender,
+    // this.doctorId,
+    // this.hospital,
+    // this.profilePic,
+  );
 
   @override
   String toString() => 'UpdateUserData($userData)';

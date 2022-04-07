@@ -11,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 class GetStartedPage extends StatefulWidget {
   const GetStartedPage({Key? key}) : super(key: key);
 
+
   @override
   _GetStartedPageState createState() => _GetStartedPageState();
 }
@@ -104,9 +105,6 @@ class _GetStartedPageState extends State<GetStartedPage> {
                                     name: name,
                                     age: age,
                                     gender: gender,
-                                    doctorId: doctorId,
-                                    hospital: hospital,
-                                    profilePic: _image!,
                                   ),
                                 ),
                               );

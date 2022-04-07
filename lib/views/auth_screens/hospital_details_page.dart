@@ -10,25 +10,24 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
 class HospitalDetailsPage extends StatefulWidget {
-  const HospitalDetailsPage(
-      {Key? key,
-      required String name,
-      required int age,
-      required String gender,
-      required String doctorId,
-      required String hospital,
-      required File profilePic})
-      : super(key: key);
+  final String name;
+  final int age;
+  final String gender;
+
+  const HospitalDetailsPage({
+    Key? key,
+    required this.name,
+    required this.age,
+    required this.gender,
+  }) : super(key: key);
 
   @override
   _HospitalDetailsPageState createState() => _HospitalDetailsPageState();
 }
 
 class _HospitalDetailsPageState extends State<HospitalDetailsPage> {
-  String name = '';
-  int age = 0;
-  String gender = '';
   String doctorId = '';
+  String doctorName = '';
   String hospital = '';
   File? _image;
 
@@ -78,7 +77,7 @@ class _HospitalDetailsPageState extends State<HospitalDetailsPage> {
                           ),
                           SizedBox(height: 20.h),
                           Text(
-                            "Let's get started",
+                            "Almost There...",
                             style: TextStyle(
                               height: 1.25.w,
                               fontSize: 25,
@@ -86,18 +85,12 @@ class _HospitalDetailsPageState extends State<HospitalDetailsPage> {
                               color: Theme.of(context).colorScheme.onBackground,
                             ),
                           ),
-                          SizedBox(height: 25.h),
-                          _buildProfile(context),
+                          SizedBox(height: 120.w),
+                          _buildHospitalName(),
                           SizedBox(height: 20.w),
-                          _buildName(),
+                          _buildDoctorName(),
                           SizedBox(height: 20.w),
-                          _buildAge(),
-                          SizedBox(height: 25.w),
-                          _buildGender(),
-                          // SizedBox(height: 20.w),
-                          // _buildHospitalName(),
-                          // SizedBox(height: 20.w),
-                          // _buildDoctorID(),
+                          _buildDoctorID(),
                           SizedBox(height: 20.w),
                           CustomElevatedButton(
                             text: 'Next',
@@ -110,12 +103,13 @@ class _HospitalDetailsPageState extends State<HospitalDetailsPage> {
                                 context,
                                 MaterialPageRoute(
                                   builder: (context) => SignupPage(
-                                    name: name,
-                                    age: age,
-                                    gender: gender,
+                                    name: widget.name,
+                                    age: widget.age,
+                                    gender: widget.gender,
                                     doctorId: doctorId,
                                     hospital: hospital,
                                     profilePic: _image,
+                                    doctorName: doctorName,
                                   ),
                                 ),
                               );
@@ -351,70 +345,20 @@ class _HospitalDetailsPageState extends State<HospitalDetailsPage> {
     );
   }
 
-  Widget _buildName() {
+  Widget _buildDoctorName() {
     return Material(
       elevation: 4,
       borderRadius: BorderRadius.circular(15.w),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       child: TextFormField(
-        decoration: customInputDecoration(labelText: 'Name'),
+        decoration: customInputDecoration(labelText: 'Doctor Name'),
         style: formTextStyle(),
         onSaved: (value) {
-          name = value ?? '';
+          doctorName = value ?? '';
         },
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Please enter your name';
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildAge() {
-    return Material(
-      elevation: 4,
-      borderRadius: BorderRadius.circular(15.w),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: TextFormField(
-        decoration: customInputDecoration(labelText: 'Age'),
-        style: formTextStyle(),
-        keyboardType: TextInputType.number,
-        onSaved: (value) {
-          age = int.tryParse(value ?? '') ?? 18;
-        },
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your age!';
-          }
-          if (int.tryParse(value) == null) {
-            return "Invalid!";
-          }
-          if (int.tryParse(value)! > 100 || int.tryParse(value)! < 0) {
-            return "Please enter valid age!";
-          }
-          return null;
-        },
-      ),
-    );
-  }
-
-  Widget _buildGender() {
-    return Material(
-      elevation: 4,
-      borderRadius: BorderRadius.circular(15.w),
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: TextFormField(
-        decoration: customInputDecoration(labelText: 'Gender'),
-        style: formTextStyle(),
-        onSaved: (value) {
-          gender = value ?? '';
-        },
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your gender';
+            return "Please enter your Doctor's name";
           }
           return null;
         },
