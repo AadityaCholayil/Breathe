@@ -1,18 +1,20 @@
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
+import 'package:breathe/views/doctor/auth_screens/get_started_page.dart';
+import 'package:breathe/views/doctor/auth_screens/login_screen.dart';
 import 'package:breathe/views/patient/auth_screens/get_started_page.dart';
 import 'package:breathe/views/patient/auth_screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class PatientWelcomeScreen extends StatefulWidget {
-  const PatientWelcomeScreen({Key? key}) : super(key: key);
+class DoctorWelcomeScreen extends StatefulWidget {
+  const DoctorWelcomeScreen({Key? key}) : super(key: key);
 
   @override
-  _PatientWelcomeScreenState createState() => _PatientWelcomeScreenState();
+  _DoctorWelcomeScreenState createState() => _DoctorWelcomeScreenState();
 }
 
-class _PatientWelcomeScreenState extends State<PatientWelcomeScreen> {
+class _DoctorWelcomeScreenState extends State<DoctorWelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,7 +41,7 @@ class _PatientWelcomeScreenState extends State<PatientWelcomeScreen> {
                     style: 0,
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const PatientGetStartedPage()));
+                          MaterialPageRoute(builder: (context) => const DoctorGetStartedPage()));
                     },
                   ),
                   SizedBox(height: 30.w),
@@ -48,7 +50,7 @@ class _PatientWelcomeScreenState extends State<PatientWelcomeScreen> {
                     style: 1,
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const PatientLoginPage()));
+                          MaterialPageRoute(builder: (context) => const DoctorLoginPage()));
                     },
                   ),
                   SizedBox(height: 75.w),

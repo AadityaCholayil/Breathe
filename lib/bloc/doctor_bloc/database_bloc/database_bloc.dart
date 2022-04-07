@@ -1,66 +1,67 @@
+import 'package:breathe/models/doctor.dart';
 import 'package:breathe/models/helper_models.dart';
-import 'package:breathe/models/session_report.dart';
 import 'package:breathe/models/patient.dart';
-import 'package:breathe/repositories/database_repository.dart';
+import 'package:breathe/models/session_report.dart';
+import 'package:breathe/repositories/doctor_database_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'database_bloc_files.dart';
 
-class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
-  Patient userData;
-  PatientDatabaseRepository databaseRepository;
+class DoctorDatabaseBloc extends Bloc<DoctorDatabaseEvent, DoctorDatabaseState> {
+  Doctor doctor;
+  DoctorDatabaseRepository databaseRepository;
 
-  DatabaseBloc({
-    required this.userData,
+  DoctorDatabaseBloc({
+    required this.doctor,
     required this.databaseRepository,
-  }) : super(Init()) {
+  }) : super(DoctorInit()) {
     on<GetTodaysReports>(_onGetTodaysReports);
-    on<SaveReport>(_onSaveReport);
-    on<DeleteReport>(_onDeleteReport);
+    // on<SaveReport>(_onSaveReport);
+    // on<DeleteReport>(_onDeleteReport);
   }
 
   Future<void> _onGetTodaysReports(
-      GetTodaysReports event, Emitter<DatabaseState> emit) async {
-    emit(const HomePageState(pageState: PageState.loading));
+      GetTodaysReports event, Emitter<DoctorDatabaseState> emit) async {
+    emit(const DoctorHomePageState(pageState: PageState.loading));
     try {
-      List<SessionReport> reportList =
-          await databaseRepository.getTodaysReports();
-      print(reportList);
-      emit(HomePageState(
-        reportList: reportList,
+      List<Patient> patientList =
+          await databaseRepository.getPatients(doctor.doctorId);
+      print(patientList);
+      emit(DoctorHomePageState(
+        patientList: patientList,
         pageState: PageState.success,
       ));
     } on Exception catch (_) {
-      emit(const HomePageState(pageState: PageState.error));
+      emit(const DoctorHomePageState(pageState: PageState.error));
     }
   }
 
-  Future<void> _onSaveReport(
-      SaveReport event, Emitter<DatabaseState> emit) async {
-    emit(const SessionReportPageState(pageState: PageState.loading));
-    try {
-      await databaseRepository.addReport(event.report);
-      emit(SessionReportPageState(
-        report: event.report,
-        pageState: PageState.success,
-      ));
-    } on Exception catch (_) {
-      emit(const SessionReportPageState(pageState: PageState.error));
-    }
-  }
-
-  Future<void> _onDeleteReport(
-      DeleteReport event, Emitter<DatabaseState> emit) async {
-    emit(const SessionReportPageState(pageState: PageState.loading));
-    try {
-      await databaseRepository.deleteReport(event.report);
-      emit(SessionReportPageState(
-        report: event.report,
-        pageState: PageState.success,
-      ));
-    } on Exception catch (_) {
-      emit(const SessionReportPageState(pageState: PageState.error));
-    }
-  }
+  // Future<void> _onSaveReport(
+  //     SaveReport event, Emitter<DoctorDatabaseState> emit) async {
+  //   emit(const SessionReportPageState(pageState: PageState.loading));
+  //   try {
+  //     await databaseRepository.addReport(event.report);
+  //     emit(SessionReportPageState(
+  //       report: event.report,
+  //       pageState: PageState.success,
+  //     ));
+  //   } on Exception catch (_) {
+  //     emit(const SessionReportPageState(pageState: PageState.error));
+  //   }
+  // }
+  //
+  // Future<void> _onDeleteReport(
+  //     DeleteReport event, Emitter<DoctorDatabaseState> emit) async {
+  //   emit(const SessionReportPageState(pageState: PageState.loading));
+  //   try {
+  //     await databaseRepository.deleteReport(event.report);
+  //     emit(SessionReportPageState(
+  //       report: event.report,
+  //       pageState: PageState.success,
+  //     ));
+  //   } on Exception catch (_) {
+  //     emit(const SessionReportPageState(pageState: PageState.error));
+  //   }
+  // }
 
 // Future<void> _onGetMyPokemons(
 //     GetMyPokemons event, Emitter<DatabaseState> emit) async {

@@ -1,21 +1,23 @@
+import 'package:breathe/bloc/doctor_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/shared/loading.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
+import 'package:breathe/views/doctor/auth_screens/get_started_page.dart';
 import 'package:breathe/views/patient/auth_screens/get_started_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class PatientLoginPage extends StatefulWidget {
-  const PatientLoginPage({Key? key}) : super(key: key);
+class DoctorLoginPage extends StatefulWidget {
+  const DoctorLoginPage({Key? key}) : super(key: key);
 
   @override
-  _PatientLoginPageState createState() => _PatientLoginPageState();
+  _DoctorLoginPageState createState() => _DoctorLoginPageState();
 }
 
-class _PatientLoginPageState extends State<PatientLoginPage> {
+class _DoctorLoginPageState extends State<DoctorLoginPage> {
   String email = 'aadi@gmail.com';
   String password = 'aadi123';
   String stateMessage = '';
@@ -25,16 +27,16 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PatientAppBloc, PatientAppState>(
+    return BlocConsumer<DoctorAppBloc, DoctorAppState>(
       listener: (context, state) async {
-        if (state is PatientLoginPageState) {
-          if (state == PatientLoginPageState.loading) {
+        if (state is DoctorLoginPageState) {
+          if (state == DoctorLoginPageState.loading) {
             showLoadingDialog(context);
           } else {
             showErrorSnackBar(context, state.message);
           }
         }
-        if (state is AuthenticatedPatient) {
+        if (state is AuthenticatedDoctor) {
           stateMessage = 'Success!';
           Navigator.pop(context);
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -90,10 +92,7 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                         ),
                       ),
                       SizedBox(height: 25.h),
-                      Material(
-                        elevation: 4,
-                        borderRadius: BorderRadius.circular(15.w),
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
+                      CustomTextFormField(
                         child: TextFormField(
                           decoration: customInputDecoration(labelText: 'Email'),
                           style: formTextStyle(),
@@ -114,10 +113,7 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                       SizedBox(height: 20.w),
                       Stack(
                         children: [
-                          Material(
-                            elevation: 4,
-                            borderRadius: BorderRadius.circular(15.w),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                          CustomTextFormField(
                             child: TextFormField(
                               decoration:
                                   customInputDecoration(labelText: 'Password'),
@@ -162,8 +158,8 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                           }
                           _formKey.currentState?.save();
                           showErrorSnackBar(context, stateMessage);
-                          BlocProvider.of<PatientAppBloc>(context)
-                              .add(PatientLoginUser(email: email, password: password));
+                          BlocProvider.of<DoctorAppBloc>(context).add(
+                              DoctorLogin(email: email, password: password));
                         },
                       ),
                       Expanded(
@@ -187,7 +183,7 @@ class _PatientLoginPageState extends State<PatientLoginPage> {
                                 Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const PatientGetStartedPage()));
+                                            const DoctorGetStartedPage()));
                               },
                             ),
                           ],

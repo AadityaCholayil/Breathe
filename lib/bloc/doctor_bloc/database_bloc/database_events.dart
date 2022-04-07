@@ -1,21 +1,21 @@
 import 'package:breathe/models/session_report.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class DatabaseEvent extends Equatable {
-  const DatabaseEvent();
+abstract class DoctorDatabaseEvent extends Equatable {
+  const DoctorDatabaseEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class GetTodaysReports extends DatabaseEvent {
+class GetTodaysReports extends DoctorDatabaseEvent {
   const GetTodaysReports();
 
   @override
   List<Object?> get props => [];
 }
 
-class SaveReport extends DatabaseEvent {
+class SaveReport extends DoctorDatabaseEvent {
   final SessionReport report;
 
   const SaveReport({required this.report});
@@ -24,7 +24,7 @@ class SaveReport extends DatabaseEvent {
   List<Object?> get props => [report];
 }
 
-class DeleteReport extends DatabaseEvent {
+class DeleteReport extends DoctorDatabaseEvent {
   final SessionReport report;
 
   const DeleteReport({required this.report});

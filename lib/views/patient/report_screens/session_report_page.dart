@@ -75,7 +75,7 @@ class SessionReportPage extends StatelessWidget {
     String bestToolTip = "Shows the best reading.";
     String averageToolTip = "Shows the average reading.";
     print(report);
-    return BlocConsumer<DatabaseBloc,DatabaseState>(
+    return BlocConsumer<PatientDatabaseBloc,PatientDatabaseState>(
       listener: (context, state){
         if (state is SessionReportPageState){
           if(state.pageState == PageState.loading){
@@ -109,7 +109,7 @@ class SessionReportPage extends StatelessWidget {
                         IconButton(
                           onPressed: () {
                             context
-                                .read<DatabaseBloc>()
+                                .read<PatientDatabaseBloc>()
                                 .add(SaveReport(report: report));
                           },
                           icon: Icon(

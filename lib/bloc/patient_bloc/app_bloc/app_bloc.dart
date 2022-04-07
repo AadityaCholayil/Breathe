@@ -6,12 +6,13 @@ import 'package:breathe/models/patient.dart';
 import 'package:breathe/repositories/auth_repository.dart';
 import 'package:breathe/repositories/database_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
   final PatientAuthRepository _authRepository;
   late PatientDatabaseRepository _databaseRepository;
   late Patient patient;
-  late DatabaseBloc databaseBloc;
+  late PatientDatabaseBloc databaseBloc;
 
   PatientAppBloc({required authRepository})
       : _authRepository = authRepository,
@@ -144,8 +145,13 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
         gender: event.gender,
         doctorId: event.doctorId,
         hospital: event.hospital,
+        doctorName: event.doctorName,
         profilePic: photoUrl,
       );
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isDoctor', false);
+
       _databaseRepository.updatePatientData(newUserData);
       patient = newUserData;
       emit(AuthenticatedPatient(patient: patient));

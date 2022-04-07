@@ -54,12 +54,7 @@ class SelectUserTypePage extends StatelessWidget {
                             BoxShadow(
                               color: CustomTheme.cardShadow,
                               blurRadius: 15,
-                              // spreadRadius: 1,
-                              // blurStyle: ,
-                              offset: Offset(
-                                4.w,
-                                4.w,
-                              ),
+                              offset: Offset(4.w, 4.w),
                             ),
                           ],
                           color: CustomTheme.card,

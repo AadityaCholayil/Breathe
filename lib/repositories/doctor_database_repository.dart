@@ -46,37 +46,34 @@ class DoctorDatabaseRepository {
   }
 
   // Report Collection Reference for specific doctor
-  CollectionReference<SessionReport> get reportsRef => db
-      .collection('doctors')
-      .doc(uid)
-      .collection('reports')
-      .withConverter<SessionReport>(
+  CollectionReference<Patient> get patientsRef => db
+      .collection('patients')
+      .withConverter<Patient>(
         fromFirestore: (snapshot, a) =>
-            SessionReport.fromJson(snapshot.data()!, snapshot.id),
+            Patient.fromJson(snapshot.data()!),
         toFirestore: (report, _) => report.toJson(),
       );
 
   // Get Today's Reports from db
-  Future<List<SessionReport>> getTodaysReports() async {
-    List<QueryDocumentSnapshot<SessionReport>> list = [];
+  Future<List<Patient>> getPatients(String doctorId) async {
+    List<QueryDocumentSnapshot<Patient>> list = [];
     String todaysDate = getDateFromDateTime(DateTime.now());
-    list = await reportsRef
-        .where('date', isEqualTo: todaysDate)
-        .orderBy('timeTakenAt')
+    list = await patientsRef
+        .where('doctorId', isEqualTo: doctorId)
         .get()
         .then((snapshot) => snapshot.docs);
     return list.map((e) => e.data()).toList();
   }
 
-  // Add Reports to db
-  Future<void> addReport(SessionReport report) async {
-    await reportsRef.add(report);
-  }
-
-  // Delete Report from db
-  Future<void> deleteReport(SessionReport report) async {
-    await reportsRef.doc(report.id).delete();
-  }
+  // // Add Reports to db
+  // Future<void> addReport(SessionReport report) async {
+  //   await patientsRef.add(report);
+  // }
+  //
+  // // Delete Report from db
+  // Future<void> deleteReport(SessionReport report) async {
+  //   await patientsRef.doc(report.id).delete();
+  // }
 
   final firebase_storage.FirebaseStorage storage =
       firebase_storage.FirebaseStorage.instance;

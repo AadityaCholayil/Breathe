@@ -1,24 +1,25 @@
 import 'dart:io';
-
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
+import 'package:breathe/views/doctor/auth_screens/login_screen.dart';
+import 'package:breathe/views/doctor/auth_screens/signup_screen.dart';
 import 'package:breathe/views/patient/auth_screens/doctor_linking_page.dart';
 import 'package:breathe/views/patient/auth_screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
-class PatientGetStartedPage extends StatefulWidget {
-  const PatientGetStartedPage({Key? key}) : super(key: key);
+class DoctorGetStartedPage extends StatefulWidget {
+  const DoctorGetStartedPage({Key? key}) : super(key: key);
 
   @override
-  _PatientGetStartedPageState createState() => _PatientGetStartedPageState();
+  _DoctorGetStartedPageState createState() => _DoctorGetStartedPageState();
 }
 
-class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
+class _DoctorGetStartedPageState extends State<DoctorGetStartedPage> {
   String name = '';
-  int age = 0;
-  String gender = '';
+  String hospital = '';
+  String qualification = '';
   File? _image;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -53,7 +54,7 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                     Text(
                       'Welcome to,',
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 27,
                         fontWeight: FontWeight.w300,
                         color: CustomTheme.t2,
                         height: 0.9,
@@ -83,9 +84,9 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                     SizedBox(height: 20.w),
                     _buildName(),
                     SizedBox(height: 20.w),
-                    _buildAge(),
+                    _buildHospital(),
                     SizedBox(height: 20.w),
-                    _buildGender(),
+                    _buildQualification(),
                     SizedBox(height: 25.w),
                     CustomElevatedButton(
                       text: 'Next',
@@ -97,11 +98,11 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => PatientDoctorLinkingPage(
+                            builder: (context) => DoctorSignupPage(
                               name: name,
-                              age: age,
-                              gender: gender,
-                              image: _image,
+                              hospital: hospital,
+                              profilePic: _image,
+                              qualification: qualification,
                             ),
                           ),
                         );
@@ -126,7 +127,8 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                    builder: (context) => const PatientLoginPage()));
+                                    builder: (context) =>
+                                        const DoctorLoginPage()));
                           },
                         ),
                       ],
@@ -216,7 +218,8 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                       width: 44.w,
                       decoration: BoxDecoration(
                         color: CustomTheme.card,
-                        border: Border.all(color: CustomTheme.accent, width: 2.5.w),
+                        border:
+                            Border.all(color: CustomTheme.accent, width: 2.5.w),
                         borderRadius: BorderRadius.circular(22.w),
                       ),
                       child: IconButton(
@@ -349,25 +352,17 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
     );
   }
 
-  Widget _buildAge() {
+  Widget _buildHospital() {
     return CustomTextFormField(
       child: TextFormField(
-        decoration: customInputDecoration(labelText: 'Age'),
+        decoration: customInputDecoration(labelText: 'Hospital'),
         style: formTextStyle(),
-        keyboardType: TextInputType.number,
         onSaved: (value) {
-          age = int.tryParse(value ?? '') ?? 18;
+          hospital = value ?? '';
         },
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Please enter your age!';
-          }
-          if (int.tryParse(value) == null) {
-            return "Invalid!";
-          }
-          if (int.tryParse(value)! > 100 || int.tryParse(value)! < 0) {
-            return "Please enter valid age!";
+            return 'Please enter your hospital';
           }
           return null;
         },
@@ -375,17 +370,17 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
     );
   }
 
-  Widget _buildGender() {
+  Widget _buildQualification() {
     return CustomTextFormField(
       child: TextFormField(
-        decoration: customInputDecoration(labelText: 'Gender'),
+        decoration: customInputDecoration(labelText: 'Qualification'),
         style: formTextStyle(),
         onSaved: (value) {
-          gender = value ?? '';
+          qualification = value ?? '';
         },
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Please enter your gender';
+            return 'Please enter your qualification';
           }
           return null;
         },
