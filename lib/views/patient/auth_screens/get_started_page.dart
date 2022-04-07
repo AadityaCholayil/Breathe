@@ -133,7 +133,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                    builder: (context) => const LoginPage()));
+                                    builder: (context) => const PatientLoginPage()));
                           },
                         ),
                       ],

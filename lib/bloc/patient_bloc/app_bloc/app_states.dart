@@ -1,86 +1,86 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:breathe/models/user.dart';
+import 'package:breathe/models/patient.dart';
 
 @immutable
-abstract class AppState extends Equatable {
-  const AppState([List props = const []]) : super();
+abstract class PatientAppState extends Equatable {
+  const PatientAppState([List props = const []]) : super();
 }
 
-class Uninitialized extends AppState {
-  final UserData userData;
+class UninitializedPatient extends PatientAppState {
+  final Patient patient;
 
-  const Uninitialized({required this.userData});
+  const UninitializedPatient({required this.patient});
 
   @override
-  String toString() => 'Uninitialized';
+  String toString() => 'UninitializedPatient';
 
   @override
   List<Object?> get props => [toString()];
 }
 
-class Unauthenticated extends AppState {
-  final UserData userData;
+class UnauthenticatedPatient extends PatientAppState {
+  final Patient patient;
 
-  const Unauthenticated({required this.userData});
-
-  @override
-  String toString() => 'Unauthenticated';
+  const UnauthenticatedPatient({required this.patient});
 
   @override
-  List<Object?> get props => [toString()];
-}
-
-class Authenticated extends AppState {
-  final UserData userData;
-
-  const Authenticated({required this.userData});
-
-  @override
-  String toString() => 'Authenticated';
+  String toString() => 'UnauthenticatedPatient';
 
   @override
   List<Object?> get props => [toString()];
 }
 
-class ErrorOccurred extends AppState {
+class AuthenticatedPatient extends PatientAppState {
+  final Patient patient;
+
+  const AuthenticatedPatient({required this.patient});
+
+  @override
+  String toString() => 'AuthenticatedPatient';
+
+  @override
+  List<Object?> get props => [toString()];
+}
+
+class ErrorOccurredPatient extends PatientAppState {
   final String error;
 
-  const ErrorOccurred({required this.error});
+  const ErrorOccurredPatient({required this.error});
 
   @override
-  String toString() => 'ErrorOccurred';
+  String toString() => 'ErrorOccurredPatient';
 
   @override
   List<Object?> get props => [toString()];
 }
 
-class LoginPageState extends AppState {
+class PatientLoginPageState extends PatientAppState {
   final String message;
 
-  const LoginPageState({required this.message});
+  const PatientLoginPageState({required this.message});
 
-  static LoginPageState loading = const LoginPageState(message: 'Loading');
+  static PatientLoginPageState loading = const PatientLoginPageState(message: 'Loading');
 
-  static LoginPageState success = const LoginPageState(message: 'Successful');
+  static PatientLoginPageState success = const PatientLoginPageState(message: 'Successful');
 
-  static LoginPageState noUserFound =
-      const LoginPageState(message: 'No user found for that email');
+  static PatientLoginPageState noUserFound =
+      const PatientLoginPageState(message: 'No user found for that email');
 
-  static LoginPageState wrongPassword =
-      const LoginPageState(message: 'Wrong Password provided for that user');
+  static PatientLoginPageState wrongPassword =
+      const PatientLoginPageState(message: 'Wrong Password provided for that user');
 
-  static LoginPageState somethingWentWrong =
-      const LoginPageState(message: 'Something went wrong, Please try again');
+  static PatientLoginPageState somethingWentWrong =
+      const PatientLoginPageState(message: 'Something went wrong, Please try again');
 
   @override
   List<Object?> get props => [message];
 }
 
-class EmailInputState extends AppState {
+class PatientEmailInputState extends PatientAppState {
   final EmailStatus emailStatus;
 
-  const EmailInputState({required this.emailStatus});
+  const PatientEmailInputState({required this.emailStatus});
 
   @override
   List<Object?> get props => [emailStatus];
@@ -92,42 +92,42 @@ enum EmailStatus {
   invalid,
 }
 
-class SignupPageState extends AppState {
+class PatientSignupPageState extends PatientAppState {
   final String message;
 
-  const SignupPageState({required this.message});
+  const PatientSignupPageState({required this.message});
 
-  static SignupPageState loading = const SignupPageState(message: 'Loading');
+  static PatientSignupPageState loading = const PatientSignupPageState(message: 'Loading');
 
-  static SignupPageState success = const SignupPageState(message: 'Successful');
+  static PatientSignupPageState success = const PatientSignupPageState(message: 'Successful');
 
-  static SignupPageState userAlreadyExists =
-      const SignupPageState(message: 'Email is already in use');
+  static PatientSignupPageState userAlreadyExists =
+      const PatientSignupPageState(message: 'Email is already in use');
 
-  static SignupPageState somethingWentWrong =
-      const SignupPageState(message: 'Something went wrong, Please try again');
+  static PatientSignupPageState somethingWentWrong =
+      const PatientSignupPageState(message: 'Something went wrong, Please try again');
 
   @override
   List<Object?> get props => [message];
 }
 
-class DeleteAccountPageState extends AppState {
+class DeletePatientAccountPageState extends PatientAppState {
   final String message;
 
-  const DeleteAccountPageState({required this.message});
+  const DeletePatientAccountPageState({required this.message});
 
-  static DeleteAccountPageState loading =
-      const DeleteAccountPageState(message: 'Loading');
+  static DeletePatientAccountPageState loading =
+      const DeletePatientAccountPageState(message: 'Loading');
 
-  static DeleteAccountPageState invalidCredentials =
-      const DeleteAccountPageState(message: 'Invalid Credentials!');
+  static DeletePatientAccountPageState invalidCredentials =
+      const DeletePatientAccountPageState(message: 'Invalid Credentials!');
 
-  static DeleteAccountPageState somethingWentWrong =
-      const DeleteAccountPageState(
+  static DeletePatientAccountPageState somethingWentWrong =
+      const DeletePatientAccountPageState(
           message: 'Something went wrong, Please try again');
 
-  static DeleteAccountPageState success =
-      const DeleteAccountPageState(message: 'Success!');
+  static DeletePatientAccountPageState success =
+      const DeletePatientAccountPageState(message: 'Success!');
 
   @override
   String toString() => 'DeleteAccountPageState';

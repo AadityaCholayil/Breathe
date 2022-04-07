@@ -235,7 +235,7 @@ class SignOutPrompt extends StatelessWidget {
                     SizedBox(width: 15.w),
                     TextButton(
                       onPressed: () {
-                        context.read<PatientAppBloc>().add(LoggedOut());
+                        context.read<PatientAppBloc>().add(PatientLoggedOut());
                         Navigator.pop(context);
                         Navigator.pop(context);
                       },

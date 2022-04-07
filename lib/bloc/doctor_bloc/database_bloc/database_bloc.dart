@@ -6,11 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'database_bloc_files.dart';
 
 class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
-  Patient patient;
+  Patient userData;
   PatientDatabaseRepository databaseRepository;
 
   DatabaseBloc({
-    required this.patient,
+    required this.userData,
     required this.databaseRepository,
   }) : super(Init()) {
     on<GetTodaysReports>(_onGetTodaysReports);

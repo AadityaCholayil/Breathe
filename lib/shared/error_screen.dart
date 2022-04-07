@@ -29,7 +29,7 @@ class SomethingWentWrong extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                context.read<PatientAppBloc>().add(AppStarted());
+                context.read<PatientAppBloc>().add(PatientAppStarted());
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 50),
@@ -91,7 +91,7 @@ class SomethingWentWrongSmall extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                context.read<PatientAppBloc>().add(AppStarted());
+                context.read<PatientAppBloc>().add(PatientAppStarted());
               },
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 50.w),

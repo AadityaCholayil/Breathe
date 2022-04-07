@@ -11,14 +11,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class PatientHomePage extends StatefulWidget {
+  const PatientHomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<PatientHomePage> createState() => _PatientHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _PatientHomePageState extends State<PatientHomePage> {
   List<SessionReport> reportList = [];
 
   @override
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: EdgeInsets.only(left: 30.w),
                   child: Text(
-                    context.read<PatientAppBloc>().userData.name,
+                    context.read<PatientAppBloc>().patient.name,
                     // "Pranav",
                     style: TextStyle(
                       color: CustomTheme.t1,

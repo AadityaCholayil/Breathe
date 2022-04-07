@@ -42,18 +42,18 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PatientAppBloc, AppState>(
+    return BlocConsumer<PatientAppBloc, PatientAppState>(
       listenWhen: (previous, current) => previous != current,
       buildWhen: (previous, current) => previous != current,
       listener: (context, state) {
-        if (state is EmailInputState) {
+        if (state is PatientEmailInputState) {
           emailStatus = state.emailStatus;
           print(emailStatus);
         }
-        if (state is SignupPageState) {
+        if (state is PatientSignupPageState) {
           showErrorSnackBar(context, state.message);
         }
-        if (state is Authenticated) {
+        if (state is AuthenticatedPatient) {
           stateMessage = 'Success!';
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           print('Navigating..');
@@ -144,7 +144,7 @@ class _SignupPageState extends State<SignupPage> {
                                 if (value.isNotEmpty && validateEmail(email)) {
                                   context
                                       .read<PatientAppBloc>()
-                                      .add(CheckEmailStatus(email: value));
+                                      .add(PatientCheckEmailStatus(email: value));
                                 } else {
                                   setState(() {
                                     emailStatus = EmailStatus.invalid;
@@ -282,7 +282,7 @@ class _SignupPageState extends State<SignupPage> {
                           }
                           _formKey.currentState?.save();
                           showErrorSnackBar(context, stateMessage);
-                          BlocProvider.of<PatientAppBloc>(context).add(SignupUser(
+                          BlocProvider.of<PatientAppBloc>(context).add(PatientSignup(
                             email: email,
                             password: password,
                             name: widget.name,
@@ -315,7 +315,7 @@ class _SignupPageState extends State<SignupPage> {
                                 Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const LoginPage()));
+                                            const PatientLoginPage()));
                               },
                             ),
                           ],

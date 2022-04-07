@@ -2,93 +2,96 @@ import 'dart:async';
 import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc_files.dart';
 import 'package:breathe/models/custom_exceptions.dart';
-import 'package:breathe/models/user.dart';
+import 'package:breathe/models/patient.dart';
 import 'package:breathe/repositories/auth_repository.dart';
 import 'package:breathe/repositories/database_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class PatientAppBloc extends Bloc<AppEvent, AppState> {
-  final AuthRepository _authRepository;
-  late DatabaseRepository _databaseRepository;
-  late UserData userData;
+class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
+  final PatientAuthRepository _authRepository;
+  late PatientDatabaseRepository _databaseRepository;
+  late Patient patient;
   late DatabaseBloc databaseBloc;
 
   PatientAppBloc({required authRepository})
       : _authRepository = authRepository,
-        super(Uninitialized(userData: UserData.empty)) {
-    userData = _authRepository.getUserData;
-    _databaseRepository = DatabaseRepository(uid: userData.uid);
-    on<AppStarted>(_onAppStarted);
-    on<LoginUser>(_onLoginUser);
-    on<CheckEmailStatus>(_onCheckEmailStatus);
-    on<SignupUser>(_onSignupUser);
-    on<UpdateUserData>(_onUpdateUserData);
-    on<LoggedOut>(_onLoggedOut);
+        super(UninitializedPatient(patient: Patient.empty)) {
+    patient = _authRepository.getUserData;
+    _databaseRepository = PatientDatabaseRepository(uid: patient.uid);
+    on<PatientAppStarted>(_onAppStarted);
+    on<PatientLoginUser>(_onLoginUser);
+    on<PatientCheckEmailStatus>(_onCheckEmailStatus);
+    on<PatientSignup>(_onSignupUser);
+    on<UpdatePatientData>(_onUpdateUserData);
+    on<PatientLoggedOut>(_onLoggedOut);
   }
 
   // When the App Starts
-  FutureOr<void> _onAppStarted(AppStarted event, Emitter<AppState> emit) async {
-    emit(Uninitialized(userData: UserData.empty));
+  FutureOr<void> _onAppStarted(
+      PatientAppStarted event, Emitter<PatientAppState> emit) async {
+    emit(UninitializedPatient(patient: Patient.empty));
     try {
-      userData = _authRepository.getUserData;
-      if (userData != UserData.empty) {
+      patient = _authRepository.getUserData;
+      if (patient != Patient.empty) {
         // Authenticated
         // Update DatabaseRepository
-        _databaseRepository = DatabaseRepository(uid: userData.uid);
+        _databaseRepository = PatientDatabaseRepository(uid: patient.uid);
         // Fetch rest of the user details from database
-        UserData completeUserData = await _databaseRepository.completeUserData;
-        if (completeUserData != UserData.empty) {
+        Patient completeUserData =
+            await _databaseRepository.completePatientData;
+        if (completeUserData != Patient.empty) {
           // if db fetch is successful
-          userData = completeUserData;
-          emit(Authenticated(userData: userData));
+          patient = completeUserData;
+          emit(AuthenticatedPatient(patient: patient));
         } else {
           // if db fetch fails
-          emit(const ErrorOccurred(error: 'Failed to fetch details!'));
+          emit(const ErrorOccurredPatient(error: 'Failed to fetch details!'));
         }
       } else {
-        emit(Unauthenticated(userData: userData));
+        emit(UnauthenticatedPatient(patient: patient));
       }
     } on Exception catch (e) {
       // If something goes wrong
-      emit(ErrorOccurred(error: e.toString()));
+      emit(ErrorOccurredPatient(error: e.toString()));
     }
   }
 
   // When the User Logs in
-  FutureOr<void> _onLoginUser(LoginUser event, Emitter<AppState> emit) async {
-    emit(LoginPageState.loading);
+  FutureOr<void> _onLoginUser(
+      PatientLoginUser event, Emitter<PatientAppState> emit) async {
+    emit(PatientLoginPageState.loading);
     try {
       // Login using email and password
-      userData = await _authRepository.logInWithCredentials(
+      patient = await _authRepository.logInWithCredentials(
           event.email, event.password);
       // Update DatabaseRepository
-      _databaseRepository = DatabaseRepository(uid: userData.uid);
+      _databaseRepository = PatientDatabaseRepository(uid: patient.uid);
       // After login fetch rest of the user details from database
-      UserData completeUserData = await _databaseRepository.completeUserData;
-      if (completeUserData != UserData.empty) {
+      Patient completeUserData = await _databaseRepository.completePatientData;
+      if (completeUserData != Patient.empty) {
         // if db fetch is successful
-        userData = completeUserData;
-        emit(Authenticated(userData: userData));
+        patient = completeUserData;
+        emit(AuthenticatedPatient(patient: patient));
       } else {
         // if db fetch fails
-        emit(const ErrorOccurred(error: 'Failed to fetch details!'));
+        emit(const ErrorOccurredPatient(error: 'Failed to fetch details!'));
       }
     } on Exception catch (e) {
       print(e);
       if (e is UserNotFoundException) {
-        emit(LoginPageState.noUserFound);
+        emit(PatientLoginPageState.noUserFound);
       } else if (e is WrongPasswordException) {
-        emit(LoginPageState.wrongPassword);
+        emit(PatientLoginPageState.wrongPassword);
       } else {
-        emit(LoginPageState.somethingWentWrong);
+        emit(PatientLoginPageState.somethingWentWrong);
       }
     }
   }
 
   Future<void> _onCheckEmailStatus(
-      CheckEmailStatus event, Emitter<AppState> emit) async {
+      PatientCheckEmailStatus event, Emitter<PatientAppState> emit) async {
     // emit loading
-    emit(const EmailInputState(emailStatus: EmailStatus.loading));
+    emit(const PatientEmailInputState(emailStatus: EmailStatus.loading));
     try {
       // Try to login with the email provided with null as password
       // This will throw an exception
@@ -97,22 +100,23 @@ class PatientAppBloc extends Bloc<AppEvent, AppState> {
       if (e is UserNotFoundException) {
         // This means there was no existing user found for that email
         // Hence, the email is valid
-        emit(const EmailInputState(emailStatus: EmailStatus.valid));
+        emit(const PatientEmailInputState(emailStatus: EmailStatus.valid));
       } else {
-        emit(const EmailInputState(emailStatus: EmailStatus.invalid));
+        emit(const PatientEmailInputState(emailStatus: EmailStatus.invalid));
       }
     }
   }
 
   // When the User Signs up
-  FutureOr<void> _onSignupUser(SignupUser event, Emitter<AppState> emit) async {
-    emit(SignupPageState.loading);
+  FutureOr<void> _onSignupUser(
+      PatientSignup event, Emitter<PatientAppState> emit) async {
+    emit(PatientSignupPageState.loading);
     try {
       // Signup using email and password
-      userData = await _authRepository.signUpUsingCredentials(
+      patient = await _authRepository.signUpUsingCredentials(
           event.email, event.password);
       // Update DatabaseRepository
-      _databaseRepository = DatabaseRepository(uid: userData.uid);
+      _databaseRepository = PatientDatabaseRepository(uid: patient.uid);
       // Upload Profile Pic
       String photoUrl = '';
       if (event.profilePic != null) {
@@ -132,8 +136,8 @@ class PatientAppBloc extends Bloc<AppEvent, AppState> {
       }
       print(photoUrl);
       // Add User details to db
-      UserData newUserData = UserData(
-        uid: userData.uid,
+      Patient newUserData = Patient(
+        uid: patient.uid,
         email: event.email,
         name: event.name,
         age: event.age,
@@ -142,30 +146,31 @@ class PatientAppBloc extends Bloc<AppEvent, AppState> {
         hospital: event.hospital,
         profilePic: photoUrl,
       );
-      _databaseRepository.updateUserData(newUserData);
-      userData = newUserData;
-      emit(Authenticated(userData: userData));
+      _databaseRepository.updatePatientData(newUserData);
+      patient = newUserData;
+      emit(AuthenticatedPatient(patient: patient));
     } on Exception catch (e) {
       print(e);
       if (e is EmailAlreadyInUseException) {
-        emit(SignupPageState.userAlreadyExists);
+        emit(PatientSignupPageState.userAlreadyExists);
       } else {
-        emit(SignupPageState.somethingWentWrong);
+        emit(PatientSignupPageState.somethingWentWrong);
       }
     }
   }
 
   FutureOr<void> _onUpdateUserData(
-      UpdateUserData event, Emitter<AppState> emit) async {
-    emit(Uninitialized(userData: UserData.empty));
+      UpdatePatientData event, Emitter<PatientAppState> emit) async {
+    emit(UninitializedPatient(patient: Patient.empty));
   }
 
-  FutureOr<void> _onLoggedOut(LoggedOut event, Emitter<AppState> emit) async {
-    emit(Uninitialized(userData: UserData.empty));
-    userData = UserData.empty;
-    _databaseRepository = DatabaseRepository(uid: userData.uid);
+  FutureOr<void> _onLoggedOut(
+      PatientLoggedOut event, Emitter<PatientAppState> emit) async {
+    emit(UninitializedPatient(patient: Patient.empty));
+    patient = Patient.empty;
+    _databaseRepository = PatientDatabaseRepository(uid: patient.uid);
     // updateDatabaseBloc();
     await _authRepository.signOut();
-    emit(Unauthenticated(userData: userData));
+    emit(UnauthenticatedPatient(patient: patient));
   }
 }

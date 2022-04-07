@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+class PatientLoginPage extends StatefulWidget {
+  const PatientLoginPage({Key? key}) : super(key: key);
 
   @override
-  _LoginPageState createState() => _LoginPageState();
+  _PatientLoginPageState createState() => _PatientLoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _PatientLoginPageState extends State<PatientLoginPage> {
   String email = 'aadi@gmail.com';
   String password = 'aadi123';
   String stateMessage = '';
@@ -25,16 +25,16 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PatientAppBloc, AppState>(
+    return BlocConsumer<PatientAppBloc, PatientAppState>(
       listener: (context, state) async {
-        if (state is LoginPageState) {
-          if (state == LoginPageState.loading) {
+        if (state is PatientLoginPageState) {
+          if (state == PatientLoginPageState.loading) {
             showLoadingDialog(context);
           } else {
             showErrorSnackBar(context, state.message);
           }
         }
-        if (state is Authenticated) {
+        if (state is AuthenticatedPatient) {
           stateMessage = 'Success!';
           Navigator.pop(context);
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -163,7 +163,7 @@ class _LoginPageState extends State<LoginPage> {
                           _formKey.currentState?.save();
                           showErrorSnackBar(context, stateMessage);
                           BlocProvider.of<PatientAppBloc>(context)
-                              .add(LoginUser(email: email, password: password));
+                              .add(PatientLoginUser(email: email, password: password));
                         },
                       ),
                       Expanded(

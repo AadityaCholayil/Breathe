@@ -2,6 +2,7 @@ import 'package:breathe/bloc/app_bloc_observer.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/shared/loading.dart';
 import 'package:breathe/themes/theme.dart';
+import 'package:breathe/views/patient/wrapper.dart';
 import 'package:breathe/views/user_wrapper.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -72,24 +73,7 @@ class _FlutterFireInitState extends State<FlutterFireInit> {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return ScreenUtilInit(
-            designSize: const Size(414, 896),
-            builder: () {
-              return MaterialApp(
-                debugShowCheckedModeBanner: false,
-                theme: CustomTheme.getTheme(context),
-                home: const UserWrapper(),
-                builder: (context, child) {
-                  int width = MediaQuery.of(context).size.width.toInt();
-                  return MediaQuery(
-                    data:
-                    MediaQuery.of(context).copyWith(textScaleFactor: width / 414),
-                    child: child ?? const SomethingWentWrong(),
-                  );
-                },
-              );
-            },
-          );
+          return const UserWrapper();
         }
 
         // Otherwise, show something whilst waiting for initialization to complete

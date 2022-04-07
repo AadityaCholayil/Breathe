@@ -40,13 +40,13 @@ class SettingsPage extends StatelessWidget {
             child: CircleAvatar(
               radius: 75.w,
               backgroundColor: Colors.grey,
-              backgroundImage: NetworkImage(context.read<DatabaseBloc>().userData.profilePic),
+              backgroundImage: NetworkImage(context.read<DatabaseBloc>().patient.profilePic),
             ),
           ),
           SizedBox(height: 11.w),
           Center(
             child: Text(
-              context.read<PatientAppBloc>().userData.name,
+              context.read<PatientAppBloc>().patient.name,
               // "Pranav",
               style: TextStyle(
                 color: CustomTheme.t1,
@@ -100,7 +100,7 @@ class SettingsPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 24.w),
             child: Text(
-              context.read<PatientAppBloc>().userData.hospital,
+              context.read<PatientAppBloc>().patient.hospital,
               // "XYZ Hospital",
               style: TextStyle(
                 color: CustomTheme.t1,
@@ -167,7 +167,7 @@ class SettingsPage extends StatelessWidget {
           _buildProfileCardElements(
             context,
             'Age',
-            context.read<PatientAppBloc>().userData.age.toString(),
+            context.read<PatientAppBloc>().patient.age.toString(),
           ),
           const Spacer(),
           _buildProfileCardElements(
