@@ -1,23 +1,23 @@
+import 'package:breathe/models/doctor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:breathe/models/custom_exceptions.dart';
 import 'package:breathe/models/patient.dart';
 
-class PatientAuthRepository {
+class DoctorAuthRepository{
   final FirebaseAuth _firebaseAuth;
 
-  PatientAuthRepository({FirebaseAuth? firebaseAuth})
+  DoctorAuthRepository({FirebaseAuth? firebaseAuth})
       : _firebaseAuth = firebaseAuth ?? FirebaseAuth.instance;
 
   // Login using email and password
-  Future<Patient> logInWithCredentials(String email, String password) async {
+  Future<Doctor> logInWithCredentials(String email, String password) async {
     try {
-      UserCredential userCredential =
-          await _firebaseAuth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       User? user = userCredential.user;
-      return user == null ? Patient.empty : Patient.fromUser(user);
+      return user==null?Doctor.empty:Doctor.fromUser(user);
     } on FirebaseAuthException catch (e) {
       // throw custom exceptions that can be handled in AppBloc
       print(e.code);
@@ -35,15 +35,14 @@ class PatientAuthRepository {
   }
 
   // Signup using email and password
-  Future<Patient> signUpUsingCredentials(String email, String password) async {
+  Future<Doctor> signUpUsingCredentials(String email, String password) async {
     try {
-      UserCredential userCredential =
-          await _firebaseAuth.createUserWithEmailAndPassword(
+      UserCredential userCredential = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email,
         password: password,
       );
       User? user = userCredential.user;
-      return user == null ? Patient.empty : Patient.fromUser(user);
+      return user==null?Doctor.empty:Doctor.fromUser(user);
     } on FirebaseAuthException catch (e) {
       // throw custom exceptions that can be handled in AppBloc
       print(e.code);
@@ -83,14 +82,15 @@ class PatientAuthRepository {
     return currentUser != null;
   }
 
-  Patient get getUserData {
+  Doctor get getUserData {
     User? user = _firebaseAuth.currentUser;
-    return user == null ? Patient.empty : Patient.fromUser(user);
+    return user==null?Doctor.empty:Doctor.fromUser(user);
   }
 
-  Stream<Patient> get user {
+  Stream<Doctor> get user {
     return _firebaseAuth.authStateChanges().map((user) {
-      return user == null ? Patient.empty : Patient.fromUser(user);
+      return user==null?Doctor.empty:Doctor.fromUser(user);
     });
   }
+
 }

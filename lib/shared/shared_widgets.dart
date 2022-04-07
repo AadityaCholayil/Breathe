@@ -1,4 +1,4 @@
-import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -235,7 +235,7 @@ class SignOutPrompt extends StatelessWidget {
                     SizedBox(width: 15.w),
                     TextButton(
                       onPressed: () {
-                        context.read<AppBloc>().add(LoggedOut());
+                        context.read<PatientAppBloc>().add(PatientLoggedOut());
                         Navigator.pop(context);
                         Navigator.pop(context);
                       },

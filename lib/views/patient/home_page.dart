@@ -1,24 +1,24 @@
-import 'package:breathe/bloc/app_bloc/app_bloc.dart';
-import 'package:breathe/bloc/database_bloc/database_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc.dart';
+import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc_files.dart';
 import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/shared/coming_soon.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/report_screens/session_report_page.dart';
-import 'package:breathe/views/readings/take_readings_page.dart';
-import 'package:breathe/views/settings_page.dart';
+import 'package:breathe/views/patient/report_screens/session_report_page.dart';
+import 'package:breathe/views/patient/readings/take_readings_page.dart';
+import 'package:breathe/views/patient/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class PatientHomePage extends StatefulWidget {
+  const PatientHomePage({Key? key}) : super(key: key);
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<PatientHomePage> createState() => _PatientHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _PatientHomePageState extends State<PatientHomePage> {
   List<SessionReport> reportList = [];
 
   @override
@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                 Padding(
                   padding: EdgeInsets.only(left: 30.w),
                   child: Text(
-                    context.read<AppBloc>().userData.name,
+                    context.read<PatientAppBloc>().patient.name,
                     // "Pranav",
                     style: TextStyle(
                       color: CustomTheme.t1,

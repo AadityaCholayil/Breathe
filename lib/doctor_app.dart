@@ -1,42 +1,43 @@
-import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
-import 'package:breathe/bloc/database_bloc/database_bloc_files.dart';
-import 'package:breathe/models/user.dart';
+import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc_files.dart';
+import 'package:breathe/models/patient.dart';
 import 'package:breathe/repositories/auth_repository.dart';
 import 'package:breathe/repositories/database_repository.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/wrapper.dart';
+import 'package:breathe/views/patient/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
+class DoctorApp extends StatefulWidget {
+  const DoctorApp({Key? key}) : super(key: key);
 
   @override
-  _AppState createState() => _AppState();
+  _DoctorAppState createState() => _DoctorAppState();
 }
 
-class _AppState extends State<App> {
+class _DoctorAppState extends State<DoctorApp> {
   @override
   Widget build(BuildContext context) {
-    return RepositoryProvider<AuthRepository>(
-      create: (context) => AuthRepository(),
-      child: BlocProvider<AppBloc>(
+    return RepositoryProvider<PatientAuthRepository>(
+      create: (context) => PatientAuthRepository(),
+      child: BlocProvider<PatientAppBloc>(
         create: (context) {
-          AppBloc appBloc =
-              AppBloc(authRepository: context.read<AuthRepository>());
-          appBloc.add(AppStarted());
+          PatientAppBloc appBloc = PatientAppBloc(
+              authRepository: context.read<PatientAuthRepository>());
+          appBloc.add(PatientAppStarted());
           return appBloc;
         },
         child: Builder(
           builder: (context) {
-            return BlocBuilder<AppBloc, AppState>(
+            return BlocBuilder<PatientAppBloc, PatientAppState>(
               builder: (context, state) {
-                UserData userData = context.read<AppBloc>().userData;
+                Patient userData = context.read<PatientAppBloc>().patient;
                 DatabaseBloc databaseBloc = DatabaseBloc(
-                  userData: userData,
-                  databaseRepository: DatabaseRepository(uid: userData.uid),
+                  patient: userData,
+                  databaseRepository:
+                      PatientDatabaseRepository(uid: userData.uid),
                 );
                 return BlocProvider<DatabaseBloc>.value(
                   value: databaseBloc,
@@ -46,9 +47,7 @@ class _AppState extends State<App> {
                       return MaterialApp(
                         debugShowCheckedModeBanner: false,
                         theme: CustomTheme.getTheme(context),
-                        home: SafeArea(
-                          child: Wrapper(state: state),
-                        ),
+                        home: PatientWrapper(state: state),
                         builder: (context, child) {
                           int width = MediaQuery.of(context).size.width.toInt();
                           return MediaQuery(

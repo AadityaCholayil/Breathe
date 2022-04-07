@@ -1,48 +1,48 @@
 import 'dart:io';
 
-import 'package:breathe/models/user.dart';
+import 'package:breathe/models/patient.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
 @immutable
-abstract class AppEvent extends Equatable {
-  const AppEvent([List props = const []]) : super();
+abstract class PatientAppEvent extends Equatable {
+  const PatientAppEvent([List props = const []]) : super();
 }
 
-class AppStarted extends AppEvent {
+class PatientAppStarted extends PatientAppEvent {
   @override
-  String toString() => 'AppStarted';
+  String toString() => 'PatientAppStarted';
 
   @override
   List<Object?> get props => [toString()];
 }
 
-class LoginUser extends AppEvent {
+class PatientLoginUser extends PatientAppEvent {
   final String email;
   final String password;
 
-  const LoginUser({required this.email, required this.password});
+  const PatientLoginUser({required this.email, required this.password});
 
   @override
-  String toString() => 'LoginUser';
+  String toString() => 'PatientLoginUser';
 
   @override
   List<Object?> get props => [toString()];
 }
 
-class CheckEmailStatus extends AppEvent {
+class PatientCheckEmailStatus extends PatientAppEvent {
   final String email;
 
-  const CheckEmailStatus({required this.email});
+  const PatientCheckEmailStatus({required this.email});
 
   @override
-  String toString() => 'CheckEmailStatus';
+  String toString() => 'PatientCheckEmailStatus';
 
   @override
   List<Object?> get props => [toString()];
 }
 
-class SignupUser extends AppEvent {
+class PatientSignup extends PatientAppEvent {
   final String email;
   final String password;
   final String name;
@@ -52,7 +52,7 @@ class SignupUser extends AppEvent {
   final String hospital;
   final File? profilePic;
 
-  const SignupUser({
+  const PatientSignup({
     required this.email,
     required this.password,
     required this.name,
@@ -65,41 +65,41 @@ class SignupUser extends AppEvent {
 
   @override
   String toString() =>
-      'SignupUser($email, $password, $name, $age, $gender, $hospital, $doctorId)';
+      'PatientSignup($email, $password, $name, $age, $gender, $hospital, $doctorId)';
 
   @override
   List<Object?> get props =>
       [email, password, name, age, gender, hospital, doctorId, profilePic];
 }
 
-class UpdateUserData extends AppEvent {
-  final UserData userData;
+class UpdatePatientData extends PatientAppEvent {
+  final Patient userData;
 
-  const UpdateUserData(this.userData);
-
-  @override
-  String toString() => 'UpdateUserData($userData)';
+  const UpdatePatientData(this.userData);
 
   @override
-  List<Object?> get props => [toString()];
-}
-
-class LoggedOut extends AppEvent {
-  @override
-  String toString() => 'LoggedOut';
+  String toString() => 'UpdatePatientData($userData)';
 
   @override
   List<Object?> get props => [toString()];
 }
 
-class DeleteUser extends AppEvent {
+class PatientLoggedOut extends PatientAppEvent {
+  @override
+  String toString() => 'PatientLoggedOut';
+
+  @override
+  List<Object?> get props => [toString()];
+}
+
+class DeletePatientData extends PatientAppEvent {
   final String email;
   final String password;
 
-  const DeleteUser({required this.email, required this.password});
+  const DeletePatientData({required this.email, required this.password});
 
   @override
-  String toString() => 'DeleteUser';
+  String toString() => 'DeletePatientData';
 
   @override
   List<Object?> get props => [toString()];

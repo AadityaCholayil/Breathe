@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/auth_screens/login_screen.dart';
-import 'package:breathe/views/auth_screens/signup_screen.dart';
+import 'package:breathe/views/patient/auth_screens/login_screen.dart';
+import 'package:breathe/views/patient/auth_screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
@@ -133,7 +133,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                    builder: (context) => const LoginPage()));
+                                    builder: (context) => const PatientLoginPage()));
                           },
                         ),
                       ],

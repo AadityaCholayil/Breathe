@@ -1,53 +1,53 @@
 import 'dart:io';
+import 'package:breathe/models/doctor.dart';
 import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/models/patient.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
-
-class PatientDatabaseRepository {
+class DoctorDatabaseRepository {
   final String uid;
 
-  PatientDatabaseRepository({required this.uid});
+  DoctorDatabaseRepository({required this.uid});
 
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  // Patients Collection Reference
+  // Doctors Collection Reference
   // Reference allows for easy from and to operations
-  CollectionReference<Patient> get patientsRef =>
-      db.collection('patients').withConverter<Patient>(
-            fromFirestore: (snapshot, _) => Patient.fromJson(snapshot.data()!),
-            toFirestore: (patient, _) => patient.toJson(),
+  CollectionReference<Doctor> get doctorsRef =>
+      db.collection('doctors').withConverter<Doctor>(
+            fromFirestore: (snapshot, _) => Doctor.fromJson(snapshot.data()!),
+            toFirestore: (doctor, _) => doctor.toJson(),
           );
 
-  // Get PatientData from DB
-  Future<Patient> get completePatientData async {
+  // Get DoctorData from DB
+  Future<Doctor> get completeDoctorData async {
     try {
-      Patient patientDataNew = await patientsRef
+      Doctor doctorDataNew = await doctorsRef
           .doc(uid)
           .get()
-          .then((value) => value.data() ?? Patient.empty);
-      return patientDataNew;
+          .then((value) => value.data() ?? Doctor.empty);
+      return doctorDataNew;
     } on Exception catch (_) {
       // TODO: If this doesn't work, throw SomethingWentWrong()
-      return Patient.empty;
+      return Doctor.empty;
     }
   }
 
-  // Update PatientData in DB
-  Future<void> updatePatientData(Patient patientData) async {
-    await patientsRef.doc(uid).set(patientData);
+  // Update DoctorData in DB
+  Future<void> updateDoctorData(Doctor doctorData) async {
+    await doctorsRef.doc(uid).set(doctorData);
   }
 
-  // Delete PatientData from db
-  Future<void> deletePatient() async {
-    await patientsRef.doc(uid).delete();
+  // Delete DoctorData from db
+  Future<void> deleteDoctor() async {
+    await doctorsRef.doc(uid).delete();
   }
 
-  // Report Collection Reference for specific patient
+  // Report Collection Reference for specific doctor
   CollectionReference<SessionReport> get reportsRef => db
-      .collection('patients')
+      .collection('doctors')
       .doc(uid)
       .collection('reports')
       .withConverter<SessionReport>(
@@ -83,9 +83,9 @@ class PatientDatabaseRepository {
 
   Future<String?> uploadFile(File _image) async {
     try {
-      await storage.ref('PatientProfiles/$uid/profile_pic.png').putFile(_image);
+      await storage.ref('DoctorProfiles/$uid/profile_pic.png').putFile(_image);
       var result = await storage
-          .ref('PatientProfiles/$uid/profile_pic.png')
+          .ref('DoctorProfiles/$uid/profile_pic.png')
           .getDownloadURL();
       print('profileUrl: $result');
       return result;

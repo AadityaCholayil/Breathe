@@ -1,10 +1,9 @@
 import 'dart:io';
-
-import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/auth_screens/login_screen.dart';
+import 'package:breathe/views/patient/auth_screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,18 +42,18 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppBloc, AppState>(
+    return BlocConsumer<PatientAppBloc, PatientAppState>(
       listenWhen: (previous, current) => previous != current,
       buildWhen: (previous, current) => previous != current,
       listener: (context, state) {
-        if (state is EmailInputState) {
+        if (state is PatientEmailInputState) {
           emailStatus = state.emailStatus;
           print(emailStatus);
         }
-        if (state is SignupPageState) {
+        if (state is PatientSignupPageState) {
           showErrorSnackBar(context, state.message);
         }
-        if (state is Authenticated) {
+        if (state is AuthenticatedPatient) {
           stateMessage = 'Success!';
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           print('Navigating..');
@@ -144,8 +143,8 @@ class _SignupPageState extends State<SignupPage> {
                                 });
                                 if (value.isNotEmpty && validateEmail(email)) {
                                   context
-                                      .read<AppBloc>()
-                                      .add(CheckEmailStatus(email: value));
+                                      .read<PatientAppBloc>()
+                                      .add(PatientCheckEmailStatus(email: value));
                                 } else {
                                   setState(() {
                                     emailStatus = EmailStatus.invalid;
@@ -283,7 +282,7 @@ class _SignupPageState extends State<SignupPage> {
                           }
                           _formKey.currentState?.save();
                           showErrorSnackBar(context, stateMessage);
-                          BlocProvider.of<AppBloc>(context).add(SignupUser(
+                          BlocProvider.of<PatientAppBloc>(context).add(PatientSignup(
                             email: email,
                             password: password,
                             name: widget.name,
@@ -316,7 +315,7 @@ class _SignupPageState extends State<SignupPage> {
                                 Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const LoginPage()));
+                                            const PatientLoginPage()));
                               },
                             ),
                           ],

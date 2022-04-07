@@ -1,18 +1,18 @@
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/auth_screens/get_started_page.dart';
-import 'package:breathe/views/auth_screens/login_screen.dart';
+import 'package:breathe/views/patient/auth_screens/get_started_page.dart';
+import 'package:breathe/views/patient/auth_screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class WelcomeScreen extends StatefulWidget {
-  const WelcomeScreen({Key? key}) : super(key: key);
+class PatientWelcomeScreen extends StatefulWidget {
+  const PatientWelcomeScreen({Key? key}) : super(key: key);
 
   @override
-  _WelcomeScreenState createState() => _WelcomeScreenState();
+  _PatientWelcomeScreenState createState() => _PatientWelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _PatientWelcomeScreenState extends State<PatientWelcomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,7 +48,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     style: 1,
                     onPressed: () {
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const LoginPage()));
+                          MaterialPageRoute(builder: (context) => const PatientLoginPage()));
                     },
                   ),
                   SizedBox(height: 75.w),
@@ -60,4 +60,5 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       ),
     );
   }
+
 }

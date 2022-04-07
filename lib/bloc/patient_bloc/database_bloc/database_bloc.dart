@@ -1,16 +1,16 @@
 import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/session_report.dart';
-import 'package:breathe/models/user.dart';
+import 'package:breathe/models/patient.dart';
 import 'package:breathe/repositories/database_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'database_bloc_files.dart';
 
 class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
-  UserData userData;
-  DatabaseRepository databaseRepository;
+  Patient patient;
+  PatientDatabaseRepository databaseRepository;
 
   DatabaseBloc({
-    required this.userData,
+    required this.patient,
     required this.databaseRepository,
   }) : super(Init()) {
     on<GetTodaysReports>(_onGetTodaysReports);
