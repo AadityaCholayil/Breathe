@@ -1,19 +1,19 @@
 import 'dart:async';
-import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
-import 'package:breathe/bloc/database_bloc/database_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc_files.dart';
 import 'package:breathe/models/custom_exceptions.dart';
 import 'package:breathe/models/user.dart';
 import 'package:breathe/repositories/auth_repository.dart';
 import 'package:breathe/repositories/database_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class AppBloc extends Bloc<AppEvent, AppState> {
+class PatientAppBloc extends Bloc<AppEvent, AppState> {
   final AuthRepository _authRepository;
   late DatabaseRepository _databaseRepository;
   late UserData userData;
   late DatabaseBloc databaseBloc;
 
-  AppBloc({required authRepository})
+  PatientAppBloc({required authRepository})
       : _authRepository = authRepository,
         super(Uninitialized(userData: UserData.empty)) {
     userData = _authRepository.getUserData;

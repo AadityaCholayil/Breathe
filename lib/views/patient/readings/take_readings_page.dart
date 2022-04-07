@@ -1,10 +1,10 @@
-import 'package:breathe/bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
 import 'package:breathe/main.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/shared/loading.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/readings/bounding_boxes.dart';
-import 'package:breathe/views/report_screens/session_report_page.dart';
+import 'package:breathe/views/patient/readings/bounding_boxes.dart';
+import 'package:breathe/views/patient/report_screens/session_report_page.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

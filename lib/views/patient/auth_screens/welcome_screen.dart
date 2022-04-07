@@ -1,7 +1,7 @@
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/auth_screens/get_started_page.dart';
-import 'package:breathe/views/auth_screens/login_screen.dart';
+import 'package:breathe/views/patient/auth_screens/get_started_page.dart';
+import 'package:breathe/views/patient/auth_screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -60,4 +60,5 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
       ),
     );
   }
+
 }

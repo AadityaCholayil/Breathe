@@ -1,4 +1,4 @@
-import 'package:breathe/bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/tensorflow_bloc/tensorflow_bloc_files.dart';
 import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/recognitions.dart';
 import 'package:breathe/models/session_report.dart';

@@ -1,4 +1,4 @@
-import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -29,7 +29,7 @@ class SomethingWentWrong extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                context.read<AppBloc>().add(AppStarted());
+                context.read<PatientAppBloc>().add(AppStarted());
               },
               child: Container(
                 margin: const EdgeInsets.symmetric(horizontal: 50),
@@ -91,7 +91,7 @@ class SomethingWentWrongSmall extends StatelessWidget {
             ),
             InkWell(
               onTap: () {
-                context.read<AppBloc>().add(AppStarted());
+                context.read<PatientAppBloc>().add(AppStarted());
               },
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 50.w),

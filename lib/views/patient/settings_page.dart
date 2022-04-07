@@ -1,4 +1,5 @@
-import 'package:breathe/bloc/database_bloc/database_bloc.dart';
+import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc.dart';
 import 'package:breathe/shared/coming_soon.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
@@ -6,9 +7,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:google_fonts/google_fonts.dart';
-
-import '../bloc/app_bloc/app_bloc.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({Key? key}) : super(key: key);
@@ -48,7 +46,7 @@ class SettingsPage extends StatelessWidget {
           SizedBox(height: 11.w),
           Center(
             child: Text(
-              context.read<AppBloc>().userData.name,
+              context.read<PatientAppBloc>().userData.name,
               // "Pranav",
               style: TextStyle(
                 color: CustomTheme.t1,
@@ -102,7 +100,7 @@ class SettingsPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 24.w),
             child: Text(
-              context.read<AppBloc>().userData.hospital,
+              context.read<PatientAppBloc>().userData.hospital,
               // "XYZ Hospital",
               style: TextStyle(
                 color: CustomTheme.t1,
@@ -169,7 +167,7 @@ class SettingsPage extends StatelessWidget {
           _buildProfileCardElements(
             context,
             'Age',
-            context.read<AppBloc>().userData.age.toString(),
+            context.read<PatientAppBloc>().userData.age.toString(),
           ),
           const Spacer(),
           _buildProfileCardElements(

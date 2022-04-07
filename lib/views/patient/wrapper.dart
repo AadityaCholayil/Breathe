@@ -1,7 +1,7 @@
-import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/shared/loading.dart';
-import 'package:breathe/views/auth_screens/welcome_screen.dart';
-import 'package:breathe/views/home_page.dart';
+import 'package:breathe/views/patient/auth_screens/welcome_screen.dart';
+import 'package:breathe/views/patient/home_page.dart';
 import 'package:flutter/material.dart';
 
 class Wrapper extends StatelessWidget {

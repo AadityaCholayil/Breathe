@@ -1,13 +1,12 @@
-import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/shared/loading.dart';
+import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/auth_screens/get_started_page.dart';
+import 'package:breathe/views/patient/auth_screens/get_started_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
-import '../../shared/shared_widgets.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -26,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppBloc, AppState>(
+    return BlocConsumer<PatientAppBloc, AppState>(
       listener: (context, state) async {
         if (state is LoginPageState) {
           if (state == LoginPageState.loading) {
@@ -163,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                           }
                           _formKey.currentState?.save();
                           showErrorSnackBar(context, stateMessage);
-                          BlocProvider.of<AppBloc>(context)
+                          BlocProvider.of<PatientAppBloc>(context)
                               .add(LoginUser(email: email, password: password));
                         },
                       ),

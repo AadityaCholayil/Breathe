@@ -1,10 +1,9 @@
 import 'dart:io';
-
-import 'package:breathe/bloc/app_bloc/app_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/auth_screens/login_screen.dart';
+import 'package:breathe/views/patient/auth_screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -43,7 +42,7 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppBloc, AppState>(
+    return BlocConsumer<PatientAppBloc, AppState>(
       listenWhen: (previous, current) => previous != current,
       buildWhen: (previous, current) => previous != current,
       listener: (context, state) {
@@ -144,7 +143,7 @@ class _SignupPageState extends State<SignupPage> {
                                 });
                                 if (value.isNotEmpty && validateEmail(email)) {
                                   context
-                                      .read<AppBloc>()
+                                      .read<PatientAppBloc>()
                                       .add(CheckEmailStatus(email: value));
                                 } else {
                                   setState(() {
@@ -283,7 +282,7 @@ class _SignupPageState extends State<SignupPage> {
                           }
                           _formKey.currentState?.save();
                           showErrorSnackBar(context, stateMessage);
-                          BlocProvider.of<AppBloc>(context).add(SignupUser(
+                          BlocProvider.of<PatientAppBloc>(context).add(SignupUser(
                             email: email,
                             password: password,
                             name: widget.name,
