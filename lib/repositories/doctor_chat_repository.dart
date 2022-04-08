@@ -31,7 +31,6 @@ class DoctorChatRepository {
           );
 
   Stream<List<Message>> messagesStream(Patient patient) {
-    print(patient.uid);
     return messagesRef
         .where('doctorUid', isEqualTo: doctor.uid)
         .where('patientUid', isEqualTo: patient.uid)

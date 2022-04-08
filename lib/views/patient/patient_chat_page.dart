@@ -184,26 +184,6 @@ class _PatientChatPageState extends State<PatientChatPage> {
                             ),
                           ),
                         ),
-                        // ElevatedButton(
-                        //   onPressed: () {},
-                        //   style: ElevatedButton.styleFrom(
-                        //     elevation: 4,
-                        //     padding: EdgeInsets.zero,
-                        //     shadowColor: CustomTheme.cardShadow,
-                        //     primary: CustomTheme.accent,
-                        //     shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(40.w),
-                        //     ),
-                        //     maximumSize: Size(60.w,
-                        //       60.w,)
-                        //   ),
-                        //   child: Container(
-                        //     child: Icon(
-                        //       Icons.send,
-                        //       color: CustomTheme.onAccent,
-                        //     ),
-                        //   ),
-                        // )
                       ],
                     ),
                   ),
@@ -239,16 +219,16 @@ class _PatientChatPageState extends State<PatientChatPage> {
       );
     } else if (message.isReport) {
       return Container(
-        alignment: Alignment.centerLeft,
+        alignment: Alignment.centerRight,
         child: Container(
-          margin: EdgeInsets.only(bottom: 16.w, left: 15.w),
+          margin: EdgeInsets.only(bottom: 16.w, right: 15.w),
           padding: EdgeInsets.fromLTRB(5.w, 5.w, 5.w, 4.w),
           decoration: BoxDecoration(
-            color: CustomTheme.card,
+            color: CustomTheme.accent,
             boxShadow: customBoxShadow,
             borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(4.w),
-              topRight: Radius.circular(15.w),
+              topLeft: Radius.circular(15.w),
+              topRight: Radius.circular(4.w),
               bottomLeft: Radius.circular(15.w),
               bottomRight: Radius.circular(15.w),
             ),
@@ -259,7 +239,7 @@ class _PatientChatPageState extends State<PatientChatPage> {
               Container(
                 padding: EdgeInsets.symmetric(vertical: 10.w),
                 decoration: BoxDecoration(
-                    color: CustomTheme.bg,
+                    color: CustomTheme.onAccent.withOpacity(0.6),
                     borderRadius: BorderRadius.circular(10.w)),
                 child: Column(
                   children: [
@@ -285,7 +265,7 @@ class _PatientChatPageState extends State<PatientChatPage> {
               SizedBox(height: 4.w),
               Text(
                 message.timestamp.toDate().toString().substring(11, 16),
-                style: TextStyle(fontSize: 10, color: CustomTheme.t2),
+                style: TextStyle(fontSize: 10, color: CustomTheme.onAccent),
               ),
             ],
           ),

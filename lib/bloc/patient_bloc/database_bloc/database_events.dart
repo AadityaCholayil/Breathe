@@ -55,3 +55,19 @@ class SendMessage extends PatientDatabaseEvent {
   @override
   List<Object?> get props => [];
 }
+
+class OpenChat extends PatientDatabaseEvent {
+  const OpenChat();
+
+  @override
+  List<Object?> get props => [];
+}
+
+// class SendMessage extends PatientDatabaseEvent {
+//   final String message;
+//
+//   const SendMessage({required this.message});
+//
+//   @override
+//   List<Object?> get props => [];
+// }
