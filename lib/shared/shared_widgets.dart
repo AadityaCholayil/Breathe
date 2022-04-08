@@ -198,14 +198,22 @@ class CustomBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      padding: EdgeInsets.fromLTRB(0, 9.w, 15.w, 9.w),
-      iconSize: 32.w,
-      color: color ?? CustomTheme.accent,
-      icon: const Icon(Icons.arrow_back_ios_rounded),
-      onPressed: () {
-        Navigator.pop(context);
-      },
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.only(top: 25.w),
+          child: IconButton(
+            padding: EdgeInsets.only(left: 25.w),
+            iconSize: 32.w,
+            color: color ?? CustomTheme.accent,
+            icon: const Icon(Icons.arrow_back_ios_rounded),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      ],
     );
   }
 }

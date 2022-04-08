@@ -4,6 +4,7 @@ import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/shared/coming_soon.dart';
 import 'package:breathe/themes/theme.dart';
+import 'package:breathe/views/patient/report_screens/report_page.dart';
 import 'package:breathe/views/patient/report_screens/session_report_page.dart';
 import 'package:breathe/views/patient/readings/take_readings_page.dart';
 import 'package:breathe/views/patient/settings_page.dart';
@@ -38,124 +39,126 @@ class _PatientHomePageState extends State<PatientHomePage> {
         }
       },
       builder: (context, state) {
-        return Scaffold(
-          floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerFloat,
-          floatingActionButton: _buildFloatingActionButton(context),
-          backgroundColor: CustomTheme.bg,
-          body: SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(right: 25.w, top: 25.w),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      InkWell(
-                        child: Icon(
-                          Icons.settings,
-                          size: 32,
-                          color: CustomTheme.t1,
+        return SafeArea(
+          child: Scaffold(
+            floatingActionButtonLocation:
+                FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: _buildFloatingActionButton(context),
+            backgroundColor: CustomTheme.bg,
+            body: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(right: 25.w, top: 25.w),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        InkWell(
+                          child: Icon(
+                            Icons.settings,
+                            size: 32,
+                            color: CustomTheme.t1,
+                          ),
+                          onTap: () {
+                            print("Settings button pressed");
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const SettingsPage()));
+                          },
                         ),
-                        onTap: () {
-                          print("Settings button pressed");
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SettingsPage()));
-                        },
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30.w,
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 30.w),
+                    child: Text(
+                      'Welcome Back,',
+                      style: TextStyle(
+                        color: CustomTheme.t1,
+                        fontSize: 25,
+                        fontWeight: FontWeight.w400,
                       ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(left: 30.w),
+                    child: Text(
+                      context.read<PatientAppBloc>().patient.name,
+                      // "Pranav",
+                      style: TextStyle(
+                        color: CustomTheme.t1,
+                        fontSize: 42,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 56.w),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 24.w,
+                      ),
+                      _buildCard(context, "report", "Report", 54.w, const ReportPage()),
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                      _buildCard(context, "exercise", "Exercise", 48.w, const ComingSoon()),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 30.w,
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 30.w),
-                  child: Text(
-                    'Welcome Back,',
-                    style: TextStyle(
-                      color: CustomTheme.t1,
-                      fontSize: 25,
-                      fontWeight: FontWeight.w400,
+                  SizedBox(height: 17.w),
+                  Row(
+                    children: [
+                      SizedBox(
+                        width: 24.w,
+                      ),
+                      _buildCard(
+                          context, "medicineReminder", "Medicine Reminder", 45.w,const ComingSoon()),
+                      SizedBox(
+                        width: 20.w,
+                      ),
+                      _buildCard(
+                          context, "askDoctor", "Chat with your\ndoctor", 45.w, const ComingSoon()),
+                    ],
+                  ),
+                  SizedBox(height: 36.w),
+                  Padding(
+                    padding: EdgeInsets.only(left: 30.w),
+                    child: Text(
+                      "Previous Reading",
+                      style: TextStyle(
+                        color: CustomTheme.t1,
+                        fontSize: 22,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(left: 30.w),
-                  child: Text(
-                    context.read<PatientAppBloc>().patient.name,
-                    // "Pranav",
-                    style: TextStyle(
-                      color: CustomTheme.t1,
-                      fontSize: 42,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 56.w),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 24.w,
-                    ),
-                    _buildCard(context, "report", "Report", 54.w),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    _buildCard(context, "exercise", "Exercise", 48.w),
-                  ],
-                ),
-                SizedBox(height: 17.w),
-                Row(
-                  children: [
-                    SizedBox(
-                      width: 24.w,
-                    ),
-                    _buildCard(
-                        context, "medicineReminder", "Medicine Reminder", 45.w),
-                    SizedBox(
-                      width: 20.w,
-                    ),
-                    _buildCard(
-                        context, "askDoctor", "Chat with your\ndoctor", 45.w),
-                  ],
-                ),
-                SizedBox(height: 36.w),
-                Padding(
-                  padding: EdgeInsets.only(left: 30.w),
-                  child: Text(
-                    "Previous Reading",
-                    style: TextStyle(
-                      color: CustomTheme.t1,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-                SizedBox(height: 23.w),
-                for (var report in reportList)
-                  _buildPreviousReadingCard(context, report),
-                reportList.isEmpty
-                    ? SizedBox(
-                        height: 200.w,
-                        child: Center(
-                          child: Text(
-                            'No reports added yet.',
-                            style: TextStyle(
-                              color: CustomTheme.t1,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w400,
+                  SizedBox(height: 23.w),
+                  for (var report in reportList)
+                    _buildPreviousReadingCard(context, report),
+                  reportList.isEmpty
+                      ? SizedBox(
+                          height: 200.w,
+                          child: Center(
+                            child: Text(
+                              'No reports added yet.',
+                              style: TextStyle(
+                                color: CustomTheme.t1,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ),
-                        ),
-                      )
-                    : const SizedBox.shrink(),
-                SizedBox(height: 60.w),
-              ],
+                        )
+                      : const SizedBox.shrink(),
+                  SizedBox(height: 60.w),
+                ],
+              ),
             ),
           ),
         );
@@ -308,12 +311,12 @@ class _PatientHomePageState extends State<PatientHomePage> {
   }
 
   Widget _buildCard(
-      BuildContext context, String asset, String cardType, double iconHeight) {
+      BuildContext context, String asset, String cardType, double iconHeight, Widget destination) {
     return InkWell(
       onTap: () {
         print("Button Pressed");
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ComingSoon()));
+            MaterialPageRoute(builder: (context) => destination ));
       },
       child: Container(
         height: 123.w,
