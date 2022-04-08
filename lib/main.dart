@@ -1,12 +1,17 @@
-import 'package:breathe/app.dart';
 import 'package:breathe/bloc/app_bloc_observer.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/shared/loading.dart';
+import 'package:breathe/themes/theme.dart';
+import 'package:breathe/views/patient/wrapper.dart';
+import 'package:breathe/views/user_wrapper.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tflite/tflite.dart';
 
 // List of available cameras
@@ -14,6 +19,10 @@ List<CameraDescription> cameras = [];
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
+  ]);
   cameras = await availableCameras();
   String? res = await Tflite.loadModel(
     model: "assets/tensorflow/model1-full.tflite",
@@ -25,11 +34,12 @@ void main() async {
     useGpuDelegate: false, // defaults to false, set to true to use GPU delegate
   );
   BlocOverrides.runZoned(
-    () => {},
+    () => {
+      runApp(const FlutterFireInit()),
+    },
     eventTransformer: sequential<dynamic>(),
     blocObserver: AppBlocObserver(),
   );
-  runApp(const FlutterFireInit());
 }
 
 class FlutterFireInit extends StatefulWidget {
@@ -40,13 +50,21 @@ class FlutterFireInit extends StatefulWidget {
 }
 
 class _FlutterFireInitState extends State<FlutterFireInit> {
-  final Future<FirebaseApp> _initialization = Firebase.initializeApp();
+  bool? isDoctor;
+
+  Future<FirebaseApp> _initialization() async {
+    final prefs = await SharedPreferences.getInstance();
+    isDoctor ??= prefs.getBool('isDoctor');
+    return await Firebase.initializeApp();
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
       // Initialize FlutterFire:
-      future: _initialization,
+      future: _initialization(),
       builder: (context, snapshot) {
         // Check for errors
         if (snapshot.hasError) {
@@ -55,7 +73,7 @@ class _FlutterFireInitState extends State<FlutterFireInit> {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return const App();
+          return const UserWrapper();
         }
 
         // Otherwise, show something whilst waiting for initialization to complete
