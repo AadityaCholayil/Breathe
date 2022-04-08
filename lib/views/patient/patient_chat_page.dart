@@ -21,17 +21,15 @@ class _PatientChatPageState extends State<PatientChatPage> {
   String message = '';
   Patient patient = Patient.empty;
   Doctor doctor = Doctor.empty;
+  final TextEditingController _chatController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
-    patient = context
-        .read<PatientDatabaseBloc>().patient;
-    context
-        .read<PatientDatabaseBloc>()
-        .add(const GetMessages());
+    patient = context.read<PatientDatabaseBloc>().patient;
+    context.read<PatientDatabaseBloc>().add(const GetMessages());
   }
 
   @override
@@ -79,11 +77,14 @@ class _PatientChatPageState extends State<PatientChatPage> {
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         height: 42.w,
                         width: 42.w,
-                        child: Image.network(patient.profilePic),
+                        child: Image.network(
+                          doctor.profilePic,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                       SizedBox(width: 21.w),
                       Text(
-                        patient.name,
+                        doctor.name,
                         style: TextStyle(
                           color: CustomTheme.t1,
                           fontSize: 21,
@@ -145,6 +146,7 @@ class _PatientChatPageState extends State<PatientChatPage> {
                         Padding(
                           padding: EdgeInsets.only(right: 70.w),
                           child: TextFormField(
+                            controller: _chatController,
                             decoration:
                                 customInputDecorationChat(labelText: 'Message'),
                             style: formTextStyle(),
@@ -160,9 +162,10 @@ class _PatientChatPageState extends State<PatientChatPage> {
                             onTap: () {
                               _formKey.currentState?.save();
                               if (message != '') {
-                                context.read<PatientDatabaseBloc>().add(
-                                    SendMessage(
-                                        message: message));
+                                context
+                                    .read<PatientDatabaseBloc>()
+                                    .add(SendMessage(message: message));
+                                _chatController.clear();
                               }
                             },
                             child: Container(

@@ -57,7 +57,7 @@ class DoctorSettingsPage extends StatelessWidget {
             ),
           ),
           SizedBox(height: 11.w),
-          Center(child: _buildProfileCard(context)),
+          // Center(child: _buildProfileCard(context)),
           SizedBox(height: 29.w),
           Padding(
             padding: EdgeInsets.only(left: 24.w),

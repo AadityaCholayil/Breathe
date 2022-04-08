@@ -21,6 +21,7 @@ class DoctorChatPage extends StatefulWidget {
 class _DoctorChatPageState extends State<DoctorChatPage> {
   List<Message> messages = [];
   String message = '';
+  final TextEditingController _chatController = TextEditingController();
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -202,6 +203,7 @@ class _DoctorChatPageState extends State<DoctorChatPage> {
                         Padding(
                           padding: EdgeInsets.only(right: 70.w),
                           child: TextFormField(
+                            controller: _chatController,
                             decoration:
                                 customInputDecorationChat(labelText: 'Message'),
                             style: formTextStyle(),
@@ -221,6 +223,7 @@ class _DoctorChatPageState extends State<DoctorChatPage> {
                                     SendMessage(
                                         patient: widget.patient,
                                         message: message));
+                                _chatController.clear();
                               }
                             },
                             child: Container(
