@@ -31,7 +31,7 @@ class PatientDoctorLinkingPage extends StatefulWidget {
 }
 
 class _PatientDoctorLinkingPageState extends State<PatientDoctorLinkingPage> {
-  String doctorId = '114283';
+  String doctorId = '';
   Doctor? doctor;
   PageState pageState = PageState.init;
 

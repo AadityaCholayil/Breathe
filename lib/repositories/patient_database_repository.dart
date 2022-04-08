@@ -67,6 +67,22 @@ class PatientDatabaseRepository {
         .then((snapshot) => snapshot.docs);
     return list.map((e) => e.data()).toList();
   }
+  
+  // Get Today's Reports from db
+  Future<List<SessionReport>> getWeeklyReport() async {
+    List<QueryDocumentSnapshot<SessionReport>> list = [];
+    DateTime now = DateTime.now();
+    DateTime start = now.subtract(const Duration(days: 6));
+    start = DateTime(start.year, start.month, start.day, 0, 0);
+    DateTime end = DateTime(now.year, now.month, now.day, 23, 59);
+    list = await reportsRef
+        .orderBy('timeTakenAt')
+        .startAt([Timestamp.fromDate(start)])
+        .endAt([Timestamp.fromDate(end)])
+        .get()
+        .then((snapshot) => snapshot.docs);
+    return list.map((e) => e.data()).toList();
+  }
 
   // Add Reports to db
   Future<void> addReport(SessionReport report) async {
