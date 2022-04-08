@@ -1,5 +1,6 @@
 import 'package:breathe/models/doctor.dart';
 import 'package:breathe/models/helper_models.dart';
+import 'package:breathe/models/message.dart';
 import 'package:breathe/models/patient.dart';
 import 'package:breathe/repositories/doctor_chat_repository.dart';
 import 'package:breathe/repositories/doctor_database_repository.dart';
@@ -18,6 +19,7 @@ class DoctorDatabaseBloc
   }) : super(DoctorInit()) {
     chatRepository = DoctorChatRepository(doctor: doctor);
     on<GetPatientList>(_onGetPatientList);
+    on<GetMessages>(_onGetMessages);
     // on<SaveReport>(_onSaveReport);
     // on<DeleteReport>(_onDeleteReport);
   }
@@ -39,6 +41,27 @@ class DoctorDatabaseBloc
       );
     } on Exception catch (_) {
       emit(const DoctorHomePageState(pageState: PageState.error));
+    }
+  }
+
+  Future<void> _onGetMessages(
+      GetMessages event, Emitter<DoctorDatabaseState> emit) async {
+    emit(const DoctorChatPageState(pageState: PageState.loading));
+    try {
+      // List<Patient> patientList =
+      //     await databaseRepository.getPatients(doctor.doctorId);
+      await emit.forEach(
+        chatRepository.messagesStream(event.patient),
+        onData: (List<Message> messages) {
+          print(messages);
+          return DoctorChatPageState(
+            messages: messages,
+            pageState: PageState.success,
+          );
+        },
+      );
+    } on Exception catch (_) {
+      emit(const DoctorChatPageState(pageState: PageState.error));
     }
   }
 

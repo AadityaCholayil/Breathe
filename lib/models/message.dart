@@ -9,6 +9,7 @@ class Message extends Equatable{
   final Timestamp timestamp;
   final bool sentByDoctor;
   final bool isSpecial;
+  final bool isReport;
   final bool seen;
   final bool sent;
 
@@ -20,6 +21,7 @@ class Message extends Equatable{
     required this.timestamp,
     this.sentByDoctor = false,
     this.isSpecial = false,
+    this.isReport = false,
     this.seen = false,
     this.sent = false,
   });
@@ -35,6 +37,7 @@ class Message extends Equatable{
     timestamp: json['timestamp'],
     sentByDoctor: json['sentByDoctor'],
     isSpecial: json['isSpecial'],
+    isReport: json['isReport'],
   );
 
   Map<String, dynamic> toJson() {
@@ -46,6 +49,7 @@ class Message extends Equatable{
     data['timestamp'] = timestamp;
     data['sentByDoctor'] = sentByDoctor;
     data['isSpecial'] = isSpecial;
+    data['isReport'] = isReport;
     return data;
   }
 
@@ -58,6 +62,7 @@ class Message extends Equatable{
       timestamp: timestamp,
       sentByDoctor: sentByDoctor,
       isSpecial: isSpecial,
+      isReport: isReport,
       seen: seen ?? this.seen,
       sent: sent ?? this.sent,
     );
@@ -81,6 +86,7 @@ class Message extends Equatable{
     timestamp,
     sentByDoctor,
     isSpecial,
+    isReport,
     seen,
     sent,
   ];

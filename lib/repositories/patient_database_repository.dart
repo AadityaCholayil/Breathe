@@ -85,8 +85,10 @@ class PatientDatabaseRepository {
   }
 
   // Add Reports to db
-  Future<void> addReport(SessionReport report) async {
-    await reportsRef.add(report);
+  Future<SessionReport> addReport(SessionReport report) async {
+    var res = await reportsRef.add(report);
+    report.id = res.id;
+    return report;
   }
 
   // Delete Report from db

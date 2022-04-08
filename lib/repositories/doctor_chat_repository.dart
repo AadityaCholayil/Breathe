@@ -16,15 +16,26 @@ class DoctorChatRepository {
             toFirestore: (patient, _) => patient.toJson(),
           );
 
+  Stream<List<Patient>> patientsStream() {
+    return patientsRef
+        .where('doctorId', isEqualTo: doctor.doctorId)
+        .orderBy('lastMessageTimestamp', descending: true)
+        .snapshots()
+        .map((event) => event.docs.map((e) => e.data()).toList());
+  }
+
   CollectionReference<Message> get messagesRef =>
       db.collection('messages').withConverter<Message>(
             fromFirestore: (snapshot, _) => Message.fromJson(snapshot.data()!),
             toFirestore: (message, _) => message.toJson(),
           );
 
-  Stream<List<Patient>> patientsStream() {
-    return patientsRef
-        .where('doctorId', isEqualTo: doctor.doctorId).orderBy('lastMessageTimestamp', descending: true)
+  Stream<List<Message>> messagesStream(Patient patient) {
+    print(patient.uid);
+    return messagesRef
+        .where('doctorUid', isEqualTo: doctor.uid)
+        .where('patientUid', isEqualTo: patient.uid)
+        .orderBy('timestamp', descending: true)
         .snapshots()
         .map((event) => event.docs.map((e) => e.data()).toList());
   }

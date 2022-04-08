@@ -3,6 +3,7 @@ import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/patient.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/themes/theme.dart';
+import 'package:breathe/views/doctor/doctor_chat_page.dart';
 import 'package:breathe/views/doctor/doctor_settings_page.dart';
 import 'package:breathe/views/patient/report_screens/session_report_page.dart';
 import 'package:flutter/material.dart';
@@ -104,7 +105,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
         );
       },
       label: Text(
-        'Pair with patient',
+        'Pair with Patient',
         style: TextStyle(
           color: CustomTheme.onAccent,
         ),
@@ -232,86 +233,106 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     );
   }
 
-  Widget _buildCard(
-      BuildContext context, Patient patient) {
-    return Container(
-      height: 80.w,
-      child: Row(
-        children: [
-          SizedBox(width: 20.w),
-          Container(
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
+  Widget _buildCard(BuildContext context, Patient patient) {
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DoctorChatPage(patient: patient)));
+      },
+      child: SizedBox(
+        height: 80.w,
+        child: Row(
+          children: [
+            SizedBox(width: 20.w),
+            Container(
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+              ),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              height: 43.w,
+              width: 43.w,
+              child: Image.network(patient.profilePic),
             ),
-            height: 43.w,
-            width: 43.w,
-            child: Image.network(patient.profilePic),
-          ),
-          SizedBox(width: 16.w),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                patient.name,
-                style: TextStyle(
-                    fontSize: 19,
-                    color: CustomTheme.t1,
-                    fontWeight: FontWeight.w500
-                ),
-              ),
-              SizedBox(height: 2.w),
-              SizedBox(
-                width: 260.w,
-                child: Text(
-                  patient.lastMessageContents,
-                  maxLines: 1,
-                  softWrap: false,
-                  overflow: TextOverflow.ellipsis,
+            SizedBox(width: 16.w),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  patient.name,
                   style: TextStyle(
-                    fontSize: 16,
-                    color: CustomTheme.t1,
+                      fontSize: 19,
+                      color: CustomTheme.t1,
+                      fontWeight: FontWeight.w500),
+                ),
+                SizedBox(height: 2.w),
+                SizedBox(
+                  width: 260.w,
+                  child: Text(
+                    patient.lastMessageContents,
+                    maxLines: 1,
+                    softWrap: false,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: CustomTheme.t1,
+                    ),
                   ),
                 ),
-              ),
-              SizedBox(height: 3.w),
-            ],
-          ),
-          const Spacer(),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                patient.lastMessageTimestamp.toDate().toString().substring(11,16),
-                style: TextStyle(
-                  fontSize: 14,
-                  color: patient.unreadMessages==0?CustomTheme.t2:CustomTheme.accent,
-                  fontWeight: patient.unreadMessages==0?FontWeight.w400:FontWeight.w600,
-                ),
-              ),
-              SizedBox(height: 5.w,),
-              patient.unreadMessages==0?SizedBox(height: 5.w):Container(
-                height: 23.w,
-                width: 23.w,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                  color: CustomTheme.accent,
-                  shape: BoxShape.circle,
-                ),
-                child: Text(
-                  '${patient.unreadMessages}',
+                SizedBox(height: 3.w),
+              ],
+            ),
+            const Spacer(),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  patient.lastMessageTimestamp
+                      .toDate()
+                      .toString()
+                      .substring(11, 16),
                   style: TextStyle(
-                    fontSize: 13,
-                    color: CustomTheme.onAccent,
-                    fontWeight: FontWeight.w600,
+                    fontSize: 14,
+                    color: patient.unreadMessages == 0
+                        ? CustomTheme.t2
+                        : CustomTheme.accent,
+                    fontWeight: patient.unreadMessages == 0
+                        ? FontWeight.w400
+                        : FontWeight.w600,
                   ),
                 ),
-              ),
-              SizedBox(height: 3.w,),
-            ],
-          ),
-          SizedBox(width: 20.w),
-        ],
+                SizedBox(
+                  height: 5.w,
+                ),
+                patient.unreadMessages == 0
+                    ? SizedBox(height: 5.w)
+                    : Container(
+                        height: 23.w,
+                        width: 23.w,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: CustomTheme.accent,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          '${patient.unreadMessages}',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: CustomTheme.onAccent,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                SizedBox(
+                  height: 3.w,
+                ),
+              ],
+            ),
+            SizedBox(width: 20.w),
+          ],
+        ),
       ),
     );
   }

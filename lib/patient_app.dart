@@ -1,5 +1,6 @@
 import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc_files.dart';
+import 'package:breathe/models/doctor.dart';
 import 'package:breathe/models/patient.dart';
 import 'package:breathe/repositories/patient_auth_repository.dart';
 import 'package:breathe/repositories/patient_database_repository.dart';
@@ -33,10 +34,12 @@ class _PatientAppState extends State<PatientApp> {
           builder: (context) {
             return BlocBuilder<PatientAppBloc, PatientAppState>(
               builder: (context, state) {
-                Patient userData = context.read<PatientAppBloc>().patient;
+                Patient patient = context.read<PatientAppBloc>().patient;
+                Doctor doctor = context.read<PatientAppBloc>().doctor;
                 PatientDatabaseBloc databaseBloc = PatientDatabaseBloc(
-                  patient: userData,
-                  databaseRepository: PatientDatabaseRepository(uid: userData.uid),
+                  patient: patient,
+                  doctor: doctor,
+                  databaseRepository: PatientDatabaseRepository(uid: patient.uid),
                 );
                 return BlocProvider<PatientDatabaseBloc>.value(
                   value: databaseBloc,

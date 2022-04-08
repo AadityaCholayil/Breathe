@@ -19,6 +19,7 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
   PatientChatRepository _chatRepository =
       PatientChatRepository(doctor: Doctor.empty);
   late Patient patient;
+  Doctor doctor = Doctor.empty;
   late PatientDatabaseBloc databaseBloc;
 
   PatientAppBloc({required authRepository})
@@ -51,7 +52,13 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
         if (completeUserData != Patient.empty) {
           // if db fetch is successful
           patient = completeUserData;
-          emit(AuthenticatedPatient(patient: patient));
+          Doctor? doctorData = await _databaseRepository.getDoctorData(patient.doctorId);
+          if(doctorData!=null){
+            doctor = doctorData;
+            emit(AuthenticatedPatient(patient: patient));
+          } else {
+            emit(const ErrorOccurredPatient(error: 'Failed to fetch details!'));
+          }
         } else {
           // if db fetch fails
           emit(const ErrorOccurredPatient(error: 'Failed to fetch details!'));
@@ -82,7 +89,14 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
         patient = completeUserData;
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isDoctor', false);
-        emit(AuthenticatedPatient(patient: patient));
+
+        Doctor? doctorData = await _databaseRepository.getDoctorData(patient.doctorId);
+        if(doctorData!=null){
+          doctor = doctorData;
+          emit(AuthenticatedPatient(patient: patient));
+        } else {
+          emit(const ErrorOccurredPatient(error: 'Failed to fetch details!'));
+        }
       } else {
         // if db fetch fails
         emit(const ErrorOccurredPatient(error: 'Failed to fetch details!'));
@@ -164,16 +178,18 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
       }
       print('Uploaded to ' + photoUrl);
 
-      _chatRepository = PatientChatRepository(doctor: event.doctor);
+      doctor = event.doctor;
+      _chatRepository = PatientChatRepository(doctor: doctor);
       Timestamp now = Timestamp.now();
       // Send Message
       Message message = Message(
         content: 'Paired!',
         patientUid: patient.uid,
-        doctorUid: event.doctor.uid,
+        doctorUid: doctor.uid,
         timestamp: now,
         sentByDoctor: false,
         isSpecial: true,
+        isReport: false,
       );
       message = await _chatRepository.sendMessage(message);
 
@@ -184,9 +200,9 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
         name: event.name,
         age: event.age,
         gender: event.gender,
-        doctorId: event.doctor.doctorId,
-        hospital: event.doctor.hospital,
-        doctorName: event.doctor.name,
+        doctorId: doctor.doctorId,
+        hospital: doctor.hospital,
+        doctorName: doctor.name,
         profilePic: photoUrl,
         lastMessageContents: 'Paired!',
         unreadMessages: 1,

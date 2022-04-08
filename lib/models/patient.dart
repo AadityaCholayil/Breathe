@@ -91,6 +91,42 @@ class Patient extends Equatable {
     return data;
   }
 
+  Patient copyWith({
+    String? uid,
+    String? email,
+    String? name,
+    int? age,
+    String? gender,
+    String? doctorId,
+    String? healthStatus,
+    String? doctorName,
+    String? hospital,
+    String? profilePic,
+    String? lastMessageContents,
+    int? unreadMessages,
+    Timestamp? lastMessageTimestamp,
+    Timestamp? patientLastOpened,
+    Timestamp? doctorLastOpened,
+  }) {
+    return Patient(
+      uid: uid ?? this.uid,
+      email: email ?? this.email,
+      name: name ?? this.name,
+      age: age ?? this.age,
+      gender: gender ?? this.gender,
+      doctorId: doctorId ?? this.doctorId,
+      healthStatus: healthStatus ?? this.healthStatus,
+      doctorName: doctorName ?? this.doctorName,
+      hospital: hospital ?? this.hospital,
+      profilePic: profilePic ?? this.profilePic,
+      lastMessageContents: lastMessageContents ?? this.lastMessageContents,
+      unreadMessages: unreadMessages ?? this.unreadMessages,
+      lastMessageTimestamp: lastMessageTimestamp ?? this.lastMessageTimestamp,
+      patientLastOpened: patientLastOpened ?? this.patientLastOpened,
+      doctorLastOpened: doctorLastOpened ?? this.doctorLastOpened,
+    );
+  }
+
   bool get isEmpty => this == Patient.empty;
 
   bool get isNotEmpty => this != Patient.empty;
