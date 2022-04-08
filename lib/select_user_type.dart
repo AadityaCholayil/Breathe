@@ -3,6 +3,7 @@ import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectUserTypePage extends StatelessWidget {
   final void Function(bool isDoctor) changeApp;
@@ -86,9 +87,11 @@ class SelectUserTypePage extends StatelessWidget {
                     ),
                     SizedBox(height: 20.w),
                     InkWell(
-                      onTap: () {
+                      onTap: () async {
                         print("Button Pressed");
                         changeApp(false);
+                        final prefs = await SharedPreferences.getInstance();
+                        await prefs.setBool('isDoctor', false);
                       },
                       child: Container(
                         height: 100.w,

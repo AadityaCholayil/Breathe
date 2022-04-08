@@ -173,7 +173,7 @@ class _PatientDoctorLinkingPageState extends State<PatientDoctorLinkingPage> {
   }
 
   Widget _buildDoctorID() {
-    return CustomTextFormField(
+    return CustomShadow(
       child: TextFormField(
         decoration: customInputDecoration(labelText: 'Doctor Id'),
         style: formTextStyle(),

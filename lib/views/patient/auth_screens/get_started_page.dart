@@ -18,7 +18,7 @@ class PatientGetStartedPage extends StatefulWidget {
 class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
   String name = '';
   int age = 0;
-  String gender = '';
+  String gender = 'Male';
   File? _image;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -49,7 +49,7 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                   children: [
                     SizedBox(height: 25.w),
                     const CustomBackButton(),
-                    SizedBox(height: 20.h),
+                    SizedBox(height: 30.h),
                     Text(
                       'Welcome to,',
                       style: TextStyle(
@@ -78,9 +78,9 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                     ),
-                    SizedBox(height: 25.h),
+                    SizedBox(height: 40.h),
                     _buildProfile(context),
-                    SizedBox(height: 20.w),
+                    SizedBox(height: 30.w),
                     _buildName(),
                     SizedBox(height: 20.w),
                     _buildAge(),
@@ -107,7 +107,7 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                         );
                       },
                     ),
-                    SizedBox(height: 50.w),
+                    SizedBox(height: 40.w),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -126,7 +126,8 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                           onPressed: () {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                    builder: (context) => const PatientLoginPage()));
+                                    builder: (context) =>
+                                        const PatientLoginPage()));
                           },
                         ),
                       ],
@@ -216,7 +217,8 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                       width: 44.w,
                       decoration: BoxDecoration(
                         color: CustomTheme.card,
-                        border: Border.all(color: CustomTheme.accent, width: 2.5.w),
+                        border:
+                            Border.all(color: CustomTheme.accent, width: 2.5.w),
                         borderRadius: BorderRadius.circular(22.w),
                       ),
                       child: IconButton(
@@ -332,7 +334,7 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
   }
 
   Widget _buildName() {
-    return CustomTextFormField(
+    return CustomShadow(
       child: TextFormField(
         decoration: customInputDecoration(labelText: 'Name'),
         style: formTextStyle(),
@@ -350,7 +352,7 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
   }
 
   Widget _buildAge() {
-    return CustomTextFormField(
+    return CustomShadow(
       child: TextFormField(
         decoration: customInputDecoration(labelText: 'Age'),
         style: formTextStyle(),
@@ -376,20 +378,132 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
   }
 
   Widget _buildGender() {
-    return CustomTextFormField(
-      child: TextFormField(
-        decoration: customInputDecoration(labelText: 'Gender'),
-        style: formTextStyle(),
-        onSaved: (value) {
-          gender = value ?? '';
-        },
-        validator: (value) {
-          if (value == null || value.isEmpty) {
-            return 'Please enter your gender';
-          }
-          return null;
-        },
-      ),
+    return Row(
+      children: [
+        SizedBox(width: 15.w,),
+        Text(
+          'Gender',
+          style: TextStyle(
+            color: CustomTheme.t1,
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+          ),
+        ),
+        SizedBox(width: 30.w,),
+        Expanded(
+          flex: 2,
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                gender = 'Male';
+              });
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: 60.w,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: CustomTheme.cardShadow,
+                    blurRadius: 15,
+                    offset: Offset(4.w, 4.w),
+                  ),
+                ],
+                border: Border.all(
+                  width: 2.5.w,
+                  color: gender=='Male'?CustomTheme.accent:Colors.transparent,
+                ),
+                color: CustomTheme.card,
+                borderRadius: BorderRadius.circular(20.w),
+              ),
+              child: Text(
+                'M',
+                style: TextStyle(
+                    color: CustomTheme.t1,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: 15.w),
+        Expanded(
+          flex: 2,
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                gender = 'Female';
+              });
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: 60.w,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: CustomTheme.cardShadow,
+                    blurRadius: 15,
+                    offset: Offset(4.w, 4.w),
+                  ),
+                ],
+                border: Border.all(
+                  width: 2.5.w,
+                  color: gender=='Female'?CustomTheme.accent:Colors.transparent,
+                ),
+                color: CustomTheme.card,
+                borderRadius: BorderRadius.circular(20.w),
+              ),
+              child: Text(
+                'F',
+                style: TextStyle(
+                    color: CustomTheme.t1,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(width: 15.w),
+        Expanded(
+          flex: 3,
+          child: InkWell(
+            onTap: () {
+              setState(() {
+                gender = 'Others';
+              });
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 200),
+              height: 60.w,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: CustomTheme.cardShadow,
+                    blurRadius: 15,
+                    offset: Offset(4.w, 4.w),
+                  ),
+                ],
+                border: Border.all(
+                  width: 2.5.w,
+                  color: gender=='Others'?CustomTheme.accent:Colors.transparent,
+                ),
+                color: CustomTheme.card,
+                borderRadius: BorderRadius.circular(20.w),
+              ),
+              child: Text(
+                'Others',
+                style: TextStyle(
+                    color: CustomTheme.t1,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w500),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

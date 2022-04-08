@@ -92,7 +92,7 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                         ),
                       ),
                       SizedBox(height: 25.h),
-                      CustomTextFormField(
+                      CustomShadow(
                         child: TextFormField(
                           decoration: customInputDecoration(labelText: 'Email'),
                           style: formTextStyle(),
@@ -113,7 +113,7 @@ class _DoctorLoginPageState extends State<DoctorLoginPage> {
                       SizedBox(height: 20.w),
                       Stack(
                         children: [
-                          CustomTextFormField(
+                          CustomShadow(
                             child: TextFormField(
                               decoration:
                                   customInputDecoration(labelText: 'Password'),

@@ -124,10 +124,10 @@ TextStyle formTextStyle() => TextStyle(
 TextStyle formTextStyle2() =>
     TextStyle(fontSize: 18, color: CustomTheme.t1);
 
-class CustomTextFormField extends StatelessWidget {
+class CustomShadow extends StatelessWidget {
   final Widget child;
 
-  const CustomTextFormField({Key? key, required this.child}) : super(key: key);
+  const CustomShadow({Key? key, required this.child}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -169,6 +169,7 @@ class CustomElevatedButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         elevation: 4,
+        shadowColor: CustomTheme.cardShadow,
         primary: style == 0 ? CustomTheme.accent : Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.w),
@@ -181,7 +182,7 @@ class CustomElevatedButton extends StatelessWidget {
           text,
           style: TextStyle(
               color: style == 0 ? CustomTheme.onAccent : Colors.black,
-              fontSize: 19,
+              fontSize: 17,
               fontWeight: FontWeight.w600),
         ),
       ),

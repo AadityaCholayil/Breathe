@@ -107,7 +107,7 @@ class _DoctorSignupPageState extends State<DoctorSignupPage> {
                       SizedBox(height: 25.h),
                       Stack(
                         children: [
-                          CustomTextFormField(
+                          CustomShadow(
                             child: TextFormField(
                               decoration: emailStatus == EmailStatus.valid
                                   ? customInputDecoration(labelText: 'Email')
@@ -172,7 +172,7 @@ class _DoctorSignupPageState extends State<DoctorSignupPage> {
                       SizedBox(height: 20.w),
                       Stack(
                         children: [
-                          CustomTextFormField(
+                          CustomShadow(
                             child: TextFormField(
                               decoration: customInputDecoration(
                                   labelText: 'Password'),
@@ -218,7 +218,7 @@ class _DoctorSignupPageState extends State<DoctorSignupPage> {
                       SizedBox(height: 20.w),
                       Stack(
                         children: [
-                          CustomTextFormField(
+                          CustomShadow(
                             child: TextFormField(
                               decoration: customInputDecoration(
                                   labelText: 'Confirm Password'),

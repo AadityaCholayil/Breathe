@@ -335,7 +335,7 @@ class _DoctorGetStartedPageState extends State<DoctorGetStartedPage> {
   }
 
   Widget _buildName() {
-    return CustomTextFormField(
+    return CustomShadow(
       child: TextFormField(
         decoration: customInputDecoration(labelText: 'Name'),
         style: formTextStyle(),
@@ -353,7 +353,7 @@ class _DoctorGetStartedPageState extends State<DoctorGetStartedPage> {
   }
 
   Widget _buildHospital() {
-    return CustomTextFormField(
+    return CustomShadow(
       child: TextFormField(
         decoration: customInputDecoration(labelText: 'Hospital'),
         style: formTextStyle(),
@@ -371,7 +371,7 @@ class _DoctorGetStartedPageState extends State<DoctorGetStartedPage> {
   }
 
   Widget _buildQualification() {
-    return CustomTextFormField(
+    return CustomShadow(
       child: TextFormField(
         decoration: customInputDecoration(labelText: 'Qualification'),
         style: formTextStyle(),
