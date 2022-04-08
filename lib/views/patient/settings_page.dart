@@ -3,7 +3,6 @@ import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc.dart';
 import 'package:breathe/shared/coming_soon.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/auth_screens/edit_details_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -126,7 +125,7 @@ class SettingsPage extends StatelessWidget {
           SizedBox(height: 8.w),
           const SettingsOptions(
             listItemName: 'Edit Details',
-            destination: EditProfilePage(),
+            destination: ComingSoon(),
           ),
           SizedBox(height: 28.w),
           const SettingsOptions(

@@ -30,17 +30,11 @@ class _GetStartedPageState extends State<GetStartedPage> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: CustomTheme.bg,
-        resizeToAvoidBottomInset: false,
-        body: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Container(
-            // decoration: BoxDecoration(
-            //   image: DecorationImage(
-            //       image: AssetImage(CustomTheme.bgImagePath), fit: BoxFit.cover),
-            // ),
-            // color: CustomTheme.bg,
-            height: MediaQuery.of(context).size.height,
-            width: MediaQuery.of(context).size.width,
+        resizeToAvoidBottomInset: true,
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Form(
               key: _formKey,
               child: Padding(
@@ -138,6 +132,7 @@ class _GetStartedPageState extends State<GetStartedPage> {
                         ),
                       ],
                     ),
+                    SizedBox(height: 20.w),
                   ],
                 ),
               ),
