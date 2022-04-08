@@ -39,8 +39,10 @@ class PatientDatabaseBloc extends Bloc<PatientDatabaseEvent, PatientDatabaseStat
       GetReports event, Emitter<PatientDatabaseState> emit) async {
     emit(const ReportPageState(pageState: PageState.loading));
     try {
+      List<SessionReport> rawWeeklyReport =
+      await databaseRepository.getWeeklyReport();
       List<DailyReport> weeklyReport = [];
-          // await databaseRepository.getTodaysReports();
+
       print(weeklyReport);
       emit(ReportPageState(
         weeklyReport: weeklyReport,

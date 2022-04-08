@@ -50,6 +50,10 @@ class DailyReport {
     this.averageOfAverage = 0,
     this.averageOfBest = 0,
   });
+
+  static DailyReport fromSessionReports(List<SessionReport> rawData){
+    return DailyReport();
+  }
 }
 
 class SessionReportPageState extends PatientDatabaseState {
