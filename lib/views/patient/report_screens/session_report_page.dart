@@ -11,60 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-var data = {
-  "date": "2022-03-09",
-  "bestScore": 1150,
-  "averageScore": 900,
-  "readings": [
-    {
-      'score': 1000,
-      'timeElapsed': 500,
-    },
-    {
-      'score': 995,
-      'timeElapsed': 1000,
-    },
-    {
-      'score': 887,
-      'timeElapsed': 1500,
-    },
-    {
-      'score': 999,
-      'timeElapsed': 2000,
-    },
-    {
-      'score': 1111,
-      'timeElapsed': 2500,
-    },
-    {
-      'score': 1150,
-      'timeElapsed': 3000,
-    },
-    {
-      'score': 608,
-      'timeElapsed': 3500,
-    },
-    {
-      'score': 500,
-      'timeElapsed': 4000,
-    },
-    {
-      'score': 899,
-      'timeElapsed': 4500,
-    },
-    {
-      'score': 752,
-      'timeElapsed': 5000,
-    },
-    {
-      'score': 800,
-      'timeElapsed': 5500,
-    },
-  ],
-  "totalDuration": 5500,
-  "timeTakenAt": Timestamp.now(),
-};
-
 class SessionReportPage extends StatelessWidget {
   final SessionReport report;
 
@@ -92,6 +38,9 @@ class SessionReportPage extends StatelessWidget {
       builder: (context, state) {
         return SafeArea(
           child: Scaffold(
+            floatingActionButtonLocation:
+            FloatingActionButtonLocation.centerFloat,
+            floatingActionButton: _buildFloatingActionButton(context),
             backgroundColor: CustomTheme.bg,
             body: SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -106,7 +55,7 @@ class SessionReportPage extends StatelessWidget {
                       children: [
                         const CustomBackButton(),
                         const Spacer(),
-                        IconButton(
+                        report.id==''?IconButton(
                           onPressed: () {
                             context
                                 .read<PatientDatabaseBloc>()
@@ -114,6 +63,17 @@ class SessionReportPage extends StatelessWidget {
                           },
                           icon: Icon(
                             Icons.save_alt,
+                            size: 32.w,
+                            color: CustomTheme.accent,
+                          ),
+                        ):IconButton(
+                          onPressed: () {
+                            context
+                                .read<PatientDatabaseBloc>()
+                                .add(DeleteReport(report: report));
+                          },
+                          icon: Icon(
+                            Icons.delete,
                             size: 32.w,
                             color: CustomTheme.accent,
                           ),
@@ -193,6 +153,31 @@ class SessionReportPage extends StatelessWidget {
       }
     );
   }
+
+  FloatingActionButton _buildFloatingActionButton(BuildContext context) {
+    return FloatingActionButton.extended(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(14.w),
+      ),
+      onPressed: () async {
+        context
+            .read<PatientDatabaseBloc>()
+            .add(SaveReport(report: report));
+      },
+      label: Text(
+        'Save and Send Report',
+        style: TextStyle(
+          color: CustomTheme.onAccent,
+        ),
+      ),
+      icon: Icon(
+        Icons.send_outlined,
+        color: CustomTheme.onAccent,
+      ),
+      backgroundColor: CustomTheme.accent,
+    );
+  }
+
 
   Widget _buildGraph(BuildContext context, SessionReport report) {
     return Padding(

@@ -172,14 +172,10 @@ class _PatientHomePageState extends State<PatientHomePage> {
         borderRadius: BorderRadius.circular(14.w),
       ),
       onPressed: () async {
-        await showModalBottomSheet(
-          context: context,
-          barrierColor: Colors.black.withOpacity(0.25),
-          backgroundColor: Colors.transparent,
-          builder: (context) {
-            return _buildBottomCard(context);
-          },
-        );
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const TakeReadingPage()));
       },
       label: Text(
         'Take Reading',
@@ -382,10 +378,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 style: TextStyle(fontSize: 16, color: CustomTheme.t1),
               ),
               onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const TakeReadingPage()));
+
               },
             ),
             Divider(

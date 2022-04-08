@@ -1,3 +1,4 @@
+import 'package:breathe/models/patient.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:equatable/equatable.dart';
 
@@ -14,7 +15,16 @@ class GetPatientList extends DoctorDatabaseEvent {
   @override
   List<Object?> get props => [];
 }
-//
+
+class GetMessages extends DoctorDatabaseEvent {
+  final Patient patient;
+
+  const GetMessages({required this.patient});
+
+  @override
+  List<Object?> get props => [];
+}
+
 // class SaveReport extends DoctorDatabaseEvent {
 //   final SessionReport report;
 //

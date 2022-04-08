@@ -1,4 +1,5 @@
 import 'package:breathe/models/helper_models.dart';
+import 'package:breathe/models/message.dart';
 import 'package:breathe/models/patient.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:equatable/equatable.dart';
@@ -26,6 +27,19 @@ class DoctorHomePageState extends DoctorDatabaseState {
 
   @override
   List<Object?> get props => [patientList, pageState];
+}
+
+class DoctorChatPageState extends DoctorDatabaseState {
+  final List<Message> messages;
+  final PageState pageState;
+
+  const DoctorChatPageState({
+    this.messages = const [],
+    this.pageState = PageState.loading,
+  });
+
+  @override
+  List<Object?> get props => [messages, pageState];
 }
 
 class SessionReportPageState extends DoctorDatabaseState {

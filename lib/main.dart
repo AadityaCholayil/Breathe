@@ -32,11 +32,11 @@ void main() async {
   );
   BlocOverrides.runZoned(
     () => {
-      runApp(const FlutterFireInit()),
     },
     eventTransformer: sequential<dynamic>(),
     blocObserver: AppBlocObserver(),
   );
+  runApp(const FlutterFireInit());
 }
 
 class FlutterFireInit extends StatefulWidget {
