@@ -1,3 +1,4 @@
+import 'package:breathe/bloc/doctor_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,7 @@ InputDecoration customInputDecoration(
             ),
           )
         : null,
-    contentPadding: EdgeInsets.fromLTRB(20.w, 15.w, 15.w, 15.w),
+    contentPadding: EdgeInsets.fromLTRB(20.w, 22.5.w, 22.5.w, 15.w),
     enabledBorder: OutlineInputBorder(
       borderSide: BorderSide(
         color: Colors.transparent,
@@ -29,7 +30,7 @@ InputDecoration customInputDecoration(
     ),
     fillColor: CustomTheme.card,
     labelText: labelText,
-    labelStyle: const TextStyle(fontSize: 18),
+    labelStyle: TextStyle(fontSize: 17.w),
     alignLabelWithHint: true,
     floatingLabelBehavior: FloatingLabelBehavior.never,
     helperStyle: const TextStyle(
@@ -123,6 +124,37 @@ TextStyle formTextStyle() => TextStyle(
 TextStyle formTextStyle2() =>
     TextStyle(fontSize: 18, color: CustomTheme.t1);
 
+class CustomShadow extends StatelessWidget {
+  final Widget child;
+
+  const CustomShadow({Key? key, required this.child}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Container(
+          height: 60.w,
+          alignment: Alignment.center,
+          decoration: BoxDecoration(
+            boxShadow: [
+              BoxShadow(
+                color: CustomTheme.cardShadow,
+                blurRadius: 15,
+                offset: Offset(4.w, 4.w),
+              ),
+            ],
+            color: CustomTheme.card,
+            borderRadius: BorderRadius.circular(20.w),
+          ),
+        ),
+        child,
+      ],
+    );
+  }
+}
+
+
 class CustomElevatedButton extends StatelessWidget {
   final void Function()? onPressed;
   final String text;
@@ -137,6 +169,7 @@ class CustomElevatedButton extends StatelessWidget {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
         elevation: 4,
+        shadowColor: CustomTheme.cardShadow,
         primary: style == 0 ? CustomTheme.accent : Colors.white,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(12.w),
@@ -149,7 +182,7 @@ class CustomElevatedButton extends StatelessWidget {
           text,
           style: TextStyle(
               color: style == 0 ? CustomTheme.onAccent : Colors.black,
-              fontSize: 19,
+              fontSize: 17,
               fontWeight: FontWeight.w600),
         ),
       ),
@@ -184,8 +217,9 @@ class CustomBackButton extends StatelessWidget {
     );
   }
 }
-class SignOutPrompt extends StatelessWidget {
-  const SignOutPrompt({Key? key}) : super(key: key);
+
+class PatientSignOutPrompt extends StatelessWidget {
+  const PatientSignOutPrompt({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -244,6 +278,101 @@ class SignOutPrompt extends StatelessWidget {
                     TextButton(
                       onPressed: () {
                         context.read<PatientAppBloc>().add(PatientLoggedOut());
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                      style: ButtonStyle(
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                12.w,
+                              ),
+                              side: BorderSide(color: CustomTheme.t1)),
+                        ),
+                      ),
+                      child: Text(
+                        'Yes',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          color: CustomTheme.t1,
+                          // backgroundColor: CustomTheme.brown,
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      width: 20.w,
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class DoctorSignOutPrompt extends StatelessWidget {
+  const DoctorSignOutPrompt({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: SizedBox(
+        height: 160.w,
+        width: 300.w,
+        child: Card(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(22.w),
+          ),
+          color: CustomTheme.bg,
+          child: Container(
+            padding: EdgeInsets.only(bottom: 10.w),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(height: 22.w),
+                Text(
+                  "Do you want to Sign out?",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    color: CustomTheme.t1,
+                    fontSize: 20.w,
+                  ),
+                ),
+                SizedBox(
+                  height: 30.w,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                          CustomTheme.accent,
+                        ),
+                        shape: MaterialStateProperty.all(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12.w),
+                          ),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop(false);
+                      },
+                      child: Text(
+                        'No',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          color: CustomTheme.onAccent,
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 15.w),
+                    TextButton(
+                      onPressed: () {
+                        context.read<DoctorAppBloc>().add(DoctorLoggedOut());
                         Navigator.pop(context);
                         Navigator.pop(context);
                       },

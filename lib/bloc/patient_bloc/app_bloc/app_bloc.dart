@@ -2,16 +2,24 @@ import 'dart:async';
 import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc_files.dart';
 import 'package:breathe/models/custom_exceptions.dart';
+import 'package:breathe/models/doctor.dart';
+import 'package:breathe/models/helper_models.dart';
+import 'package:breathe/models/message.dart';
 import 'package:breathe/models/patient.dart';
-import 'package:breathe/repositories/auth_repository.dart';
-import 'package:breathe/repositories/database_repository.dart';
+import 'package:breathe/repositories/patient_auth_repository.dart';
+import 'package:breathe/repositories/patient_database_repository.dart';
+import 'package:breathe/repositories/patient_chat_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
   final PatientAuthRepository _authRepository;
   late PatientDatabaseRepository _databaseRepository;
+  PatientChatRepository _chatRepository =
+      PatientChatRepository(doctor: Doctor.empty);
   late Patient patient;
-  late DatabaseBloc databaseBloc;
+  late PatientDatabaseBloc databaseBloc;
 
   PatientAppBloc({required authRepository})
       : _authRepository = authRepository,
@@ -20,6 +28,7 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
     _databaseRepository = PatientDatabaseRepository(uid: patient.uid);
     on<PatientAppStarted>(_onAppStarted);
     on<PatientLoginUser>(_onLoginUser);
+    on<GetDoctorDetails>(_onGetDoctorDetails);
     on<PatientCheckEmailStatus>(_onCheckEmailStatus);
     on<PatientSignup>(_onSignupUser);
     on<UpdatePatientData>(_onUpdateUserData);
@@ -71,6 +80,8 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
       if (completeUserData != Patient.empty) {
         // if db fetch is successful
         patient = completeUserData;
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isDoctor', false);
         emit(AuthenticatedPatient(patient: patient));
       } else {
         // if db fetch fails
@@ -85,6 +96,23 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
       } else {
         emit(PatientLoginPageState.somethingWentWrong);
       }
+    }
+  }
+
+  Future<void> _onGetDoctorDetails(
+      GetDoctorDetails event, Emitter<PatientAppState> emit) async {
+    // emit loading
+    emit(const DoctorLinkingPageState(pageState: PageState.loading));
+    try {
+      Doctor? doctor = await _databaseRepository.getDoctorData(event.doctorId);
+      if (doctor == null) {
+        emit(const DoctorLinkingPageState(pageState: PageState.error));
+      } else {
+        emit(DoctorLinkingPageState(
+            doctor: doctor, pageState: PageState.success));
+      }
+    } on Exception catch (_) {
+      emit(const DoctorLinkingPageState(pageState: PageState.error));
     }
   }
 
@@ -134,7 +162,21 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
         photoUrl =
             'https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg';
       }
-      print(photoUrl);
+      print('Uploaded to ' + photoUrl);
+
+      _chatRepository = PatientChatRepository(doctor: event.doctor);
+      Timestamp now = Timestamp.now();
+      // Send Message
+      Message message = Message(
+        content: 'Paired!',
+        patientUid: patient.uid,
+        doctorUid: event.doctor.uid,
+        timestamp: now,
+        sentByDoctor: false,
+        isSpecial: true,
+      );
+      message = await _chatRepository.sendMessage(message);
+
       // Add User details to db
       Patient newUserData = Patient(
         uid: patient.uid,
@@ -142,12 +184,23 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
         name: event.name,
         age: event.age,
         gender: event.gender,
-        doctorId: event.doctorId,
-        hospital: event.hospital,
+        doctorId: event.doctor.doctorId,
+        hospital: event.doctor.hospital,
+        doctorName: event.doctor.name,
         profilePic: photoUrl,
+        lastMessageContents: 'Paired!',
+        unreadMessages: 1,
+        lastMessageTimestamp: now,
+        patientLastOpened: now,
+        doctorLastOpened: now,
       );
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isDoctor', false);
+
       _databaseRepository.updatePatientData(newUserData);
       patient = newUserData;
+
       emit(AuthenticatedPatient(patient: patient));
     } on Exception catch (e) {
       print(e);
@@ -171,6 +224,8 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
     _databaseRepository = PatientDatabaseRepository(uid: patient.uid);
     // updateDatabaseBloc();
     await _authRepository.signOut();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isDoctor');
     emit(UnauthenticatedPatient(patient: patient));
   }
 }

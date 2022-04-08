@@ -1,11 +1,11 @@
 import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc_files.dart';
 import 'package:breathe/models/patient.dart';
-import 'package:breathe/repositories/auth_repository.dart';
-import 'package:breathe/repositories/database_repository.dart';
+import 'package:breathe/repositories/patient_auth_repository.dart';
+import 'package:breathe/repositories/patient_database_repository.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/patient/wrapper.dart';
+import 'package:breathe/views/patient/patient_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -34,11 +34,11 @@ class _PatientAppState extends State<PatientApp> {
             return BlocBuilder<PatientAppBloc, PatientAppState>(
               builder: (context, state) {
                 Patient userData = context.read<PatientAppBloc>().patient;
-                DatabaseBloc databaseBloc = DatabaseBloc(
+                PatientDatabaseBloc databaseBloc = PatientDatabaseBloc(
                   patient: userData,
                   databaseRepository: PatientDatabaseRepository(uid: userData.uid),
                 );
-                return BlocProvider<DatabaseBloc>.value(
+                return BlocProvider<PatientDatabaseBloc>.value(
                   value: databaseBloc,
                   child: ScreenUtilInit(
                     designSize: const Size(414, 896),

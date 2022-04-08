@@ -46,9 +46,6 @@ class DoctorSignup extends DoctorAppEvent {
   final String email;
   final String password;
   final String name;
-  final int age;
-  final String gender;
-  final String doctorId;
   final String hospital;
   final File? profilePic;
   final String qualification;
@@ -57,9 +54,6 @@ class DoctorSignup extends DoctorAppEvent {
     required this.email,
     required this.password,
     required this.name,
-    required this.age,
-    required this.gender,
-    required this.doctorId,
     required this.hospital,
     required this.profilePic,
     required this.qualification,
@@ -67,11 +61,11 @@ class DoctorSignup extends DoctorAppEvent {
 
   @override
   String toString() =>
-      'DoctorSignup($email, $password, $name, $age, $gender, $hospital, $doctorId, $qualification)';
+      'DoctorSignup($email, $password, $name, $hospital, $qualification)';
 
   @override
   List<Object?> get props =>
-      [email, password, name, age, gender, hospital, doctorId, profilePic, qualification];
+      [email, password, name, hospital, profilePic, qualification];
 }
 
 class UpdateDoctorData extends DoctorAppEvent {

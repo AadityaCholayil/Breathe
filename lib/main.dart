@@ -1,8 +1,6 @@
 import 'package:breathe/bloc/app_bloc_observer.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/shared/loading.dart';
-import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/patient/wrapper.dart';
 import 'package:breathe/views/user_wrapper.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bloc_concurrency/bloc_concurrency.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tflite/tflite.dart';
 
@@ -73,7 +70,7 @@ class _FlutterFireInitState extends State<FlutterFireInit> {
 
         // Once complete, show your application
         if (snapshot.connectionState == ConnectionState.done) {
-          return const UserWrapper();
+          return UserWrapper(isDoctor: isDoctor);
         }
 
         // Otherwise, show something whilst waiting for initialization to complete

@@ -1,15 +1,16 @@
+import 'package:breathe/bloc/doctor_bloc/app_bloc/app_bloc_files.dart';
+import 'package:breathe/bloc/doctor_bloc/database_bloc/database_bloc_files.dart';
 import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc.dart';
 import 'package:breathe/shared/coming_soon.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SettingsPage extends StatelessWidget {
-  const SettingsPage({Key? key}) : super(key: key);
+class DoctorSettingsPage extends StatelessWidget {
+  const DoctorSettingsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -40,13 +41,13 @@ class SettingsPage extends StatelessWidget {
             child: CircleAvatar(
               radius: 75.w,
               backgroundColor: Colors.grey,
-              backgroundImage: NetworkImage(context.read<PatientDatabaseBloc>().patient.profilePic),
+              backgroundImage: NetworkImage(context.read<DoctorDatabaseBloc>().doctor.profilePic),
             ),
           ),
           SizedBox(height: 11.w),
           Center(
             child: Text(
-              context.read<PatientAppBloc>().patient.name,
+              context.read<DoctorAppBloc>().doctor.name,
               // "Pranav",
               style: TextStyle(
                 color: CustomTheme.t1,
@@ -74,8 +75,8 @@ class SettingsPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 24.w),
             child: Text(
-              // context.read<AppBloc>().userData.doctorName,
-              "Dr. Pranav Shegekar",
+              context.read<DoctorAppBloc>().doctor.name,
+              // "Dr. Pranav Shegekar",
               style: TextStyle(
                 color: CustomTheme.t1,
                 fontSize: 24,
@@ -100,8 +101,8 @@ class SettingsPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 24.w),
             child: Text(
-              context.read<PatientAppBloc>().patient.hospital,
-              // "XYZ Hospital",
+              // context.read<DoctorAppBloc>().patient.hospital,
+              "XYZ Hospital",
               style: TextStyle(
                 color: CustomTheme.t1,
                 fontSize: 24,
@@ -167,7 +168,8 @@ class SettingsPage extends StatelessWidget {
           _buildProfileCardElements(
             context,
             'Age',
-            context.read<PatientAppBloc>().patient.age.toString(),
+            // context.read<DoctorAppBloc>().patient.age.toString(),
+            '20'
           ),
           const Spacer(),
           _buildProfileCardElements(
@@ -244,7 +246,7 @@ class SettingsOptions extends StatelessWidget {
           showDialog(
             context: context,
             builder: (context) {
-              return const PatientSignOutPrompt();
+              return const DoctorSignOutPrompt();
             },
           );
         } else {

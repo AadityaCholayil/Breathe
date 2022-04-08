@@ -1,33 +1,34 @@
 import 'package:breathe/models/helper_models.dart';
+import 'package:breathe/models/patient.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:equatable/equatable.dart';
 
-abstract class DatabaseState extends Equatable {
-  const DatabaseState();
+abstract class DoctorDatabaseState extends Equatable {
+  const DoctorDatabaseState();
 
   @override
   List<Object?> get props => [];
 }
 
-class Init extends DatabaseState {
+class DoctorInit extends DoctorDatabaseState {
   @override
   List<Object?> get props => ['Init'];
 }
 
-class HomePageState extends DatabaseState {
-  final List<SessionReport> reportList;
+class DoctorHomePageState extends DoctorDatabaseState {
+  final List<Patient> patientList;
   final PageState pageState;
 
-  const HomePageState({
-    this.reportList = const [],
+  const DoctorHomePageState({
+    this.patientList = const [],
     this.pageState = PageState.loading,
   });
 
   @override
-  List<Object?> get props => [reportList, pageState];
+  List<Object?> get props => [patientList, pageState];
 }
 
-class SessionReportPageState extends DatabaseState {
+class SessionReportPageState extends DoctorDatabaseState {
   final SessionReport? report;
   final PageState pageState;
 

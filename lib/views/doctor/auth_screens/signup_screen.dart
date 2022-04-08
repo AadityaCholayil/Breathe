@@ -1,35 +1,33 @@
 import 'dart:io';
-import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
-import 'package:breathe/models/doctor.dart';
+import 'package:breathe/bloc/doctor_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/patient/auth_screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class PatientSignupPage extends StatefulWidget {
-  final String name;
-  final int age;
-  final String gender;
-  final Doctor doctor;
-  final File? profilePic;
+import 'login_screen.dart';
 
-  const PatientSignupPage({
+class DoctorSignupPage extends StatefulWidget {
+  final String name;
+  final String hospital;
+  final File? profilePic;
+  final String qualification;
+
+  const DoctorSignupPage({
     Key? key,
     required this.name,
-    required this.age,
-    required this.gender,
-    required this.doctor,
+    required this.hospital,
     required this.profilePic,
+    required this.qualification,
   }) : super(key: key);
 
   @override
-  _PatientSignupPageState createState() => _PatientSignupPageState();
+  _DoctorSignupPageState createState() => _DoctorSignupPageState();
 }
 
-class _PatientSignupPageState extends State<PatientSignupPage> {
+class _DoctorSignupPageState extends State<DoctorSignupPage> {
   String email = '';
   String password = '';
   String stateMessage = '';
@@ -41,18 +39,18 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<PatientAppBloc, PatientAppState>(
+    return BlocConsumer<DoctorAppBloc, DoctorAppState>(
       listenWhen: (previous, current) => previous != current,
       buildWhen: (previous, current) => previous != current,
       listener: (context, state) {
-        if (state is PatientEmailInputState) {
+        if (state is DoctorEmailInputState) {
           emailStatus = state.emailStatus;
           print(emailStatus);
         }
-        if (state is PatientSignupPageState) {
+        if (state is DoctorSignupPageState) {
           showErrorSnackBar(context, state.message);
         }
-        if (state is AuthenticatedPatient) {
+        if (state is AuthenticatedDoctor) {
           stateMessage = 'Success!';
           ScaffoldMessenger.of(context).hideCurrentSnackBar();
           print('Navigating..');
@@ -139,8 +137,8 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                                 });
                                 if (value.isNotEmpty && validateEmail(email)) {
                                   context
-                                      .read<PatientAppBloc>()
-                                      .add(PatientCheckEmailStatus(email: value));
+                                      .read<DoctorAppBloc>()
+                                      .add(DoctorCheckEmailStatus(email: value));
                                 } else {
                                   setState(() {
                                     emailStatus = EmailStatus.invalid;
@@ -267,14 +265,13 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                           }
                           _formKey.currentState?.save();
                           showErrorSnackBar(context, stateMessage);
-                          BlocProvider.of<PatientAppBloc>(context).add(PatientSignup(
+                          BlocProvider.of<DoctorAppBloc>(context).add(DoctorSignup(
                             email: email,
                             password: password,
                             name: widget.name,
-                            age: widget.age,
-                            gender: widget.gender,
-                            doctor: widget.doctor,
+                            hospital: widget.hospital,
                             profilePic: widget.profilePic,
+                            qualification: widget.qualification,
                           ));
                         },
                       ),
@@ -299,7 +296,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                                 Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                         builder: (context) =>
-                                            const PatientLoginPage()));
+                                            const DoctorLoginPage()));
                               },
                             ),
                           ],
