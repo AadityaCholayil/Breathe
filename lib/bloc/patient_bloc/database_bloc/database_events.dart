@@ -40,29 +40,18 @@ class DeleteReport extends PatientDatabaseEvent {
   List<Object?> get props => [report];
 }
 
-// class AddPokemon extends DatabaseEvent {
-//   final PokemonPVP pokemon;
-//
-//   const AddPokemon(this.pokemon);
-//
-//   @override
-//   List<Object?> get props => [pokemon];
-// }
-//
-// class UpdatePokemon extends DatabaseEvent {
-//   final PokemonDB pokemon;
-//
-//   const UpdatePokemon(this.pokemon);
-//
-//   @override
-//   List<Object?> get props => [pokemon];
-// }
-//
-// class DeletePokemon extends DatabaseEvent {
-//   final PokemonDB pokemon;
-//
-//   const DeletePokemon(this.pokemon);
-//
-//   @override
-//   List<Object?> get props => [pokemon];
-// }
+class GetMessages extends PatientDatabaseEvent {
+  const GetMessages();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class SendMessage extends PatientDatabaseEvent {
+  final String message;
+
+  const SendMessage({required this.message});
+
+  @override
+  List<Object?> get props => [];
+}

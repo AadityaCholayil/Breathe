@@ -9,7 +9,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'database_bloc_files.dart';
 
-class PatientDatabaseBloc extends Bloc<PatientDatabaseEvent, PatientDatabaseState> {
+class PatientDatabaseBloc
+    extends Bloc<PatientDatabaseEvent, PatientDatabaseState> {
   Patient patient;
   Doctor doctor;
   PatientDatabaseRepository databaseRepository;
@@ -20,19 +21,21 @@ class PatientDatabaseBloc extends Bloc<PatientDatabaseEvent, PatientDatabaseStat
     required this.doctor,
     required this.databaseRepository,
   }) : super(PatientInit()) {
-    chatRepository = PatientChatRepository(doctor: doctor);
+    chatRepository = PatientChatRepository(doctor: doctor, patient: patient);
     on<GetTodaysReports>(_onGetTodaysReports);
     on<GetReports>(_onGetWeeklyReport);
     on<SaveReport>(_onSaveReport);
     on<DeleteReport>(_onDeleteReport);
+    on<GetMessages>(_onGetMessages);
+    on<SendMessage>(_onSendMessage);
   }
 
-  Future<void> _onGetTodaysReports(
-      GetTodaysReports event, Emitter<PatientDatabaseState> emit) async {
+  Future<void> _onGetTodaysReports(GetTodaysReports event,
+      Emitter<PatientDatabaseState> emit) async {
     emit(const PatientHomePageState(pageState: PageState.loading));
     try {
       List<SessionReport> reportList =
-          await databaseRepository.getTodaysReports();
+      await databaseRepository.getTodaysReports();
       print(reportList);
       emit(PatientHomePageState(
         reportList: reportList,
@@ -43,8 +46,8 @@ class PatientDatabaseBloc extends Bloc<PatientDatabaseEvent, PatientDatabaseStat
     }
   }
 
-  Future<void> _onGetWeeklyReport(
-      GetReports event, Emitter<PatientDatabaseState> emit) async {
+  Future<void> _onGetWeeklyReport(GetReports event,
+      Emitter<PatientDatabaseState> emit) async {
     emit(const ReportPageState(pageState: PageState.loading));
     try {
       List<SessionReport> rawWeeklyReport =
@@ -61,8 +64,8 @@ class PatientDatabaseBloc extends Bloc<PatientDatabaseEvent, PatientDatabaseStat
     }
   }
 
-  Future<void> _onSaveReport(
-      SaveReport event, Emitter<PatientDatabaseState> emit) async {
+  Future<void> _onSaveReport(SaveReport event,
+      Emitter<PatientDatabaseState> emit) async {
     emit(const SessionReportPageState(pageState: PageState.loading));
     try {
       SessionReport report = await databaseRepository.addReport(event.report);
@@ -83,7 +86,7 @@ class PatientDatabaseBloc extends Bloc<PatientDatabaseEvent, PatientDatabaseStat
       // Update patient
       patient = patient.copyWith(
         lastMessageContents: 'Sent a report',
-        unreadMessages: patient.unreadMessages+1,
+        unreadMessages: patient.unreadMessages + 1,
         lastMessageTimestamp: now,
       );
       databaseRepository.updatePatientData(patient);
@@ -98,8 +101,8 @@ class PatientDatabaseBloc extends Bloc<PatientDatabaseEvent, PatientDatabaseStat
     }
   }
 
-  Future<void> _onDeleteReport(
-      DeleteReport event, Emitter<PatientDatabaseState> emit) async {
+  Future<void> _onDeleteReport(DeleteReport event,
+      Emitter<PatientDatabaseState> emit) async {
     emit(const SessionReportPageState(pageState: PageState.loading));
     try {
       await databaseRepository.deleteReport(event.report);
@@ -113,49 +116,55 @@ class PatientDatabaseBloc extends Bloc<PatientDatabaseEvent, PatientDatabaseStat
     }
   }
 
-// Future<void> _onGetMyPokemons(
-//     GetMyPokemons event, Emitter<DatabaseState> emit) async {
-//   emit(const MyPokemonsPageState(pageState: PageState.loading));
-//   try {
-//     List<PokemonDB> list = await databaseRepository.getPokemons();
-//     emit(MyPokemonsPageState(pokemonList: list, pageState: PageState.success));
-//   } on Exception catch (_) {
-//     emit(const MyPokemonsPageState(pageState: PageState.error));
-//   }
-// }
-//
-// Future<void> _onAddPokemon(
-//     AddPokemon event, Emitter<DatabaseState> emit) async {
-//   emit(const PokemonDBState(pageState: PageState.loading));
-//   try {
-//     PokemonDB pokemonDB = PokemonDB.fromPokemonPVP(event.pokemon);
-//     await databaseRepository.addPokemon(pokemonDB);
-//     print('Added to Database');
-//     emit(const PokemonDBState(pageState: PageState.success));
-//   } on Exception catch (_) {
-//     emit(const PokemonDBState(pageState: PageState.error));
-//   }
-// }
-//
-// Future<void> _onUpdatePokemon(
-//     UpdatePokemon event, Emitter<DatabaseState> emit) async {
-//   emit(const PokemonDBState(pageState: PageState.loading));
-//   try {
-//     await databaseRepository.updatePokemon(event.pokemon);
-//     emit(const PokemonDBState(pageState: PageState.success));
-//   } on Exception catch (_) {
-//     emit(const PokemonDBState(pageState: PageState.error));
-//   }
-// }
-//
-// Future<void> _onDeletePokemon(
-//     DeletePokemon event, Emitter<DatabaseState> emit) async {
-//   emit(const PokemonDBState(pageState: PageState.loading));
-//   try {
-//     await databaseRepository.deletePokemon(event.pokemon);
-//     emit(const PokemonDBState(pageState: PageState.success));
-//   } on Exception catch (_) {
-//     emit(const PokemonDBState(pageState: PageState.error));
-//   }
-// }
+  Future<void> _onGetMessages(GetMessages event,
+      Emitter<PatientDatabaseState> emit) async {
+    emit(const PatientChatPageState(pageState: PageState.loading));
+    try {
+      // List<Patient> patientList =
+      //     await databaseRepository.getPatients(doctor.doctorId);
+      await emit.forEach(
+        chatRepository.messagesStream(),
+        onData: (List<Message> messages) {
+          print(messages);
+          return PatientChatPageState(
+            messages: messages,
+            pageState: PageState.success,
+          );
+        },
+      );
+    } on Exception catch (_) {
+      emit(const PatientChatPageState(pageState: PageState.error));
+    }
+  }
+
+  Future<void> _onSendMessage(SendMessage event,
+      Emitter<PatientDatabaseState> emit) async {
+    emit(const PatientChatPageState(pageState: PageState.loading));
+    try {
+      Timestamp now = Timestamp.now();
+
+      Message message = Message(
+        content: event.message,
+        patientUid: patient.uid,
+        doctorUid: doctor.uid,
+        timestamp: now,
+        sentByDoctor: false,
+        isSpecial: false,
+        isReport: false,
+      );
+      chatRepository.sendMessage(message);
+
+      PatientDatabaseRepository patientDatabaseRepository =
+      PatientDatabaseRepository(uid: patient.uid);
+      patient = patient.copyWith(
+        lastMessageContents: message.content,
+        unreadMessages: patient.unreadMessages+1,
+        lastMessageTimestamp: now,
+      );
+
+      patientDatabaseRepository.updatePatientData(patient);
+    } on Exception catch (_) {
+      emit(const PatientChatPageState(pageState: PageState.error));
+    }
+  }
 }

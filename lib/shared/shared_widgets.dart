@@ -116,6 +116,116 @@ InputDecoration customInputDecoration(
   );
 }
 
+InputDecoration customInputDecorationChat(
+    {String labelText = '',
+    bool isSearch = false}) {
+  return InputDecoration(
+    suffixIcon: isSearch
+        ? Padding(
+            padding: EdgeInsets.only(right: 20.w),
+            child: Icon(
+              Icons.search,
+              size: 25.w,
+            ),
+          )
+        : null,
+    contentPadding: EdgeInsets.fromLTRB(24.w, 22.5.w, 22.5.w, 15.w),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Colors.transparent,
+        width: 2.w,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(90.w)),
+    ),
+    fillColor: CustomTheme.card,
+    labelText: labelText,
+    labelStyle: TextStyle(fontSize: 17.w),
+    alignLabelWithHint: true,
+    floatingLabelBehavior: FloatingLabelBehavior.never,
+    helperStyle: const TextStyle(
+      color: Color(0xdd000000),
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    hintStyle: const TextStyle(
+      color: Color(0xdd000000),
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    errorStyle: const TextStyle(
+      color: Color(0xffd32f2f),
+      fontSize: 15.0,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    errorMaxLines: null,
+    isDense: false,
+    isCollapsed: false,
+    prefixStyle: const TextStyle(
+      color: Color(0xdd000000),
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    suffixStyle: const TextStyle(
+      color: Color(0xdd000000),
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    counterStyle: const TextStyle(
+      color: Color(0xdd000000),
+      fontSize: 16.0,
+      fontWeight: FontWeight.w400,
+      fontStyle: FontStyle.normal,
+    ),
+    filled: true,
+    errorBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: const Color(0xffd32f2f),
+        width: 2.w,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(90.w)),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: CustomTheme.accent,
+        width: 2.w,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(90.w)),
+    ),
+    focusedErrorBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: const Color(0xffd32f2f),
+        width: 2.w,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(90.w)),
+    ),
+    disabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: const Color(0xff000000),
+        width: 2.w,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(90.w)),
+    ),
+    border: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: const Color(0xff000000),
+        width: 2.w,
+        style: BorderStyle.solid,
+      ),
+      borderRadius: BorderRadius.all(Radius.circular(90.w)),
+    ),
+  );
+}
+
 TextStyle formTextStyle() => TextStyle(
       fontSize: 18,
       color: CustomTheme.t1,
@@ -123,6 +233,14 @@ TextStyle formTextStyle() => TextStyle(
 
 TextStyle formTextStyle2() =>
     TextStyle(fontSize: 18, color: CustomTheme.t1);
+
+List<BoxShadow> customBoxShadow = [
+  BoxShadow(
+    color: CustomTheme.cardShadow,
+    blurRadius: 15,
+    offset: Offset(4.w, 4.w),
+  ),
+];
 
 class CustomShadow extends StatelessWidget {
   final Widget child;
