@@ -1,10 +1,10 @@
 import 'dart:io';
+import 'package:breathe/models/doctor.dart';
 import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/models/patient.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
-
 
 class PatientDatabaseRepository {
   final String uid;
@@ -92,6 +92,29 @@ class PatientDatabaseRepository {
     } on Exception catch (e) {
       print('Failed - $e');
       return null;
+    }
+  }
+
+  // Doctors Collection Reference
+  // Reference allows for easy from and to operations
+  CollectionReference<Doctor> get doctorsRef =>
+      db.collection('doctors').withConverter<Doctor>(
+            fromFirestore: (snapshot, _) => Doctor.fromJson(snapshot.data()!),
+            toFirestore: (doctor, _) => doctor.toJson(),
+          );
+
+  // Get PatientData from DB
+  Future<Doctor?> getDoctorData(String doctorId) async {
+    try {
+      Doctor? doctor = await doctorsRef
+          .where('doctorId', isEqualTo: doctorId)
+          .get()
+          .then((value) =>
+              value.docs.isEmpty ? null : value.docs.first.data());
+      return doctor;
+    } on Exception catch (_) {
+      // TODO: If this doesn't work, throw SomethingWentWrong()
+      return Doctor.empty;
     }
   }
 }

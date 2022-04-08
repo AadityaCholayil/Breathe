@@ -45,13 +45,12 @@ class DoctorDatabaseRepository {
     await doctorsRef.doc(uid).delete();
   }
 
-  // Report Collection Reference for specific doctor
-  CollectionReference<Patient> get patientsRef => db
-      .collection('patients')
-      .withConverter<Patient>(
-        fromFirestore: (snapshot, a) =>
-            Patient.fromJson(snapshot.data()!),
-        toFirestore: (report, _) => report.toJson(),
+  // Patients Collection Reference
+  // Reference allows for easy from and to operations
+  CollectionReference<Patient> get patientsRef =>
+      db.collection('patients').withConverter<Patient>(
+        fromFirestore: (snapshot, _) => Patient.fromJson(snapshot.data()!),
+        toFirestore: (patient, _) => patient.toJson(),
       );
 
   // Get Today's Reports from db

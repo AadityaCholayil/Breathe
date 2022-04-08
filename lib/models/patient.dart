@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -12,6 +13,10 @@ class Patient extends Equatable {
   final String doctorName;
   final String hospital;
   final String profilePic;
+  final String lastMessageContents;
+  final Timestamp lastMessageTimestamp;
+  final Timestamp patientLastOpened;
+  final Timestamp doctorLastOpened;
 
   const Patient({
     this.uid = '',
@@ -24,13 +29,26 @@ class Patient extends Equatable {
     this.doctorName = '',
     this.hospital = '',
     this.profilePic = '',
+    this.lastMessageContents = '',
+    required this.lastMessageTimestamp,
+    required this.patientLastOpened,
+    required this.doctorLastOpened,
   });
 
   static Patient fromUser(User user) {
-    return Patient(uid: user.uid, email: user.email ?? '');
+    return Patient(
+        uid: user.uid,
+        email: user.email ?? '',
+        patientLastOpened: Timestamp.now(),
+        doctorLastOpened: Timestamp.now(),
+        lastMessageTimestamp: Timestamp.now());
   }
 
-  static Patient empty = const Patient(uid: '');
+  static Patient empty = Patient(
+      uid: '',
+      lastMessageTimestamp: Timestamp(0, 0),
+      patientLastOpened: Timestamp(0, 0),
+      doctorLastOpened: Timestamp(0, 0));
 
   Patient.fromJson(Map<String, dynamic> json)
       : this(
@@ -44,6 +62,10 @@ class Patient extends Equatable {
           doctorName: json['doctorName'],
           hospital: json['hospital'],
           profilePic: json['profilePic'],
+          lastMessageContents: json['lastMessageContents'],
+          lastMessageTimestamp: json['lastMessageTimestamp'],
+          patientLastOpened: json['patientLastOpened'],
+          doctorLastOpened: json['doctorLastOpened'],
         );
 
   Map<String, dynamic> toJson() {
@@ -58,6 +80,10 @@ class Patient extends Equatable {
     data['doctorName'] = doctorName;
     data['hospital'] = hospital;
     data['profilePic'] = profilePic;
+    data['lastMessageContents'] = lastMessageContents;
+    data['lastMessageTimestamp'] = lastMessageTimestamp;
+    data['patientLastOpened'] = patientLastOpened;
+    data['doctorLastOpened'] = doctorLastOpened;
     return data;
   }
 
@@ -67,7 +93,7 @@ class Patient extends Equatable {
 
   @override
   String toString() {
-    return 'UserData($uid, $email, $name, $age, $gender, $doctorId, $healthStatus, $doctorName, $hospital, $profilePic)';
+    return 'Patient($uid, $email, $name, $age, $gender, $doctorId, $healthStatus, $doctorName, $hospital, $profilePic, $lastMessageContents, $lastMessageTimestamp, $patientLastOpened, $doctorLastOpened)';
   }
 
   @override
@@ -82,5 +108,9 @@ class Patient extends Equatable {
         doctorName,
         hospital,
         profilePic,
+        lastMessageContents,
+    lastMessageTimestamp,
+        patientLastOpened,
+        doctorLastOpened,
       ];
 }

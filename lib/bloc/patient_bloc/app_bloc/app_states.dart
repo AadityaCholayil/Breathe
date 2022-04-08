@@ -1,3 +1,5 @@
+import 'package:breathe/models/doctor.dart';
+import 'package:breathe/models/helper_models.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:breathe/models/patient.dart';
@@ -60,21 +62,36 @@ class PatientLoginPageState extends PatientAppState {
 
   const PatientLoginPageState({required this.message});
 
-  static PatientLoginPageState loading = const PatientLoginPageState(message: 'Loading');
+  static PatientLoginPageState loading =
+      const PatientLoginPageState(message: 'Loading');
 
-  static PatientLoginPageState success = const PatientLoginPageState(message: 'Successful');
+  static PatientLoginPageState success =
+      const PatientLoginPageState(message: 'Successful');
 
   static PatientLoginPageState noUserFound =
       const PatientLoginPageState(message: 'No user found for that email');
 
-  static PatientLoginPageState wrongPassword =
-      const PatientLoginPageState(message: 'Wrong Password provided for that user');
+  static PatientLoginPageState wrongPassword = const PatientLoginPageState(
+      message: 'Wrong Password provided for that user');
 
-  static PatientLoginPageState somethingWentWrong =
-      const PatientLoginPageState(message: 'Something went wrong, Please try again');
+  static PatientLoginPageState somethingWentWrong = const PatientLoginPageState(
+      message: 'Something went wrong, Please try again');
 
   @override
   List<Object?> get props => [message];
+}
+
+class DoctorLinkingPageState extends PatientAppState {
+  final Doctor? doctor;
+  final PageState pageState;
+
+  const DoctorLinkingPageState({
+    this.doctor,
+    this.pageState = PageState.loading,
+  });
+
+  @override
+  List<Object?> get props => [doctor, pageState];
 }
 
 class PatientEmailInputState extends PatientAppState {
@@ -97,15 +114,18 @@ class PatientSignupPageState extends PatientAppState {
 
   const PatientSignupPageState({required this.message});
 
-  static PatientSignupPageState loading = const PatientSignupPageState(message: 'Loading');
+  static PatientSignupPageState loading =
+      const PatientSignupPageState(message: 'Loading');
 
-  static PatientSignupPageState success = const PatientSignupPageState(message: 'Successful');
+  static PatientSignupPageState success =
+      const PatientSignupPageState(message: 'Successful');
 
   static PatientSignupPageState userAlreadyExists =
       const PatientSignupPageState(message: 'Email is already in use');
 
   static PatientSignupPageState somethingWentWrong =
-      const PatientSignupPageState(message: 'Something went wrong, Please try again');
+      const PatientSignupPageState(
+          message: 'Something went wrong, Please try again');
 
   @override
   List<Object?> get props => [message];

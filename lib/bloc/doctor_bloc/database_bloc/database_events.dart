@@ -8,30 +8,30 @@ abstract class DoctorDatabaseEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class GetTodaysReports extends DoctorDatabaseEvent {
-  const GetTodaysReports();
+class GetPatientList extends DoctorDatabaseEvent {
+  const GetPatientList();
 
   @override
   List<Object?> get props => [];
 }
-
-class SaveReport extends DoctorDatabaseEvent {
-  final SessionReport report;
-
-  const SaveReport({required this.report});
-
-  @override
-  List<Object?> get props => [report];
-}
-
-class DeleteReport extends DoctorDatabaseEvent {
-  final SessionReport report;
-
-  const DeleteReport({required this.report});
-
-  @override
-  List<Object?> get props => [report];
-}
+//
+// class SaveReport extends DoctorDatabaseEvent {
+//   final SessionReport report;
+//
+//   const SaveReport({required this.report});
+//
+//   @override
+//   List<Object?> get props => [report];
+// }
+//
+// class DeleteReport extends DoctorDatabaseEvent {
+//   final SessionReport report;
+//
+//   const DeleteReport({required this.report});
+//
+//   @override
+//   List<Object?> get props => [report];
+// }
 
 // class AddPokemon extends DatabaseEvent {
 //   final PokemonPVP pokemon;

@@ -1,8 +1,8 @@
 import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
 import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc_files.dart';
 import 'package:breathe/models/patient.dart';
-import 'package:breathe/repositories/auth_repository.dart';
-import 'package:breathe/repositories/database_repository.dart';
+import 'package:breathe/repositories/patient_auth_repository.dart';
+import 'package:breathe/repositories/patient_database_repository.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:breathe/views/patient/patient_wrapper.dart';

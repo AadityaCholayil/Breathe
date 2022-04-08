@@ -28,6 +28,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
   @override
   void initState() {
     super.initState();
+    context.read<DoctorDatabaseBloc>().add(const GetPatientList());
   }
 
   @override
@@ -81,7 +82,62 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  for (Patient patient in patientList) Text(patient.name),
+                  for (Patient patient in patientList)
+                    SizedBox(
+                      height: 85.w,
+                      child: Row(
+                        children: [
+                          SizedBox(width: 20.w),
+                          Container(
+                            decoration: const BoxDecoration(
+                              shape: BoxShape.circle,
+                            ),
+                            height: 43.w,
+                            width: 43.w,
+                            child: Image.network(patient.profilePic),
+                          ),
+                          SizedBox(width: 16.w),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                patient.name,
+                                style: TextStyle(
+                                  fontSize: 19,
+                                  color: CustomTheme.t1,
+                                  fontWeight: FontWeight.w500
+                                ),
+                              ),
+                              SizedBox(height: 2.w),
+                              SizedBox(
+                                width: 260.w,
+                                child: Text(
+                                  patient.lastMessageContents,
+                                  maxLines: 1,
+                                  softWrap: false,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: CustomTheme.t1,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 3.w),
+                            ],
+                          ),
+                          const Spacer(),
+                          Text(
+                            patient.lastMessageTimestamp.toDate().toString().substring(11,16)+'\n',
+                            style: TextStyle(
+                              fontSize: 15,
+                              color: CustomTheme.t2,
+                            ),
+                          ),
+                          SizedBox(width: 20.w),
+                        ],
+                      ),
+                    ),
                 ],
               ),
             ),

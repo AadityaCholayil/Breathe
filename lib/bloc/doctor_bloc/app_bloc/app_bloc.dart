@@ -70,6 +70,8 @@ class DoctorAppBloc extends Bloc<DoctorAppEvent, DoctorAppState> {
       if (completeUserData != Doctor.empty) {
         // if db fetch is successful
         doctor = completeUserData;
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isDoctor', true);
         emit(AuthenticatedDoctor(doctor: doctor));
       } else {
         // if db fetch fails

@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc_files.dart';
+import 'package:breathe/models/doctor.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
@@ -12,9 +13,7 @@ class PatientSignupPage extends StatefulWidget {
   final String name;
   final int age;
   final String gender;
-  final String doctorId;
-  final String doctorName;
-  final String hospital;
+  final Doctor doctor;
   final File? profilePic;
 
   const PatientSignupPage({
@@ -22,9 +21,7 @@ class PatientSignupPage extends StatefulWidget {
     required this.name,
     required this.age,
     required this.gender,
-    required this.doctorId,
-    required this.doctorName,
-    required this.hospital,
+    required this.doctor,
     required this.profilePic,
   }) : super(key: key);
 
@@ -290,9 +287,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                             name: widget.name,
                             age: widget.age,
                             gender: widget.gender,
-                            doctorId: widget.doctorId,
-                            doctorName: widget.doctorName,
-                            hospital: widget.hospital,
+                            doctor: widget.doctor,
                             profilePic: widget.profilePic,
                           ));
                         },
