@@ -14,6 +14,7 @@ class PatientDatabaseBloc extends Bloc<PatientDatabaseEvent, PatientDatabaseStat
     required this.databaseRepository,
   }) : super(PatientInit()) {
     on<GetTodaysReports>(_onGetTodaysReports);
+    on<GetReports>(_onGetWeeklyReport);
     on<SaveReport>(_onSaveReport);
     on<DeleteReport>(_onDeleteReport);
   }
@@ -31,6 +32,22 @@ class PatientDatabaseBloc extends Bloc<PatientDatabaseEvent, PatientDatabaseStat
       ));
     } on Exception catch (_) {
       emit(const PatientHomePageState(pageState: PageState.error));
+    }
+  }
+
+  Future<void> _onGetWeeklyReport(
+      GetReports event, Emitter<PatientDatabaseState> emit) async {
+    emit(const ReportPageState(pageState: PageState.loading));
+    try {
+      List<DailyReport> weeklyReport = [];
+          // await databaseRepository.getTodaysReports();
+      print(weeklyReport);
+      emit(ReportPageState(
+        weeklyReport: weeklyReport,
+        pageState: PageState.success,
+      ));
+    } on Exception catch (_) {
+      emit(const ReportPageState(pageState: PageState.error));
     }
   }
 

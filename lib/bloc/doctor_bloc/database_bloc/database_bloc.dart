@@ -28,7 +28,7 @@ class DoctorDatabaseBloc
     try {
       // List<Patient> patientList =
       //     await databaseRepository.getPatients(doctor.doctorId);
-      emit.forEach(
+      await emit.forEach(
         chatRepository.patientsStream(),
         onData: (List<Patient> patientList) {
           return DoctorHomePageState(

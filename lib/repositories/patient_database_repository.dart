@@ -68,6 +68,18 @@ class PatientDatabaseRepository {
     return list.map((e) => e.data()).toList();
   }
 
+  // Get Today's Reports from db
+  Future<List<SessionReport>> getWeeklyReport() async {
+    List<QueryDocumentSnapshot<SessionReport>> list = [];
+    String todaysDate = getDateFromDateTime(DateTime.now());
+    list = await reportsRef
+        .where('date', isEqualTo: todaysDate)
+        .orderBy('timeTakenAt')
+        .get()
+        .then((snapshot) => snapshot.docs);
+    return list.map((e) => e.data()).toList();
+  }
+
   // Add Reports to db
   Future<void> addReport(SessionReport report) async {
     await reportsRef.add(report);
