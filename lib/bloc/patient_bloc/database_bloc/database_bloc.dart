@@ -1,41 +1,41 @@
 import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/models/patient.dart';
-import 'package:breathe/repositories/database_repository.dart';
+import 'package:breathe/repositories/patient_database_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'database_bloc_files.dart';
 
-class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
+class PatientDatabaseBloc extends Bloc<PatientDatabaseEvent, PatientDatabaseState> {
   Patient patient;
   PatientDatabaseRepository databaseRepository;
 
-  DatabaseBloc({
+  PatientDatabaseBloc({
     required this.patient,
     required this.databaseRepository,
-  }) : super(Init()) {
+  }) : super(PatientInit()) {
     on<GetTodaysReports>(_onGetTodaysReports);
     on<SaveReport>(_onSaveReport);
     on<DeleteReport>(_onDeleteReport);
   }
 
   Future<void> _onGetTodaysReports(
-      GetTodaysReports event, Emitter<DatabaseState> emit) async {
-    emit(const HomePageState(pageState: PageState.loading));
+      GetTodaysReports event, Emitter<PatientDatabaseState> emit) async {
+    emit(const PatientHomePageState(pageState: PageState.loading));
     try {
       List<SessionReport> reportList =
           await databaseRepository.getTodaysReports();
       print(reportList);
-      emit(HomePageState(
+      emit(PatientHomePageState(
         reportList: reportList,
         pageState: PageState.success,
       ));
     } on Exception catch (_) {
-      emit(const HomePageState(pageState: PageState.error));
+      emit(const PatientHomePageState(pageState: PageState.error));
     }
   }
 
   Future<void> _onSaveReport(
-      SaveReport event, Emitter<DatabaseState> emit) async {
+      SaveReport event, Emitter<PatientDatabaseState> emit) async {
     emit(const SessionReportPageState(pageState: PageState.loading));
     try {
       await databaseRepository.addReport(event.report);
@@ -49,7 +49,7 @@ class DatabaseBloc extends Bloc<DatabaseEvent, DatabaseState> {
   }
 
   Future<void> _onDeleteReport(
-      DeleteReport event, Emitter<DatabaseState> emit) async {
+      DeleteReport event, Emitter<PatientDatabaseState> emit) async {
     emit(const SessionReportPageState(pageState: PageState.loading));
     try {
       await databaseRepository.deleteReport(event.report);

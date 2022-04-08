@@ -6,12 +6,14 @@ import 'package:breathe/models/doctor.dart';
 import 'package:breathe/repositories/doctor_auth_repository.dart';
 import 'package:breathe/repositories/doctor_database_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class DoctorAppBloc extends Bloc<DoctorAppEvent, DoctorAppState> {
   final DoctorAuthRepository _doctorAuthRepository;
   late DoctorDatabaseRepository _databaseRepository;
   late Doctor doctor;
-  late DatabaseBloc databaseBloc;
+  late DoctorDatabaseBloc databaseBloc;
 
   DoctorAppBloc({required authRepository})
       : _doctorAuthRepository = authRepository,
@@ -68,6 +70,8 @@ class DoctorAppBloc extends Bloc<DoctorAppEvent, DoctorAppState> {
       if (completeUserData != Doctor.empty) {
         // if db fetch is successful
         doctor = completeUserData;
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isDoctor', true);
         emit(AuthenticatedDoctor(doctor: doctor));
       } else {
         // if db fetch fails
@@ -130,16 +134,25 @@ class DoctorAppBloc extends Bloc<DoctorAppEvent, DoctorAppState> {
             'https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg';
       }
       print(photoUrl);
+
+      // Generate uuid
+      const uuid = Uuid();
+      String id = uuid.v1().substring(0, 6);
+
       // Add User details to db
       Doctor newUserData = Doctor(
         uid: doctor.uid,
         email: event.email,
         name: event.name,
-        doctorId: event.doctorId,
+        doctorId: id,
         hospital: event.hospital,
         profilePic: photoUrl,
         qualification: event.qualification,
       );
+
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('isDoctor', true);
+
       _databaseRepository.updateDoctorData(newUserData);
       doctor = newUserData;
       emit(AuthenticatedDoctor(doctor: doctor));
@@ -164,6 +177,8 @@ class DoctorAppBloc extends Bloc<DoctorAppEvent, DoctorAppState> {
     _databaseRepository = DoctorDatabaseRepository(uid: doctor.uid);
     // updateDatabaseBloc();
     await _doctorAuthRepository.signOut();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isDoctor');
     emit(UnauthenticatedDoctor(doctor: doctor));
   }
 }

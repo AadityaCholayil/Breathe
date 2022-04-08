@@ -1,7 +1,6 @@
 import 'package:breathe/models/doctor.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:breathe/models/custom_exceptions.dart';
-import 'package:breathe/models/patient.dart';
 
 class DoctorAuthRepository{
   final FirebaseAuth _firebaseAuth;

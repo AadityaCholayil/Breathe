@@ -24,14 +24,14 @@ class _PatientHomePageState extends State<PatientHomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<DatabaseBloc>().add(const GetTodaysReports());
+    context.read<PatientDatabaseBloc>().add(const GetTodaysReports());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DatabaseBloc, DatabaseState>(
+    return BlocConsumer<PatientDatabaseBloc, PatientDatabaseState>(
       listener: (context, state) {
-        if (state is HomePageState) {
+        if (state is PatientHomePageState) {
           if (state.pageState == PageState.success) {
             reportList = state.reportList;
           }

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:breathe/models/doctor.dart';
 import 'package:breathe/models/patient.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
@@ -30,6 +31,18 @@ class PatientLoginUser extends PatientAppEvent {
   List<Object?> get props => [toString()];
 }
 
+class GetDoctorDetails extends PatientAppEvent {
+  final String doctorId;
+
+  const GetDoctorDetails({required this.doctorId});
+
+  @override
+  String toString() => 'PatientCheckEmailStatus';
+
+  @override
+  List<Object?> get props => [toString()];
+}
+
 class PatientCheckEmailStatus extends PatientAppEvent {
   final String email;
 
@@ -48,8 +61,7 @@ class PatientSignup extends PatientAppEvent {
   final String name;
   final int age;
   final String gender;
-  final String doctorId;
-  final String hospital;
+  final Doctor doctor;
   final File? profilePic;
 
   const PatientSignup({
@@ -58,18 +70,17 @@ class PatientSignup extends PatientAppEvent {
     required this.name,
     required this.age,
     required this.gender,
-    required this.doctorId,
-    required this.hospital,
+    required this.doctor,
     required this.profilePic,
   });
 
   @override
   String toString() =>
-      'PatientSignup($email, $password, $name, $age, $gender, $hospital, $doctorId)';
+      'PatientSignup($email, $password, $name, $age, $gender)';
 
   @override
   List<Object?> get props =>
-      [email, password, name, age, gender, hospital, doctorId, profilePic];
+      [email, password, name, age, gender, profilePic];
 }
 
 class UpdatePatientData extends PatientAppEvent {

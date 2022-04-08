@@ -1,24 +1,23 @@
 import 'dart:io';
-
 import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
-import 'package:breathe/views/patient/auth_screens/doctor_linking_page.dart';
-import 'package:breathe/views/patient/auth_screens/login_screen.dart';
+import 'package:breathe/views/doctor/auth_screens/login_screen.dart';
+import 'package:breathe/views/doctor/auth_screens/signup_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 
-class PatientGetStartedPage extends StatefulWidget {
-  const PatientGetStartedPage({Key? key}) : super(key: key);
+class DoctorGetStartedPage extends StatefulWidget {
+  const DoctorGetStartedPage({Key? key}) : super(key: key);
 
   @override
-  _PatientGetStartedPageState createState() => _PatientGetStartedPageState();
+  _DoctorGetStartedPageState createState() => _DoctorGetStartedPageState();
 }
 
-class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
-  String name = 'a';
-  int age = 3;
-  String gender = 'Male';
+class _DoctorGetStartedPageState extends State<DoctorGetStartedPage> {
+  String name = '';
+  String hospital = '';
+  String qualification = '';
   File? _image;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -49,11 +48,11 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                   children: [
                     SizedBox(height: 25.w),
                     const CustomBackButton(),
-                    SizedBox(height: 30.h),
+                    SizedBox(height: 20.h),
                     Text(
                       'Welcome to,',
                       style: TextStyle(
-                        fontSize: 30,
+                        fontSize: 27,
                         fontWeight: FontWeight.w300,
                         color: CustomTheme.t2,
                         height: 0.9,
@@ -78,14 +77,14 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                         color: Theme.of(context).colorScheme.onBackground,
                       ),
                     ),
-                    SizedBox(height: 40.h),
+                    SizedBox(height: 25.h),
                     _buildProfile(context),
-                    SizedBox(height: 30.w),
+                    SizedBox(height: 20.w),
                     _buildName(),
                     SizedBox(height: 20.w),
-                    _buildAge(),
+                    _buildHospital(),
                     SizedBox(height: 20.w),
-                    _buildGender(),
+                    _buildQualification(),
                     SizedBox(height: 25.w),
                     CustomElevatedButton(
                       text: 'Next',
@@ -97,17 +96,17 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => PatientDoctorLinkingPage(
+                            builder: (context) => DoctorSignupPage(
                               name: name,
-                              age: age,
-                              gender: gender,
-                              image: _image,
+                              hospital: hospital,
+                              profilePic: _image,
+                              qualification: qualification,
                             ),
                           ),
                         );
                       },
                     ),
-                    SizedBox(height: 40.w),
+                    SizedBox(height: 50.w),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -127,7 +126,7 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                             Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
                                     builder: (context) =>
-                                        const PatientLoginPage()));
+                                        const DoctorLoginPage()));
                           },
                         ),
                       ],
@@ -336,7 +335,6 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
   Widget _buildName() {
     return CustomShadow(
       child: TextFormField(
-        initialValue: name,
         decoration: customInputDecoration(labelText: 'Name'),
         style: formTextStyle(),
         onSaved: (value) {
@@ -352,26 +350,17 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
     );
   }
 
-  Widget _buildAge() {
+  Widget _buildHospital() {
     return CustomShadow(
       child: TextFormField(
-        initialValue: age.toString(),
-        decoration: customInputDecoration(labelText: 'Age'),
+        decoration: customInputDecoration(labelText: 'Hospital'),
         style: formTextStyle(),
-        keyboardType: TextInputType.number,
         onSaved: (value) {
-          age = int.tryParse(value ?? '') ?? 18;
+          hospital = value ?? '';
         },
-        autovalidateMode: AutovalidateMode.onUserInteraction,
         validator: (value) {
           if (value == null || value.isEmpty) {
-            return 'Please enter your age!';
-          }
-          if (int.tryParse(value) == null) {
-            return "Invalid!";
-          }
-          if (int.tryParse(value)! > 100 || int.tryParse(value)! < 0) {
-            return "Please enter valid age!";
+            return 'Please enter your hospital';
           }
           return null;
         },
@@ -379,133 +368,21 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
     );
   }
 
-  Widget _buildGender() {
-    return Row(
-      children: [
-        SizedBox(width: 15.w,),
-        Text(
-          'Gender',
-          style: TextStyle(
-            color: CustomTheme.t1,
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-        SizedBox(width: 30.w,),
-        Expanded(
-          flex: 2,
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                gender = 'Male';
-              });
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              height: 60.w,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: CustomTheme.cardShadow,
-                    blurRadius: 15,
-                    offset: Offset(4.w, 4.w),
-                  ),
-                ],
-                border: Border.all(
-                  width: 2.5.w,
-                  color: gender=='Male'?CustomTheme.accent:Colors.transparent,
-                ),
-                color: CustomTheme.card,
-                borderRadius: BorderRadius.circular(20.w),
-              ),
-              child: Text(
-                'M',
-                style: TextStyle(
-                    color: CustomTheme.t1,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(width: 15.w),
-        Expanded(
-          flex: 2,
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                gender = 'Female';
-              });
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              height: 60.w,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: CustomTheme.cardShadow,
-                    blurRadius: 15,
-                    offset: Offset(4.w, 4.w),
-                  ),
-                ],
-                border: Border.all(
-                  width: 2.5.w,
-                  color: gender=='Female'?CustomTheme.accent:Colors.transparent,
-                ),
-                color: CustomTheme.card,
-                borderRadius: BorderRadius.circular(20.w),
-              ),
-              child: Text(
-                'F',
-                style: TextStyle(
-                    color: CustomTheme.t1,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-          ),
-        ),
-        SizedBox(width: 15.w),
-        Expanded(
-          flex: 3,
-          child: InkWell(
-            onTap: () {
-              setState(() {
-                gender = 'Others';
-              });
-            },
-            child: AnimatedContainer(
-              duration: const Duration(milliseconds: 200),
-              height: 60.w,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                    color: CustomTheme.cardShadow,
-                    blurRadius: 15,
-                    offset: Offset(4.w, 4.w),
-                  ),
-                ],
-                border: Border.all(
-                  width: 2.5.w,
-                  color: gender=='Others'?CustomTheme.accent:Colors.transparent,
-                ),
-                color: CustomTheme.card,
-                borderRadius: BorderRadius.circular(20.w),
-              ),
-              child: Text(
-                'Others',
-                style: TextStyle(
-                    color: CustomTheme.t1,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500),
-              ),
-            ),
-          ),
-        ),
-      ],
+  Widget _buildQualification() {
+    return CustomShadow(
+      child: TextFormField(
+        decoration: customInputDecoration(labelText: 'Qualification'),
+        style: formTextStyle(),
+        onSaved: (value) {
+          qualification = value ?? '';
+        },
+        validator: (value) {
+          if (value == null || value.isEmpty) {
+            return 'Please enter your qualification';
+          }
+          return null;
+        },
+      ),
     );
   }
 }
