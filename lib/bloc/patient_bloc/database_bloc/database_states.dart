@@ -1,4 +1,5 @@
 import 'package:breathe/models/helper_models.dart';
+import 'package:breathe/models/message.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:equatable/equatable.dart';
 
@@ -79,6 +80,20 @@ class SessionReportPageState extends PatientDatabaseState {
   @override
   List<Object?> get props => [report, pageState];
 }
+
+class PatientChatPageState extends PatientDatabaseState {
+  final List<Message> messages;
+  final PageState pageState;
+
+  const PatientChatPageState({
+    this.messages = const [],
+    this.pageState = PageState.loading,
+  });
+
+  @override
+  List<Object?> get props => [messages, pageState];
+}
+
 
 // class HomePageState extends DatabaseState {
 //   final List<RaidBoss>? raidBossList;

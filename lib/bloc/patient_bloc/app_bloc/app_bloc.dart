@@ -17,7 +17,7 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
   final PatientAuthRepository _authRepository;
   late PatientDatabaseRepository _databaseRepository;
   PatientChatRepository _chatRepository =
-  PatientChatRepository(doctor: Doctor.empty);
+      PatientChatRepository(doctor: Doctor.empty);
   late Patient patient;
   Doctor doctor = Doctor.empty;
   late PatientDatabaseBloc databaseBloc;
@@ -32,13 +32,13 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
     on<GetDoctorDetails>(_onGetDoctorDetails);
     on<PatientCheckEmailStatus>(_onCheckEmailStatus);
     on<PatientSignup>(_onSignupUser);
-    on<UpdatePatientData>(_onUpdatePatientUserData);
+    on<UpdatePatientData>(_onUpdateUserData);
     on<PatientLoggedOut>(_onLoggedOut);
   }
 
   // When the App Starts
-  FutureOr<void> _onAppStarted(PatientAppStarted event,
-      Emitter<PatientAppState> emit) async {
+  FutureOr<void> _onAppStarted(
+      PatientAppStarted event, Emitter<PatientAppState> emit) async {
     emit(UninitializedPatient(patient: Patient.empty));
     try {
       patient = _authRepository.getUserData;
@@ -48,13 +48,12 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
         _databaseRepository = PatientDatabaseRepository(uid: patient.uid);
         // Fetch rest of the user details from database
         Patient completeUserData =
-        await _databaseRepository.completePatientData;
+            await _databaseRepository.completePatientData;
         if (completeUserData != Patient.empty) {
           // if db fetch is successful
           patient = completeUserData;
-          Doctor? doctorData = await _databaseRepository.getDoctorData(
-              patient.doctorId);
-          if (doctorData != null) {
+          Doctor? doctorData = await _databaseRepository.getDoctorData(patient.doctorId);
+          if(doctorData!=null){
             doctor = doctorData;
             emit(AuthenticatedPatient(patient: patient));
           } else {
@@ -74,8 +73,8 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
   }
 
   // When the User Logs in
-  FutureOr<void> _onLoginUser(PatientLoginUser event,
-      Emitter<PatientAppState> emit) async {
+  FutureOr<void> _onLoginUser(
+      PatientLoginUser event, Emitter<PatientAppState> emit) async {
     emit(PatientLoginPageState.loading);
     try {
       // Login using email and password
@@ -91,9 +90,8 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
         final prefs = await SharedPreferences.getInstance();
         await prefs.setBool('isDoctor', false);
 
-        Doctor? doctorData = await _databaseRepository.getDoctorData(
-            patient.doctorId);
-        if (doctorData != null) {
+        Doctor? doctorData = await _databaseRepository.getDoctorData(patient.doctorId);
+        if(doctorData!=null){
           doctor = doctorData;
           emit(AuthenticatedPatient(patient: patient));
         } else {
@@ -115,8 +113,8 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
     }
   }
 
-  Future<void> _onGetDoctorDetails(GetDoctorDetails event,
-      Emitter<PatientAppState> emit) async {
+  Future<void> _onGetDoctorDetails(
+      GetDoctorDetails event, Emitter<PatientAppState> emit) async {
     // emit loading
     emit(const DoctorLinkingPageState(pageState: PageState.loading));
     try {
@@ -132,8 +130,8 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
     }
   }
 
-  Future<void> _onCheckEmailStatus(PatientCheckEmailStatus event,
-      Emitter<PatientAppState> emit) async {
+  Future<void> _onCheckEmailStatus(
+      PatientCheckEmailStatus event, Emitter<PatientAppState> emit) async {
     // emit loading
     emit(const PatientEmailInputState(emailStatus: EmailStatus.loading));
     try {
@@ -152,8 +150,8 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
   }
 
   // When the User Signs up
-  FutureOr<void> _onSignupUser(PatientSignup event,
-      Emitter<PatientAppState> emit) async {
+  FutureOr<void> _onSignupUser(
+      PatientSignup event, Emitter<PatientAppState> emit) async {
     emit(PatientSignupPageState.loading);
     try {
       // Signup using email and password
@@ -171,12 +169,12 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
         } else {
           // Default profile pic
           photoUrl =
-          'https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg';
+              'https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg';
         }
       } else {
         // Default profile pic
         photoUrl =
-        'https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg';
+            'https://icon-library.com/images/default-user-icon/default-user-icon-13.jpg';
       }
       print('Uploaded to ' + photoUrl);
 
@@ -230,53 +228,13 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
     }
   }
 
-  // FutureOr<void> _onUpdateUserData(
-  //     UpdatePatientData event, Emitter<PatientAppState> emit) async {
-  //   emit(UninitializedPatient(patient: Patient.empty));
-  // }
-
-  FutureOr<void> _onUpdatePatientUserData(UpdatePatientData event,
-      Emitter<PatientAppState> emit) async {
+  FutureOr<void> _onUpdateUserData(
+      UpdatePatientData event, Emitter<PatientAppState> emit) async {
     emit(UninitializedPatient(patient: Patient.empty));
-    emit(EditPatientProfilePageState.loading);
-    try {
-      // Get userData for uid and email
-      Patient userDataTemp = _authRepository.getUserData;
-      // Update databaseRepository
-      _databaseRepository = PatientDatabaseRepository(uid: userDataTemp.uid);
-      String photoUrl = '';
-      // if (event.profilePic != null) {
-      //   // Upload new image to Firebase storage
-      //   String? res = await _databaseRepository.uploadFile(event.profilePic!);
-      //   if (res != null) {
-      //     photoUrl = res;
-      //   } else {
-      //     emit(EditPatientProfilePageState.somethingWentWrong);
-      //   }
-      // } else {
-      //   // Keep the same photoUrl
-      //   photoUrl = patient.profilePic;
-      // }
-      // Create new userData object
-      Patient newUserData = patient.copyWith(
-      name: event.name,
-        gender: event.name,
-        age: event.age,
-        profilePic: photoUrl,
-
-      );
-      // Update userData
-      await
-      _databaseRepository.updatePatientData(newUserData);
-      patient = newUserData;
-      emit(EditPatientProfilePageState.success);
-    } on Exception catch (_) {
-      emit(EditPatientProfilePageState.somethingWentWrong);
-    }
   }
 
-  FutureOr<void> _onLoggedOut(PatientLoggedOut event,
-      Emitter<PatientAppState> emit) async {
+  FutureOr<void> _onLoggedOut(
+      PatientLoggedOut event, Emitter<PatientAppState> emit) async {
     emit(UninitializedPatient(patient: Patient.empty));
     patient = Patient.empty;
     _databaseRepository = PatientDatabaseRepository(uid: patient.uid);

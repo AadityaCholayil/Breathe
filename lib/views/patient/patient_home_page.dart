@@ -4,6 +4,7 @@ import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/shared/coming_soon.dart';
 import 'package:breathe/themes/theme.dart';
+import 'package:breathe/views/patient/patient_chat_page.dart';
 import 'package:breathe/views/patient/report_screens/report_page.dart';
 import 'package:breathe/views/patient/report_screens/session_report_page.dart';
 import 'package:breathe/views/patient/readings/take_readings_page.dart';
@@ -123,7 +124,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                         width: 20.w,
                       ),
                       _buildCard(
-                          context, "askDoctor", "Chat with your\ndoctor", 45.w, const ComingSoon()),
+                          context, "askDoctor", "Chat with your\ndoctor", 45.w, const PatientChatPage()),
                     ],
                   ),
                   SizedBox(height: 36.w),

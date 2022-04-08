@@ -5,8 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class PatientChatRepository {
   final Doctor doctor;
+  final Patient patient;
 
-  PatientChatRepository({required this.doctor});
+  PatientChatRepository({required this.doctor, required this.patient,});
 
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
@@ -28,9 +29,11 @@ class PatientChatRepository {
             toFirestore: (message, _) => message.toJson(),
           );
 
-  Stream<List<Patient>> patientsStream() {
-    return patientsRef
-        .where('doctorId', isEqualTo: doctor.doctorId)
+  Stream<List<Message>> messagesStream() {
+    return messagesRef
+        .where('doctorUid', isEqualTo: doctor.uid)
+        .where('patientUid', isEqualTo: patient.uid)
+        .orderBy('timestamp', descending: true)
         .snapshots()
         .map((event) => event.docs.map((e) => e.data()).toList());
   }
