@@ -24,8 +24,7 @@ class DoctorDatabaseBloc
     on<GetPatientList>(_onGetPatientList);
     on<GetMessages>(_onGetMessages);
     on<SendMessage>(_onSendMessage);
-    // on<SaveReport>(_onSaveReport);
-    // on<DeleteReport>(_onDeleteReport);
+    on<OpenChat>(_onOpenChat);
   }
 
   Future<void> _onGetPatientList(
@@ -71,7 +70,6 @@ class DoctorDatabaseBloc
 
   Future<void> _onSendMessage(
       SendMessage event, Emitter<DoctorDatabaseState> emit) async {
-    emit(const DoctorChatPageState(pageState: PageState.loading));
     try {
       Timestamp now = Timestamp.now();
 
@@ -90,10 +88,25 @@ class DoctorDatabaseBloc
           PatientDatabaseRepository(uid: event.patient.uid);
       Patient patient = event.patient.copyWith(
         lastMessageContents: message.content,
-        unreadMessages: 0,
+        patientUnreadCount: event.patient.patientUnreadCount + 1,
         lastMessageTimestamp: now,
       );
 
+      patientDatabaseRepository.updatePatientData(patient);
+    } on Exception catch (_) {
+      emit(const DoctorChatPageState(pageState: PageState.error));
+    }
+  }
+
+  Future<void> _onOpenChat(
+      OpenChat event, Emitter<DoctorDatabaseState> emit) async {
+    emit(const DoctorChatPageState(pageState: PageState.loading));
+    try {
+      Patient patient = event.patient.copyWith(
+        doctorUnreadCount: 0,
+      );
+      PatientDatabaseRepository patientDatabaseRepository =
+          PatientDatabaseRepository(uid: event.patient.uid);
       patientDatabaseRepository.updatePatientData(patient);
     } on Exception catch (_) {
       emit(const DoctorChatPageState(pageState: PageState.error));

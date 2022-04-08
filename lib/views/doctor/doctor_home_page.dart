@@ -295,10 +295,10 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                       .substring(11, 16),
                   style: TextStyle(
                     fontSize: 14,
-                    color: patient.unreadMessages == 0
+                    color: patient.patientUnreadCount == 0
                         ? CustomTheme.t2
                         : CustomTheme.accent,
-                    fontWeight: patient.unreadMessages == 0
+                    fontWeight: patient.patientUnreadCount == 0
                         ? FontWeight.w400
                         : FontWeight.w600,
                   ),
@@ -306,7 +306,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                 SizedBox(
                   height: 5.w,
                 ),
-                patient.unreadMessages == 0
+                patient.patientUnreadCount == 0
                     ? SizedBox(height: 5.w)
                     : Container(
                         height: 23.w,
@@ -317,7 +317,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                           shape: BoxShape.circle,
                         ),
                         child: Text(
-                          '${patient.unreadMessages}',
+                          '${patient.patientUnreadCount}',
                           style: TextStyle(
                             fontSize: 13,
                             color: CustomTheme.onAccent,

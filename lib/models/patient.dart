@@ -14,7 +14,8 @@ class Patient extends Equatable {
   final String hospital;
   final String profilePic;
   final String lastMessageContents;
-  final int unreadMessages;
+  final int patientUnreadCount;
+  final int doctorUnreadCount;
   final Timestamp lastMessageTimestamp;
   final Timestamp patientLastOpened;
   final Timestamp doctorLastOpened;
@@ -31,7 +32,8 @@ class Patient extends Equatable {
     this.hospital = '',
     this.profilePic = '',
     this.lastMessageContents = '',
-    this.unreadMessages = 1,
+    this.patientUnreadCount = 1,
+    this.doctorUnreadCount = 1,
     required this.lastMessageTimestamp,
     required this.patientLastOpened,
     required this.doctorLastOpened,
@@ -65,7 +67,8 @@ class Patient extends Equatable {
           hospital: json['hospital'],
           profilePic: json['profilePic'],
           lastMessageContents: json['lastMessageContents'],
-          unreadMessages: json['unreadMessages'],
+          patientUnreadCount: json['patientUnreadCount'],
+    doctorUnreadCount: json['doctorUnreadCount'],
           lastMessageTimestamp: json['lastMessageTimestamp'],
           patientLastOpened: json['patientLastOpened'],
           doctorLastOpened: json['doctorLastOpened'],
@@ -84,7 +87,8 @@ class Patient extends Equatable {
     data['hospital'] = hospital;
     data['profilePic'] = profilePic;
     data['lastMessageContents'] = lastMessageContents;
-    data['unreadMessages'] = unreadMessages;
+    data['patientUnreadCount'] = patientUnreadCount;
+    data['doctorUnreadCount'] = doctorUnreadCount;
     data['lastMessageTimestamp'] = lastMessageTimestamp;
     data['patientLastOpened'] = patientLastOpened;
     data['doctorLastOpened'] = doctorLastOpened;
@@ -103,7 +107,8 @@ class Patient extends Equatable {
     String? hospital,
     String? profilePic,
     String? lastMessageContents,
-    int? unreadMessages,
+    int? patientUnreadCount,
+    int? doctorUnreadCount,
     Timestamp? lastMessageTimestamp,
     Timestamp? patientLastOpened,
     Timestamp? doctorLastOpened,
@@ -120,7 +125,8 @@ class Patient extends Equatable {
       hospital: hospital ?? this.hospital,
       profilePic: profilePic ?? this.profilePic,
       lastMessageContents: lastMessageContents ?? this.lastMessageContents,
-      unreadMessages: unreadMessages ?? this.unreadMessages,
+      patientUnreadCount: patientUnreadCount ?? this.patientUnreadCount,
+      doctorUnreadCount: doctorUnreadCount ?? this.doctorUnreadCount,
       lastMessageTimestamp: lastMessageTimestamp ?? this.lastMessageTimestamp,
       patientLastOpened: patientLastOpened ?? this.patientLastOpened,
       doctorLastOpened: doctorLastOpened ?? this.doctorLastOpened,
@@ -133,7 +139,7 @@ class Patient extends Equatable {
 
   @override
   String toString() {
-    return 'Patient($uid, $email, $name, $age, $gender, $doctorId, $healthStatus, $doctorName, $hospital, $profilePic, $lastMessageContents, $unreadMessages, $lastMessageTimestamp, $patientLastOpened, $doctorLastOpened)';
+    return 'Patient($uid, $email, $name, $age, $gender, $doctorId, $healthStatus, $doctorName, $hospital, $profilePic, $lastMessageContents, $patientUnreadCount, $lastMessageTimestamp, $patientLastOpened, $doctorLastOpened)';
   }
 
   @override
@@ -149,7 +155,8 @@ class Patient extends Equatable {
         hospital,
         profilePic,
         lastMessageContents,
-        unreadMessages,
+        patientUnreadCount,
+    doctorUnreadCount,
         lastMessageTimestamp,
         patientLastOpened,
         doctorLastOpened,

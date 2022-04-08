@@ -36,6 +36,14 @@ class SendMessage extends DoctorDatabaseEvent {
   List<Object?> get props => [];
 }
 
+class OpenChat extends DoctorDatabaseEvent {
+  final Patient patient;
+
+  const OpenChat({required this.patient});
+
+  @override
+  List<Object?> get props => [];
+}
 // class SaveReport extends DoctorDatabaseEvent {
 //   final SessionReport report;
 //

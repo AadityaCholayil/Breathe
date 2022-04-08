@@ -28,6 +28,7 @@ class PatientDatabaseBloc
     on<DeleteReport>(_onDeleteReport);
     on<GetMessages>(_onGetMessages);
     on<SendMessage>(_onSendMessage);
+    on<OpenChat>(_onOpenChat);
   }
 
   Future<void> _onGetTodaysReports(GetTodaysReports event,
@@ -86,7 +87,7 @@ class PatientDatabaseBloc
       // Update patient
       patient = patient.copyWith(
         lastMessageContents: 'Sent a report',
-        unreadMessages: patient.unreadMessages + 1,
+        doctorUnreadCount: patient.doctorUnreadCount + 1,
         lastMessageTimestamp: now,
       );
       databaseRepository.updatePatientData(patient);
@@ -158,11 +159,24 @@ class PatientDatabaseBloc
       PatientDatabaseRepository(uid: patient.uid);
       patient = patient.copyWith(
         lastMessageContents: message.content,
-        unreadMessages: patient.unreadMessages+1,
+        doctorUnreadCount: patient.doctorUnreadCount+1,
         lastMessageTimestamp: now,
       );
 
       patientDatabaseRepository.updatePatientData(patient);
+    } on Exception catch (_) {
+      emit(const PatientChatPageState(pageState: PageState.error));
+    }
+  }
+
+  Future<void> _onOpenChat(OpenChat event,
+      Emitter<PatientDatabaseState> emit) async {
+    emit(const PatientChatPageState(pageState: PageState.loading));
+    try {
+      patient = patient.copyWith(
+        patientUnreadCount: 0,
+      );
+      databaseRepository.updatePatientData(patient);
     } on Exception catch (_) {
       emit(const PatientChatPageState(pageState: PageState.error));
     }
