@@ -4,6 +4,8 @@ import 'package:breathe/models/message.dart';
 import 'package:breathe/models/patient.dart';
 import 'package:breathe/repositories/doctor_chat_repository.dart';
 import 'package:breathe/repositories/doctor_database_repository.dart';
+import 'package:breathe/repositories/patient_database_repository.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'database_bloc_files.dart';
 
@@ -11,7 +13,8 @@ class DoctorDatabaseBloc
     extends Bloc<DoctorDatabaseEvent, DoctorDatabaseState> {
   Doctor doctor;
   DoctorDatabaseRepository databaseRepository;
-  late DoctorChatRepository chatRepository = DoctorChatRepository(doctor: Doctor.empty);
+  late DoctorChatRepository chatRepository =
+      DoctorChatRepository(doctor: Doctor.empty);
 
   DoctorDatabaseBloc({
     required this.doctor,
@@ -20,6 +23,7 @@ class DoctorDatabaseBloc
     chatRepository = DoctorChatRepository(doctor: doctor);
     on<GetPatientList>(_onGetPatientList);
     on<GetMessages>(_onGetMessages);
+    on<SendMessage>(_onSendMessage);
     // on<SaveReport>(_onSaveReport);
     // on<DeleteReport>(_onDeleteReport);
   }
@@ -60,6 +64,37 @@ class DoctorDatabaseBloc
           );
         },
       );
+    } on Exception catch (_) {
+      emit(const DoctorChatPageState(pageState: PageState.error));
+    }
+  }
+
+  Future<void> _onSendMessage(
+      SendMessage event, Emitter<DoctorDatabaseState> emit) async {
+    emit(const DoctorChatPageState(pageState: PageState.loading));
+    try {
+      Timestamp now = Timestamp.now();
+
+      Message message = Message(
+        content: event.message,
+        patientUid: event.patient.uid,
+        doctorUid: doctor.uid,
+        timestamp: now,
+        sentByDoctor: true,
+        isSpecial: false,
+        isReport: false,
+      );
+      chatRepository.sendMessage(message);
+
+      PatientDatabaseRepository patientDatabaseRepository =
+          PatientDatabaseRepository(uid: event.patient.uid);
+      Patient patient = event.patient.copyWith(
+        lastMessageContents: message.content,
+        unreadMessages: 0,
+        lastMessageTimestamp: now,
+      );
+
+      patientDatabaseRepository.updatePatientData(patient);
     } on Exception catch (_) {
       emit(const DoctorChatPageState(pageState: PageState.error));
     }

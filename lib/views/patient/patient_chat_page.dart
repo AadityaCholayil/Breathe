@@ -1,5 +1,5 @@
-import 'package:breathe/bloc/doctor_bloc/database_bloc/database_bloc.dart';
-import 'package:breathe/bloc/doctor_bloc/database_bloc/database_bloc_files.dart';
+import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc_files.dart';
+import 'package:breathe/models/doctor.dart';
 import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/message.dart';
 import 'package:breathe/models/patient.dart';
@@ -9,34 +9,36 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class DoctorChatPage extends StatefulWidget {
-  final Patient patient;
-
-  const DoctorChatPage({Key? key, required this.patient}) : super(key: key);
+class PatientChatPage extends StatefulWidget {
+  const PatientChatPage({Key? key}) : super(key: key);
 
   @override
-  State<DoctorChatPage> createState() => _DoctorChatPageState();
+  State<PatientChatPage> createState() => _PatientChatPageState();
 }
 
-class _DoctorChatPageState extends State<DoctorChatPage> {
+class _PatientChatPageState extends State<PatientChatPage> {
   List<Message> messages = [];
   String message = '';
+  Patient patient = Patient.empty;
+  Doctor doctor = Doctor.empty;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   @override
   void initState() {
     super.initState();
+    patient = context
+        .read<PatientDatabaseBloc>().patient;
     context
-        .read<DoctorDatabaseBloc>()
-        .add(GetMessages(patient: widget.patient));
+        .read<PatientDatabaseBloc>()
+        .add(const GetMessages());
   }
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<DoctorDatabaseBloc, DoctorDatabaseState>(
+    return BlocConsumer<PatientDatabaseBloc, PatientDatabaseState>(
       listener: (context, state) {
-        if (state is DoctorChatPageState) {
+        if (state is PatientChatPageState) {
           if (state.pageState == PageState.success) {
             messages = state.messages;
           }
@@ -44,65 +46,6 @@ class _DoctorChatPageState extends State<DoctorChatPage> {
       },
       builder: (context, state) {
         return Scaffold(
-          // appBar: AppBar(
-          //   titleSpacing: 0,
-          //   toolbarHeight: 70.w,
-          //   leading: IconButton(
-          //     padding: EdgeInsets.only(left: 10.w),
-          //     icon: Icon(
-          //       Icons.arrow_back_ios,
-          //       size: 22.w,
-          //       color: CustomTheme.t1,
-          //     ),
-          //     onPressed: () {
-          //       Navigator.pop(context);
-          //     },
-          //   ),
-          //   leadingWidth: 40.w,
-          //   title: Row(
-          //     children: [
-          //       Container(
-          //         decoration: const BoxDecoration(
-          //           shape: BoxShape.circle,
-          //         ),
-          //         clipBehavior: Clip.antiAliasWithSaveLayer,
-          //         height: 42.w,
-          //         width: 42.w,
-          //         child: Image.network(widget.patient.profilePic),
-          //       ),
-          //       SizedBox(width: 21.w),
-          //       Text(
-          //         widget.patient.name,
-          //         style: TextStyle(
-          //           color: CustomTheme.t1,
-          //           fontSize: 21,
-          //           fontWeight: FontWeight.w500,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          //   centerTitle: false,
-          //   backgroundColor: CustomTheme.card,
-          //   shadowColor: CustomTheme.cardShadow,
-          //   elevation: 3,
-          //   actions: [
-          //     InkWell(
-          //       child: Icon(
-          //         Icons.more_vert,
-          //         size: 26,
-          //         color: CustomTheme.t1,
-          //       ),
-          //       onTap: () {
-          //         print("Settings button pressed");
-          //         // Navigator.push(
-          //         //     context,
-          //         //     MaterialPageRoute(
-          //         //         builder: (context) => const DoctorSettingsPage()));
-          //       },
-          //     ),
-          //     SizedBox(width: 20.w),
-          //   ],
-          // ),
           backgroundColor: CustomTheme.bg,
           body: SafeArea(
             child: Column(
@@ -136,11 +79,11 @@ class _DoctorChatPageState extends State<DoctorChatPage> {
                         clipBehavior: Clip.antiAliasWithSaveLayer,
                         height: 42.w,
                         width: 42.w,
-                        child: Image.network(widget.patient.profilePic),
+                        child: Image.network(patient.profilePic),
                       ),
                       SizedBox(width: 21.w),
                       Text(
-                        widget.patient.name,
+                        patient.name,
                         style: TextStyle(
                           color: CustomTheme.t1,
                           fontSize: 21,
@@ -217,9 +160,8 @@ class _DoctorChatPageState extends State<DoctorChatPage> {
                             onTap: () {
                               _formKey.currentState?.save();
                               if (message != '') {
-                                context.read<DoctorDatabaseBloc>().add(
+                                context.read<PatientDatabaseBloc>().add(
                                     SendMessage(
-                                        patient: widget.patient,
                                         message: message));
                               }
                             },
@@ -346,7 +288,7 @@ class _DoctorChatPageState extends State<DoctorChatPage> {
           ),
         ),
       );
-    } else if (message.sentByDoctor) {
+    } else if (!message.sentByDoctor) {
       return Container(
         alignment: Alignment.bottomRight,
         child: Container(

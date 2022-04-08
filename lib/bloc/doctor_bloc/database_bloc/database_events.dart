@@ -1,3 +1,4 @@
+import 'package:breathe/models/message.dart';
 import 'package:breathe/models/patient.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:equatable/equatable.dart';
@@ -20,6 +21,16 @@ class GetMessages extends DoctorDatabaseEvent {
   final Patient patient;
 
   const GetMessages({required this.patient});
+
+  @override
+  List<Object?> get props => [];
+}
+
+class SendMessage extends DoctorDatabaseEvent {
+  final Patient patient;
+  final String message;
+
+  const SendMessage({required this.patient, required this.message});
 
   @override
   List<Object?> get props => [];

@@ -17,7 +17,7 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
   final PatientAuthRepository _authRepository;
   late PatientDatabaseRepository _databaseRepository;
   PatientChatRepository _chatRepository =
-      PatientChatRepository(doctor: Doctor.empty);
+      PatientChatRepository(doctor: Doctor.empty, patient: Patient.empty);
   late Patient patient;
   Doctor doctor = Doctor.empty;
   late PatientDatabaseBloc databaseBloc;
@@ -179,7 +179,7 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
       print('Uploaded to ' + photoUrl);
 
       doctor = event.doctor;
-      _chatRepository = PatientChatRepository(doctor: doctor);
+      _chatRepository = PatientChatRepository(doctor: doctor, patient: patient);
       Timestamp now = Timestamp.now();
       // Send Message
       Message message = Message(
