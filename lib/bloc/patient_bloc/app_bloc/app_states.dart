@@ -155,3 +155,24 @@ class DeletePatientAccountPageState extends PatientAppState {
   @override
   List<Object?> get props => [toString() + message];
 }
+
+class EditPatientProfilePageState extends PatientAppState {
+  final String message;
+
+  const EditPatientProfilePageState({required this.message});
+
+  static EditPatientProfilePageState loading =
+      const EditPatientProfilePageState(message: 'Loading');
+
+  static EditPatientProfilePageState somethingWentWrong = const EditPatientProfilePageState(
+      message: 'Something went wrong, Please try again');
+
+  static EditPatientProfilePageState success =
+      const EditPatientProfilePageState(message: 'Success!');
+
+  @override
+  String toString() => 'EditPatientProfilePageState.' + message;
+
+  @override
+  List<Object?> get props => [toString()];
+}

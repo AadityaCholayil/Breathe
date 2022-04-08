@@ -377,7 +377,9 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
   Widget _buildGender() {
     return Row(
       children: [
-        SizedBox(width: 15.w,),
+        SizedBox(
+          width: 15.w,
+        ),
         Text(
           'Gender',
           style: TextStyle(
@@ -386,7 +388,9 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
             fontWeight: FontWeight.w400,
           ),
         ),
-        SizedBox(width: 30.w,),
+        SizedBox(
+          width: 30.w,
+        ),
         Expanded(
           flex: 2,
           child: InkWell(
@@ -409,7 +413,9 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                 ],
                 border: Border.all(
                   width: 2.5.w,
-                  color: gender=='Male'?CustomTheme.accent:Colors.transparent,
+                  color: gender == 'Male'
+                      ? CustomTheme.accent
+                      : Colors.transparent,
                 ),
                 color: CustomTheme.card,
                 borderRadius: BorderRadius.circular(20.w),
@@ -447,7 +453,9 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                 ],
                 border: Border.all(
                   width: 2.5.w,
-                  color: gender=='Female'?CustomTheme.accent:Colors.transparent,
+                  color: gender == 'Female'
+                      ? CustomTheme.accent
+                      : Colors.transparent,
                 ),
                 color: CustomTheme.card,
                 borderRadius: BorderRadius.circular(20.w),
@@ -485,7 +493,9 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
                 ],
                 border: Border.all(
                   width: 2.5.w,
-                  color: gender=='Others'?CustomTheme.accent:Colors.transparent,
+                  color: gender == 'Others'
+                      ? CustomTheme.accent
+                      : Colors.transparent,
                 ),
                 color: CustomTheme.card,
                 borderRadius: BorderRadius.circular(20.w),

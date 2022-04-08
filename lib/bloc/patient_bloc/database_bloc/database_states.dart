@@ -52,6 +52,17 @@ class DailyReport {
   });
 
   static DailyReport fromSessionReports(List<SessionReport> rawData){
+    int sumOfAverage = 0;
+    int sumOfBest = 0;
+    int i = 0;
+    for (var report in rawData){
+      sumOfAverage = sumOfAverage + report.averageScore;
+      sumOfBest = sumOfBest + report.bestScore;
+    }
+
+
+
+
     return DailyReport();
   }
 }

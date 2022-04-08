@@ -75,18 +75,24 @@ class PatientSignup extends PatientAppEvent {
   });
 
   @override
-  String toString() =>
-      'PatientSignup($email, $password, $name, $age, $gender)';
+  String toString() => 'PatientSignup($email, $password, $name, $age, $gender)';
 
   @override
-  List<Object?> get props =>
-      [email, password, name, age, gender, profilePic];
+  List<Object?> get props => [email, password, name, age, gender, profilePic];
 }
 
 class UpdatePatientData extends PatientAppEvent {
   final Patient userData;
+  final String email;
+  final String password;
+  final String name;
+  final int age;
+  final String gender;
+  final String doctorId;
+  final String hospital;
+  final File? profilePic;
 
-  const UpdatePatientData(this.userData);
+  const UpdatePatientData(this.userData, this.email, this.password, this.name, this.age, this.gender, this.doctorId, this.hospital, this.profilePic);
 
   @override
   String toString() => 'UpdatePatientData($userData)';
