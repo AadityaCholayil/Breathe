@@ -158,7 +158,7 @@ class PatientDatabaseBloc
       PatientDatabaseRepository(uid: patient.uid);
       patient = patient.copyWith(
         lastMessageContents: message.content,
-        unreadMessages: 0,
+        unreadMessages: patient.unreadMessages+1,
         lastMessageTimestamp: now,
       );
 
