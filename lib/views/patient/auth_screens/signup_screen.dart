@@ -109,10 +109,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                       SizedBox(height: 25.h),
                       Stack(
                         children: [
-                          Material(
-                            elevation: 4,
-                            borderRadius: BorderRadius.circular(15.w),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                          CustomShadow(
                             child: TextFormField(
                               decoration: emailStatus == EmailStatus.valid
                                   ? customInputDecoration(labelText: 'Email')
@@ -177,36 +174,28 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                       SizedBox(height: 20.w),
                       Stack(
                         children: [
-                          Material(
-                            elevation: 4,
-                            borderRadius: BorderRadius.circular(15.w),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            child: Material(
-                              elevation: 4,
-                              borderRadius: BorderRadius.circular(15.w),
-                              clipBehavior: Clip.antiAliasWithSaveLayer,
-                              child: TextFormField(
-                                decoration: customInputDecoration(
-                                    labelText: 'Password'),
-                                style: formTextStyle(),
-                                obscureText: !showPassword,
-                                onChanged: (value) {
-                                  setState(() {
-                                    password = value;
-                                  });
-                                },
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter your password';
-                                  }
-                                  if (value.length < 8) {
-                                    return 'Minimum 8 characters';
-                                  }
-                                  return null;
-                                },
-                              ),
+                          CustomShadow(
+                            child: TextFormField(
+                              decoration: customInputDecoration(
+                                  labelText: 'Password'),
+                              style: formTextStyle(),
+                              obscureText: !showPassword,
+                              onChanged: (value) {
+                                setState(() {
+                                  password = value;
+                                });
+                              },
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter your password';
+                                }
+                                if (value.length < 8) {
+                                  return 'Minimum 8 characters';
+                                }
+                                return null;
+                              },
                             ),
                           ),
                           Container(
@@ -231,10 +220,7 @@ class _PatientSignupPageState extends State<PatientSignupPage> {
                       SizedBox(height: 20.w),
                       Stack(
                         children: [
-                          Material(
-                            elevation: 4,
-                            borderRadius: BorderRadius.circular(15.w),
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                          CustomShadow(
                             child: TextFormField(
                               decoration: customInputDecoration(
                                   labelText: 'Confirm Password'),

@@ -1,7 +1,6 @@
 import 'package:breathe/models/doctor.dart';
 import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/patient.dart';
-import 'package:breathe/models/session_report.dart';
 import 'package:breathe/repositories/doctor_chat_repository.dart';
 import 'package:breathe/repositories/doctor_database_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

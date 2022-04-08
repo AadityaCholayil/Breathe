@@ -24,7 +24,7 @@ class DoctorChatRepository {
 
   Stream<List<Patient>> patientsStream() {
     return patientsRef
-        .where('doctorId', isEqualTo: doctor.doctorId).orderBy('lastMessageTimestamp')
+        .where('doctorId', isEqualTo: doctor.doctorId).orderBy('lastMessageTimestamp', descending: true)
         .snapshots()
         .map((event) => event.docs.map((e) => e.data()).toList());
   }

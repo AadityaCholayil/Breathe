@@ -113,8 +113,7 @@ class PatientDatabaseRepository {
               value.docs.isEmpty ? null : value.docs.first.data());
       return doctor;
     } on Exception catch (_) {
-      // TODO: If this doesn't work, throw SomethingWentWrong()
-      return Doctor.empty;
+      return null;
     }
   }
 }

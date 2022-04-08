@@ -105,8 +105,12 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
     emit(const DoctorLinkingPageState(pageState: PageState.loading));
     try {
       Doctor? doctor = await _databaseRepository.getDoctorData(event.doctorId);
-      emit(
-          DoctorLinkingPageState(doctor: doctor, pageState: PageState.success));
+      if (doctor == null) {
+        emit(const DoctorLinkingPageState(pageState: PageState.error));
+      } else {
+        emit(DoctorLinkingPageState(
+            doctor: doctor, pageState: PageState.success));
+      }
     } on Exception catch (_) {
       emit(const DoctorLinkingPageState(pageState: PageState.error));
     }
@@ -160,6 +164,7 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
       }
       print('Uploaded to ' + photoUrl);
 
+      _chatRepository = PatientChatRepository(doctor: event.doctor);
       Timestamp now = Timestamp.now();
       // Send Message
       Message message = Message(
@@ -184,6 +189,7 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
         doctorName: event.doctor.name,
         profilePic: photoUrl,
         lastMessageContents: 'Paired!',
+        unreadMessages: 1,
         lastMessageTimestamp: now,
         patientLastOpened: now,
         doctorLastOpened: now,
@@ -218,6 +224,8 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
     _databaseRepository = PatientDatabaseRepository(uid: patient.uid);
     // updateDatabaseBloc();
     await _authRepository.signOut();
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove('isDoctor');
     emit(UnauthenticatedPatient(patient: patient));
   }
 }

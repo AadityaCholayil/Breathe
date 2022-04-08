@@ -3,8 +3,6 @@ import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:breathe/views/doctor/auth_screens/login_screen.dart';
 import 'package:breathe/views/doctor/auth_screens/signup_screen.dart';
-import 'package:breathe/views/patient/auth_screens/doctor_linking_page.dart';
-import 'package:breathe/views/patient/auth_screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';

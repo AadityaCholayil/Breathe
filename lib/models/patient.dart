@@ -14,6 +14,7 @@ class Patient extends Equatable {
   final String hospital;
   final String profilePic;
   final String lastMessageContents;
+  final int unreadMessages;
   final Timestamp lastMessageTimestamp;
   final Timestamp patientLastOpened;
   final Timestamp doctorLastOpened;
@@ -30,6 +31,7 @@ class Patient extends Equatable {
     this.hospital = '',
     this.profilePic = '',
     this.lastMessageContents = '',
+    this.unreadMessages = 1,
     required this.lastMessageTimestamp,
     required this.patientLastOpened,
     required this.doctorLastOpened,
@@ -63,6 +65,7 @@ class Patient extends Equatable {
           hospital: json['hospital'],
           profilePic: json['profilePic'],
           lastMessageContents: json['lastMessageContents'],
+          unreadMessages: json['unreadMessages'],
           lastMessageTimestamp: json['lastMessageTimestamp'],
           patientLastOpened: json['patientLastOpened'],
           doctorLastOpened: json['doctorLastOpened'],
@@ -81,6 +84,7 @@ class Patient extends Equatable {
     data['hospital'] = hospital;
     data['profilePic'] = profilePic;
     data['lastMessageContents'] = lastMessageContents;
+    data['unreadMessages'] = unreadMessages;
     data['lastMessageTimestamp'] = lastMessageTimestamp;
     data['patientLastOpened'] = patientLastOpened;
     data['doctorLastOpened'] = doctorLastOpened;
@@ -93,7 +97,7 @@ class Patient extends Equatable {
 
   @override
   String toString() {
-    return 'Patient($uid, $email, $name, $age, $gender, $doctorId, $healthStatus, $doctorName, $hospital, $profilePic, $lastMessageContents, $lastMessageTimestamp, $patientLastOpened, $doctorLastOpened)';
+    return 'Patient($uid, $email, $name, $age, $gender, $doctorId, $healthStatus, $doctorName, $hospital, $profilePic, $lastMessageContents, $unreadMessages, $lastMessageTimestamp, $patientLastOpened, $doctorLastOpened)';
   }
 
   @override
@@ -109,7 +113,8 @@ class Patient extends Equatable {
         hospital,
         profilePic,
         lastMessageContents,
-    lastMessageTimestamp,
+        unreadMessages,
+        lastMessageTimestamp,
         patientLastOpened,
         doctorLastOpened,
       ];

@@ -16,8 +16,8 @@ class PatientGetStartedPage extends StatefulWidget {
 }
 
 class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
-  String name = '';
-  int age = 0;
+  String name = 'a';
+  int age = 3;
   String gender = 'Male';
   File? _image;
 
@@ -336,6 +336,7 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
   Widget _buildName() {
     return CustomShadow(
       child: TextFormField(
+        initialValue: name,
         decoration: customInputDecoration(labelText: 'Name'),
         style: formTextStyle(),
         onSaved: (value) {
@@ -354,6 +355,7 @@ class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
   Widget _buildAge() {
     return CustomShadow(
       child: TextFormField(
+        initialValue: age.toString(),
         decoration: customInputDecoration(labelText: 'Age'),
         style: formTextStyle(),
         keyboardType: TextInputType.number,

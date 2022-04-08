@@ -1,4 +1,3 @@
-import 'package:breathe/patient_app.dart';
 import 'package:breathe/shared/error_screen.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:flutter/material.dart';

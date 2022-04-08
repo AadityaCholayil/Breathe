@@ -278,7 +278,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
           ),
           const Spacer(),
           Text(
-            patient.lastMessageTimestamp.toDate().toString().substring(11,16)+'\n',
+            patient.lastMessageTimestamp.toDate().toString().substring(11,16),
             style: TextStyle(
               fontSize: 15,
               color: CustomTheme.t2,
