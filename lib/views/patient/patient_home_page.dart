@@ -4,6 +4,7 @@ import 'package:breathe/models/helper_models.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/shared/coming_soon.dart';
 import 'package:breathe/themes/theme.dart';
+import 'package:breathe/views/patient/report_screens/report_page.dart';
 import 'package:breathe/views/patient/report_screens/session_report_page.dart';
 import 'package:breathe/views/patient/readings/take_readings_page.dart';
 import 'package:breathe/views/patient/settings_page.dart';
@@ -103,11 +104,11 @@ class _PatientHomePageState extends State<PatientHomePage> {
                       SizedBox(
                         width: 24.w,
                       ),
-                      _buildCard(context, "report", "Report", 54.w),
+                      _buildCard(context, "report", "Report", 54.w, const ReportPage()),
                       SizedBox(
                         width: 20.w,
                       ),
-                      _buildCard(context, "exercise", "Exercise", 48.w),
+                      _buildCard(context, "exercise", "Exercise", 48.w, const ComingSoon()),
                     ],
                   ),
                   SizedBox(height: 17.w),
@@ -117,12 +118,12 @@ class _PatientHomePageState extends State<PatientHomePage> {
                         width: 24.w,
                       ),
                       _buildCard(
-                          context, "medicineReminder", "Medicine Reminder", 45.w),
+                          context, "medicineReminder", "Medicine Reminder", 45.w,const ComingSoon()),
                       SizedBox(
                         width: 20.w,
                       ),
                       _buildCard(
-                          context, "askDoctor", "Chat with your\ndoctor", 45.w),
+                          context, "askDoctor", "Chat with your\ndoctor", 45.w, const ComingSoon()),
                     ],
                   ),
                   SizedBox(height: 36.w),
@@ -306,12 +307,12 @@ class _PatientHomePageState extends State<PatientHomePage> {
   }
 
   Widget _buildCard(
-      BuildContext context, String asset, String cardType, double iconHeight) {
+      BuildContext context, String asset, String cardType, double iconHeight, Widget destination) {
     return InkWell(
       onTap: () {
         print("Button Pressed");
         Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const ComingSoon()));
+            MaterialPageRoute(builder: (context) => destination ));
       },
       child: Container(
         height: 123.w,
