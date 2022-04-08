@@ -16,8 +16,8 @@ class PatientGetStartedPage extends StatefulWidget {
 }
 
 class _PatientGetStartedPageState extends State<PatientGetStartedPage> {
-  String name = 'a';
-  int age = 3;
+  String name = '';
+  int age = 0;
   String gender = 'Male';
   File? _image;
 

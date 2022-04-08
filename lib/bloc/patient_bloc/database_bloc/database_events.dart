@@ -15,6 +15,13 @@ class GetTodaysReports extends PatientDatabaseEvent {
   List<Object?> get props => [];
 }
 
+class GetReports extends PatientDatabaseEvent {
+  const GetReports();
+
+  @override
+  List<Object?> get props => [];
+}
+
 class SaveReport extends PatientDatabaseEvent {
   final SessionReport report;
 

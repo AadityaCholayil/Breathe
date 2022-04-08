@@ -76,6 +76,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  SizedBox(height: 10.w),
                   for (Patient patient in patientList)
                     _buildCard(context, patient),
                 ],
@@ -233,8 +234,8 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
 
   Widget _buildCard(
       BuildContext context, Patient patient) {
-    return SizedBox(
-      height: 85.w,
+    return Container(
+      height: 80.w,
       child: Row(
         children: [
           SizedBox(width: 20.w),
@@ -277,12 +278,37 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
             ],
           ),
           const Spacer(),
-          Text(
-            patient.lastMessageTimestamp.toDate().toString().substring(11,16),
-            style: TextStyle(
-              fontSize: 15,
-              color: CustomTheme.t2,
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                patient.lastMessageTimestamp.toDate().toString().substring(11,16),
+                style: TextStyle(
+                  fontSize: 14,
+                  color: patient.unreadMessages==0?CustomTheme.t2:CustomTheme.accent,
+                  fontWeight: patient.unreadMessages==0?FontWeight.w400:FontWeight.w600,
+                ),
+              ),
+              SizedBox(height: 5.w,),
+              patient.unreadMessages==0?SizedBox(height: 5.w):Container(
+                height: 23.w,
+                width: 23.w,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  color: CustomTheme.accent,
+                  shape: BoxShape.circle,
+                ),
+                child: Text(
+                  '${patient.unreadMessages}',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: CustomTheme.onAccent,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+              SizedBox(height: 3.w,),
+            ],
           ),
           SizedBox(width: 20.w),
         ],

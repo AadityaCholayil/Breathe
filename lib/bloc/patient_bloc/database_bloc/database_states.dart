@@ -27,6 +27,35 @@ class PatientHomePageState extends PatientDatabaseState {
   List<Object?> get props => [reportList, pageState];
 }
 
+class ReportPageState extends PatientDatabaseState {
+  final List<DailyReport> weeklyReport;
+  final PageState pageState;
+
+  const ReportPageState({
+    this.weeklyReport = const [],
+    this.pageState = PageState.loading,
+  });
+
+  @override
+  List<Object?> get props => [weeklyReport, pageState];
+}
+
+class DailyReport {
+  List<SessionReport> reports;
+  int averageOfAverage;
+  int averageOfBest;
+
+  DailyReport({
+    this.reports = const [],
+    this.averageOfAverage = 0,
+    this.averageOfBest = 0,
+  });
+
+  static DailyReport fromSessionReports(List<SessionReport> rawData){
+    return DailyReport();
+  }
+}
+
 class SessionReportPageState extends PatientDatabaseState {
   final SessionReport? report;
   final PageState pageState;
