@@ -14,124 +14,128 @@ class SettingsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        backgroundColor: CustomTheme.bg,
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const CustomBackButton(),
-            SizedBox(
-              height: 30.w,
-            ),
-            Container(
-              alignment: Alignment.center,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.black54,
-              ),
-              child: CircleAvatar(
-                radius: 75.w,
-                backgroundColor: Colors.grey,
-                backgroundImage: NetworkImage(
-                    context.read<PatientDatabaseBloc>().patient.profilePic),
-              ),
-            ),
-            SizedBox(height: 11.w),
-            Center(
-              child: Text(
-                context.read<PatientAppBloc>().patient.name,
-                // "Pranav",
-                style: TextStyle(
-                  color: CustomTheme.t1,
-                  fontSize: 29,
-                  fontWeight: FontWeight.w500,
+    return BlocBuilder<PatientAppBloc, PatientAppState>(
+      builder: (context, state) {
+        return SafeArea(
+          child: Scaffold(
+            backgroundColor: CustomTheme.bg,
+            body: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CustomBackButton(),
+                SizedBox(
+                  height: 30.w,
                 ),
-              ),
-            ),
-            SizedBox(height: 11.w),
-            Center(child: _buildProfileCard(context)),
-            SizedBox(height: 29.w),
-            Padding(
-              padding: EdgeInsets.only(left: 24.w),
-              child: Text(
-                "Consulting Doctor",
-                // "Pranav",
-                style: TextStyle(
-                  color: CustomTheme.t2,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
+                Container(
+                  alignment: Alignment.center,
+                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.black54,
+                  ),
+                  child: CircleAvatar(
+                    radius: 75.w,
+                    backgroundColor: Colors.grey,
+                    backgroundImage: NetworkImage(
+                        context.read<PatientDatabaseBloc>().patient.profilePic),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(height: 8.w),
-            Padding(
-              padding: EdgeInsets.only(left: 24.w),
-              child: Text(
-                context.read<PatientAppBloc>().patient.doctorName,
-                // "Dr. Pranav Shegekar",
-                style: TextStyle(
-                  color: CustomTheme.t1,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
+                SizedBox(height: 11.w),
+                Center(
+                  child: Text(
+                    context.read<PatientAppBloc>().patient.name,
+                    // "Pranav",
+                    style: TextStyle(
+                      color: CustomTheme.t1,
+                      fontSize: 29,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(height: 20.w),
-            Padding(
-              padding: EdgeInsets.only(left: 24.w),
-              child: Text(
-                // context.read<AppBloc>().userData.doctorName,
-                "Hospital",
-                style: TextStyle(
-                  color: CustomTheme.t2,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
+                SizedBox(height: 11.w),
+                Center(child: _buildProfileCard(context)),
+                SizedBox(height: 29.w),
+                Padding(
+                  padding: EdgeInsets.only(left: 24.w),
+                  child: Text(
+                    "Consulting Doctor",
+                    // "Pranav",
+                    style: TextStyle(
+                      color: CustomTheme.t2,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(height: 8.w),
-            Padding(
-              padding: EdgeInsets.only(left: 24.w),
-              child: Text(
-                context.read<PatientAppBloc>().patient.hospital,
-                // "XYZ Hospital",
-                style: TextStyle(
-                  color: CustomTheme.t1,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w500,
+                SizedBox(height: 8.w),
+                Padding(
+                  padding: EdgeInsets.only(left: 24.w),
+                  child: Text(
+                    context.read<PatientAppBloc>().patient.doctorName,
+                    // "Dr. Pranav Shegekar",
+                    style: TextStyle(
+                      color: CustomTheme.t1,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            SizedBox(height: 29.w),
-            Padding(
-              padding: EdgeInsets.only(left: 24.w),
-              child: Text(
-                // context.read<AppBloc>().userData.doctorName,
-                "Account",
-                style: TextStyle(
-                  color: CustomTheme.t2,
-                  fontSize: 15,
-                  fontWeight: FontWeight.w500,
+                SizedBox(height: 20.w),
+                Padding(
+                  padding: EdgeInsets.only(left: 24.w),
+                  child: Text(
+                    // context.read<AppBloc>().userData.doctorName,
+                    "Hospital",
+                    style: TextStyle(
+                      color: CustomTheme.t2,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
-              ),
+                SizedBox(height: 8.w),
+                Padding(
+                  padding: EdgeInsets.only(left: 24.w),
+                  child: Text(
+                    context.read<PatientAppBloc>().patient.hospital,
+                    // "XYZ Hospital",
+                    style: TextStyle(
+                      color: CustomTheme.t1,
+                      fontSize: 24,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 29.w),
+                Padding(
+                  padding: EdgeInsets.only(left: 24.w),
+                  child: Text(
+                    // context.read<AppBloc>().userData.doctorName,
+                    "Account",
+                    style: TextStyle(
+                      color: CustomTheme.t2,
+                      fontSize: 15,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                SizedBox(height: 8.w),
+                const SettingsOptions(
+                  listItemName: 'Edit Details',
+                  destination: EditPatientProfilePage(),
+                ),
+                SizedBox(height: 28.w),
+                const SettingsOptions(
+                  listItemName: 'Delete Account',
+                  destination: ComingSoon(),
+                ),
+                SizedBox(height: 28.w),
+                const SettingsOptions(listItemName: 'Sign Out', destination: null),
+              ],
             ),
-            SizedBox(height: 8.w),
-            const SettingsOptions(
-              listItemName: 'Edit Details',
-              destination: EditPatientProfilePage(),
-            ),
-            SizedBox(height: 28.w),
-            const SettingsOptions(
-              listItemName: 'Delete Account',
-              destination: ComingSoon(),
-            ),
-            SizedBox(height: 28.w),
-            const SettingsOptions(listItemName: 'Sign Out', destination: null),
-          ],
-        ),
-      ),
+          ),
+        );
+      }
     );
   }
 

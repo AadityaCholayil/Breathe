@@ -245,18 +245,18 @@ class PatientAppBloc extends Bloc<PatientAppEvent, PatientAppState> {
       // Update databaseRepository
       _databaseRepository = PatientDatabaseRepository(uid: userDataTemp.uid);
       String photoUrl = '';
-      if (event.userData.profilePic != null) {
-        // Upload new image to Firebase storage
-        String? res = await _databaseRepository.uploadFile(event.profilePic!);
-        if (res != null) {
-          photoUrl = res;
-        } else {
-          emit(EditPatientProfilePageState.somethingWentWrong);
-        }
-      } else {
-        // Keep the same photoUrl
-        photoUrl = patient.profilePic;
-      }
+      // if (event.profilePic != null) {
+      //   // Upload new image to Firebase storage
+      //   String? res = await _databaseRepository.uploadFile(event.profilePic!);
+      //   if (res != null) {
+      //     photoUrl = res;
+      //   } else {
+      //     emit(EditPatientProfilePageState.somethingWentWrong);
+      //   }
+      // } else {
+      //   // Keep the same photoUrl
+      //   photoUrl = patient.profilePic;
+      // }
       // Create new userData object
       Patient newUserData = patient.copyWith(
       name: event.name,
