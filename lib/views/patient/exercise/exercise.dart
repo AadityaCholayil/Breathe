@@ -1,4 +1,5 @@
 import 'package:breathe/shared/coming_soon.dart';
+import 'package:breathe/shared/shared_widgets.dart';
 import 'package:breathe/themes/theme.dart';
 import 'package:breathe/views/patient/exercise/exercise-1.dart';
 import 'package:flutter/material.dart';
@@ -9,32 +10,38 @@ class Exercise extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: CustomTheme.bg,
-      body: Column(
-        children: [
-          Center(
-            child: Image.asset("assets/breathingExercise.png"),
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: CustomTheme.bg,
+        body: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              SizedBox(height: 20.w),
+              CustomBackButton(),
+              SizedBox(height: 20.w),
+              Center(
+                child: Image.asset("assets/breathingExercise.png"),
+              ),
+              SizedBox(
+                height: 40.w,
+              ),
+              _buildCard(context, "Exercise-1"),
+              SizedBox(
+                height: 23.w,
+              ),
+              _buildCard(context, "Exercise"),
+              SizedBox(
+                height: 23.w,
+              ),
+              _buildCard(context, "Exercise"),
+              SizedBox(
+                height: 23.w,
+              ),
+              _buildCard(context, "Exercise"),
+            ],
           ),
-          SizedBox(
-            height: 40.w,
-          ),
-          _buildCard(context, "Exercise-1"),
-
-
-          SizedBox(
-            height: 23.w,
-          ),
-          _buildCard(context, "Exercise"),
-          SizedBox(
-            height: 23.w,
-          ),
-          _buildCard(context, "Exercise"),
-          SizedBox(
-            height: 23.w,
-          ),
-          _buildCard(context, "Exercise"),
-        ],
+        ),
       ),
     );
   }

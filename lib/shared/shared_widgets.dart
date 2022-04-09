@@ -319,17 +319,13 @@ class CustomBackButton extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        Padding(
-          padding: EdgeInsets.only(top: 25.w),
-          child: IconButton(
-            padding: EdgeInsets.only(left: 25.w),
-            iconSize: 32.w,
-            color: color ?? CustomTheme.accent,
-            icon: const Icon(Icons.arrow_back_ios_rounded),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+        IconButton(
+          iconSize: 32.w,
+          color: color ?? CustomTheme.accent,
+          icon: const Icon(Icons.arrow_back_ios_rounded),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
       ],
     );

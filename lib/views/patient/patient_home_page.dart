@@ -13,6 +13,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'exercise/exercise.dart';
+
 class PatientHomePage extends StatefulWidget {
   const PatientHomePage({Key? key}) : super(key: key);
 
@@ -109,7 +111,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                       SizedBox(
                         width: 20.w,
                       ),
-                      _buildCard(context, "exercise", "Exercise", 48.w, const ComingSoon()),
+                      _buildCard(context, "exercise", "Exercise", 48.w, const Exercise()),
                     ],
                   ),
                   SizedBox(height: 17.w),
