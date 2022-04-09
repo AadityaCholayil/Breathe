@@ -1,6 +1,7 @@
 import 'package:breathe/bloc/patient_bloc/app_bloc/app_bloc.dart';
 import 'package:breathe/bloc/patient_bloc/database_bloc/database_bloc_files.dart';
 import 'package:breathe/models/helper_models.dart';
+import 'package:breathe/models/patient.dart';
 import 'package:breathe/models/session_report.dart';
 import 'package:breathe/shared/coming_soon.dart';
 import 'package:breathe/themes/theme.dart';
@@ -40,6 +41,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
         }
       },
       builder: (context, state) {
+        Patient patient = context.read<PatientAppBloc>().patient;
         return SafeArea(
           child: Scaffold(
             floatingActionButtonLocation:
@@ -67,7 +69,8 @@ class _PatientHomePageState extends State<PatientHomePage> {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const SettingsPage()));
+                                    builder: (context) =>
+                                        const SettingsPage()));
                           },
                         ),
                       ],
@@ -90,7 +93,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                   Padding(
                     padding: EdgeInsets.only(left: 30.w),
                     child: Text(
-                      context.read<PatientAppBloc>().patient.name,
+                      patient.name,
                       // "Pranav",
                       style: TextStyle(
                         color: CustomTheme.t1,
@@ -105,26 +108,76 @@ class _PatientHomePageState extends State<PatientHomePage> {
                       SizedBox(
                         width: 24.w,
                       ),
-                      _buildCard(context, "report", "Report", 54.w, const ReportPage()),
+                      _buildCard(context, "report", "Report", 54.w,
+                          const ReportPage()),
                       SizedBox(
                         width: 20.w,
                       ),
-                      _buildCard(context, "exercise", "Exercise", 48.w, const ComingSoon()),
+                      _buildCard(context, "exercise", "Exercise", 48.w,
+                          const ComingSoon()),
                     ],
                   ),
-                  SizedBox(height: 17.w),
-                  Row(
+                  Stack(
                     children: [
-                      SizedBox(
-                        width: 24.w,
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 24.w,
+                          ),
+                          Column(
+                            children: [
+                              SizedBox(height: 17.w),
+                              _buildCard(
+                                  context,
+                                  "medicineReminder",
+                                  "Medicine Reminder",
+                                  45.w,
+                                  const ComingSoon()),
+                            ],
+                          ),
+                          SizedBox(
+                            width: 20.w,
+                          ),
+                          Stack(
+                            children: [
+                              Column(
+                                children: [
+                                  SizedBox(height: 17.w),
+                                  _buildCard(
+                                      context,
+                                      "askDoctor",
+                                      "Chat with your\ndoctor",
+                                      45.w,
+                                      const PatientChatPage()),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                      _buildCard(
-                          context, "medicineReminder", "Medicine Reminder", 45.w,const ComingSoon()),
-                      SizedBox(
-                        width: 20.w,
-                      ),
-                      _buildCard(
-                          context, "askDoctor", "Chat with your\ndoctor", 45.w, const PatientChatPage()),
+                      patient.patientUnreadCount == 0
+                          ? SizedBox(height: 5.w)
+                          : Positioned(
+                              right: 15.w,
+                              top: 7.w,
+                              child: Container(
+                                height: 28.w,
+                                width: 28.w,
+                                alignment: Alignment.center,
+                                decoration: BoxDecoration(
+                                  color: CustomTheme.accent,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Text(
+                                  '${patient.patientUnreadCount}',
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: CustomTheme.onAccent,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
                     ],
                   ),
                   SizedBox(height: 36.w),
@@ -173,10 +226,8 @@ class _PatientHomePageState extends State<PatientHomePage> {
         borderRadius: BorderRadius.circular(14.w),
       ),
       onPressed: () async {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const TakeReadingPage()));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const TakeReadingPage()));
       },
       label: Text(
         'Take Reading',
@@ -307,13 +358,13 @@ class _PatientHomePageState extends State<PatientHomePage> {
     );
   }
 
-  Widget _buildCard(
-      BuildContext context, String asset, String cardType, double iconHeight, Widget destination) {
+  Widget _buildCard(BuildContext context, String asset, String cardType,
+      double iconHeight, Widget destination) {
     return InkWell(
       onTap: () {
         print("Button Pressed");
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => destination ));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => destination));
       },
       child: Container(
         height: 123.w,
@@ -378,9 +429,7 @@ class _PatientHomePageState extends State<PatientHomePage> {
                 'Record',
                 style: TextStyle(fontSize: 16, color: CustomTheme.t1),
               ),
-              onTap: () {
-
-              },
+              onTap: () {},
             ),
             Divider(
               color: CustomTheme.accent,
