@@ -59,32 +59,32 @@ class DoctorSettingsPage extends StatelessWidget {
           SizedBox(height: 11.w),
           // Center(child: _buildProfileCard(context)),
           SizedBox(height: 29.w),
-          Padding(
-            padding: EdgeInsets.only(left: 24.w),
-            child: Text(
-              "Consulting Doctor",
-              // "Pranav",
-              style: TextStyle(
-                color: CustomTheme.t2,
-                fontSize: 15,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          SizedBox(height: 8.w),
-          Padding(
-            padding: EdgeInsets.only(left: 24.w),
-            child: Text(
-              context.read<DoctorAppBloc>().doctor.name,
-              // "Dr. Pranav Shegekar",
-              style: TextStyle(
-                color: CustomTheme.t1,
-                fontSize: 24,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-          ),
-          SizedBox(height: 20.w),
+          // Padding(
+          //   padding: EdgeInsets.only(left: 24.w),
+          //   child: Text(
+          //     "Consulting Doctor",
+          //     // "Pranav",
+          //     style: TextStyle(
+          //       color: CustomTheme.t2,
+          //       fontSize: 15,
+          //       fontWeight: FontWeight.w500,
+          //     ),
+          //   ),
+          // ),
+          // SizedBox(height: 8.w),
+          // Padding(
+          //   padding: EdgeInsets.only(left: 24.w),
+          //   child: Text(
+          //     context.read<DoctorAppBloc>().doctor.name,
+          //     // "Dr. Pranav Shegekar",
+          //     style: TextStyle(
+          //       color: CustomTheme.t1,
+          //       fontSize: 24,
+          //       fontWeight: FontWeight.w500,
+          //     ),
+          //   ),
+          // ),
+          // SizedBox(height: 20.w),
           Padding(
             padding: EdgeInsets.only(left: 24.w),
             child: Text(
@@ -101,8 +101,8 @@ class DoctorSettingsPage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 24.w),
             child: Text(
-              // context.read<DoctorAppBloc>().patient.hospital,
-              "XYZ Hospital",
+              context.read<DoctorAppBloc>().doctor.hospital,
+              // "XYZ Hospital",
               style: TextStyle(
                 color: CustomTheme.t1,
                 fontSize: 24,

@@ -17,19 +17,24 @@ class _PatientWelcomeScreenState extends State<PatientWelcomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        // decoration: BoxDecoration(
-        //   image: DecorationImage(
-        //       image: AssetImage(CustomTheme.bgImagePath),
-        //       fit: BoxFit.cover),
-        // ),
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/onBoardingScreen.png"),
+            fit: BoxFit.cover,
+          ),
+        ),
         color: CustomTheme.bg,
         height: MediaQuery.of(context).size.height,
         width: MediaQuery.of(context).size.width,
         child: Column(
           children: [
-            const Spacer(flex: 5,),
+            const Spacer(
+              flex: 5,
+            ),
             // Image.asset('assets/welcome_page_icon_${CustomTheme.isDark?'dark':'light'}.png'),
-            const Spacer(flex: 4,),
+            const Spacer(
+              flex: 4,
+            ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 20.w),
               child: Column(
@@ -38,8 +43,11 @@ class _PatientWelcomeScreenState extends State<PatientWelcomeScreen> {
                     text: 'Sign Up',
                     style: 0,
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const PatientGetStartedPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  const PatientGetStartedPage()));
                     },
                   ),
                   SizedBox(height: 30.w),
@@ -47,8 +55,10 @@ class _PatientWelcomeScreenState extends State<PatientWelcomeScreen> {
                     text: 'Login',
                     style: 1,
                     onPressed: () {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => const PatientLoginPage()));
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PatientLoginPage()));
                     },
                   ),
                   SizedBox(height: 75.w),
@@ -60,5 +70,4 @@ class _PatientWelcomeScreenState extends State<PatientWelcomeScreen> {
       ),
     );
   }
-
 }

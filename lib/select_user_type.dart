@@ -116,7 +116,7 @@ class SelectUserTypePage extends StatelessWidget {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             SizedBox(
-                              child: Image.asset("assets/askDoctor.png"),
+                              child: Image.asset("assets/patient.png"),
                               height: 40.w,
                             ),
                             SizedBox(
