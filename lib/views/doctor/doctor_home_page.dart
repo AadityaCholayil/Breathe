@@ -118,124 +118,10 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
     );
   }
 
-  Widget _buildPreviousReadingCard(BuildContext context, SessionReport report) {
-    return Padding(
-      padding: EdgeInsets.only(bottom: 35.w),
-      child: InkWell(
-        onTap: () {
-          print("Previous Reading Card pressed");
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => SessionReportPage(report: report)));
-        },
-        child: Container(
-          margin: EdgeInsets.symmetric(horizontal: 24.w),
-          height: 147.w,
-          decoration: BoxDecoration(
-            boxShadow: [
-              BoxShadow(
-                color: CustomTheme.cardShadow,
-                blurRadius: 15,
-                // spreadRadius: 1,
-                // blurStyle: ,
-                offset: Offset(
-                  4.w,
-                  4.w,
-                ),
-              ),
-            ],
-            borderRadius: BorderRadius.circular(20),
-            color: CustomTheme.card,
-          ),
-          child: Column(
-            children: [
-              Padding(
-                padding: EdgeInsets.only(top: 19.w, left: 39.w, right: 39.w),
-                child: Row(
-                  children: [
-                    Column(
-                      children: [
-                        Text(
-                          report.bestScore.toString(),
-                          style: TextStyle(
-                            fontSize: 41,
-                            fontWeight: FontWeight.w400,
-                            color: CustomTheme.t1,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 6.w,
-                        ),
-                        Text(
-                          "Best",
-                          style: TextStyle(
-                            color: CustomTheme.t2,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      height: 63.w,
-                      child: VerticalDivider(
-                        thickness: 1.w,
-                        color: CustomTheme.t2,
-                        // endIndent: 3.w,
-                      ),
-                    ),
-                    const Spacer(),
-                    Column(
-                      children: [
-                        Text(
-                          report.averageScore.toString(),
-                          style: TextStyle(
-                            fontSize: 41,
-                            fontWeight: FontWeight.w400,
-                            color: CustomTheme.t1,
-                          ),
-                        ),
-                        SizedBox(
-                          height: 6.w,
-                        ),
-                        Text(
-                          "Average",
-                          style: TextStyle(
-                            color: CustomTheme.t2,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(height: 18.w),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    report.timeTakenAt.toDate().toIso8601String(),
-                    style: TextStyle(
-                      fontSize: 18.w,
-                      color: CustomTheme.t1,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _buildCard(BuildContext context, Patient patient) {
     return InkWell(
       onTap: () {
+        context.read<DoctorDatabaseBloc>().add(OpenChat(patient: patient));
         Navigator.push(
             context,
             MaterialPageRoute(
@@ -295,10 +181,10 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                       .substring(11, 16),
                   style: TextStyle(
                     fontSize: 14,
-                    color: patient.patientUnreadCount == 0
+                    color: patient.doctorUnreadCount == 0
                         ? CustomTheme.t2
                         : CustomTheme.accent,
-                    fontWeight: patient.patientUnreadCount == 0
+                    fontWeight: patient.doctorUnreadCount == 0
                         ? FontWeight.w400
                         : FontWeight.w600,
                   ),
@@ -306,7 +192,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                 SizedBox(
                   height: 5.w,
                 ),
-                patient.patientUnreadCount == 0
+                patient.doctorUnreadCount == 0
                     ? SizedBox(height: 5.w)
                     : Container(
                         height: 23.w,
@@ -317,7 +203,7 @@ class _DoctorHomePageState extends State<DoctorHomePage> {
                           shape: BoxShape.circle,
                         ),
                         child: Text(
-                          '${patient.patientUnreadCount}',
+                          '${patient.doctorUnreadCount}',
                           style: TextStyle(
                             fontSize: 13,
                             color: CustomTheme.onAccent,
