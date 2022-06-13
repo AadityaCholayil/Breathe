@@ -45,65 +45,6 @@ class _DoctorChatPageState extends State<DoctorChatPage> {
       },
       builder: (context, state) {
         return Scaffold(
-          // appBar: AppBar(
-          //   titleSpacing: 0,
-          //   toolbarHeight: 70.w,
-          //   leading: IconButton(
-          //     padding: EdgeInsets.only(left: 10.w),
-          //     icon: Icon(
-          //       Icons.arrow_back_ios,
-          //       size: 22.w,
-          //       color: CustomTheme.t1,
-          //     ),
-          //     onPressed: () {
-          //       Navigator.pop(context);
-          //     },
-          //   ),
-          //   leadingWidth: 40.w,
-          //   title: Row(
-          //     children: [
-          //       Container(
-          //         decoration: const BoxDecoration(
-          //           shape: BoxShape.circle,
-          //         ),
-          //         clipBehavior: Clip.antiAliasWithSaveLayer,
-          //         height: 42.w,
-          //         width: 42.w,
-          //         child: Image.network(widget.patient.profilePic),
-          //       ),
-          //       SizedBox(width: 21.w),
-          //       Text(
-          //         widget.patient.name,
-          //         style: TextStyle(
-          //           color: CustomTheme.t1,
-          //           fontSize: 21,
-          //           fontWeight: FontWeight.w500,
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          //   centerTitle: false,
-          //   backgroundColor: CustomTheme.card,
-          //   shadowColor: CustomTheme.cardShadow,
-          //   elevation: 3,
-          //   actions: [
-          //     InkWell(
-          //       child: Icon(
-          //         Icons.more_vert,
-          //         size: 26,
-          //         color: CustomTheme.t1,
-          //       ),
-          //       onTap: () {
-          //         print("Settings button pressed");
-          //         // Navigator.push(
-          //         //     context,
-          //         //     MaterialPageRoute(
-          //         //         builder: (context) => const DoctorSettingsPage()));
-          //       },
-          //     ),
-          //     SizedBox(width: 20.w),
-          //   ],
-          // ),
           backgroundColor: CustomTheme.bg,
           body: SafeArea(
             child: Column(
@@ -242,32 +183,10 @@ class _DoctorChatPageState extends State<DoctorChatPage> {
                             ),
                           ),
                         ),
-                        // ElevatedButton(
-                        //   onPressed: () {},
-                        //   style: ElevatedButton.styleFrom(
-                        //     elevation: 4,
-                        //     padding: EdgeInsets.zero,
-                        //     shadowColor: CustomTheme.cardShadow,
-                        //     primary: CustomTheme.accent,
-                        //     shape: RoundedRectangleBorder(
-                        //       borderRadius: BorderRadius.circular(40.w),
-                        //     ),
-                        //     maximumSize: Size(60.w,
-                        //       60.w,)
-                        //   ),
-                        //   child: Container(
-                        //     child: Icon(
-                        //       Icons.send,
-                        //       color: CustomTheme.onAccent,
-                        //     ),
-                        //   ),
-                        // )
                       ],
                     ),
                   ),
                 ),
-                // for (Message message in messages)
-                //   _buildMessage(context, message),
               ],
             ),
           ),
@@ -319,25 +238,30 @@ class _DoctorChatPageState extends State<DoctorChatPage> {
                 decoration: BoxDecoration(
                     color: CustomTheme.bg,
                     borderRadius: BorderRadius.circular(10.w)),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(right: 40.w, left: 40.w),
-                      child: Text(
-                        'Sent a report',
-                        style: TextStyle(fontSize: 15, color: CustomTheme.t1),
+                child: InkWell(
+                  onTap: () {
+
+                  },
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: 40.w, left: 40.w),
+                        child: Text(
+                          'Sent a report',
+                          style: TextStyle(fontSize: 15, color: CustomTheme.t1),
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 5.w),
-                    Text(
-                      'Open',
-                      style: TextStyle(
-                          fontSize: 16,
-                          color: CustomTheme.accent,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    SizedBox(height: 5.w),
-                  ],
+                      SizedBox(height: 5.w),
+                      Text(
+                        'Open',
+                        style: TextStyle(
+                            fontSize: 16,
+                            color: CustomTheme.accent,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(height: 5.w),
+                    ],
+                  ),
                 ),
               ),
               SizedBox(height: 4.w),
