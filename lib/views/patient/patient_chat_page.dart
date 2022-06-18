@@ -29,6 +29,7 @@ class _PatientChatPageState extends State<PatientChatPage> {
   void initState() {
     super.initState();
     patient = context.read<PatientDatabaseBloc>().patient;
+    doctor = context.read<PatientDatabaseBloc>().doctor;
     context.read<PatientDatabaseBloc>().add(const GetMessages());
   }
 
